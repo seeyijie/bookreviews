@@ -2,8 +2,7 @@
 
 venv/
 env/
-
-/jiawei.py
-/ken.py
+jiawei.py
+ken.py
 
 __pycache__/
