@@ -4,5 +4,8 @@ venv/
 env/
 jiawei.py
 ken.py
+yijie.py
+jinkind.py
+dom.py
 
 __pycache__/
