@@ -43,9 +43,12 @@ def post():
     retDict = data.exampleDict
     return render_template('post.html', retDict = retDict)          # loads post.html, and sends a variable called retDict
 
-@app.route('/test')
-def test():
-    return render_template('test.html')
+@app.route('/browse')
+def browse():
+    arrayOfBooks = data.hardcodedMongo
+    # TODO: Instead of hardcoding arrayOfBooks, call a function that retrieves all books from the MongoDB database, and store it in arrayOfBooks.
+    # The format of arrayOfBooks is based off the example in prof's github, and can be viewed from data.py
+    return render_template('browse.html', arrayOfBooks = arrayOfBooks)
 
 if __name__ == '__main__':
     app.run(debug=True)

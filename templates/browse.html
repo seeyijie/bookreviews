@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Book Reviews</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            Browse all books
+            <!-- this page allows the user to scroll and see all books in the database -->
+        </h1>
+    </div>
+
+    <div>
+        <table>
+            {% for book in arrayOfBooks %}
+            <tr>
+                <td>
+                    <img src={{ book['imUrl'] }}>       <!-- this line may look erroneous in the IDE but don't worry it is not -->
+                </td>
+                <td>
+                    Title: {{ book['title'] }} <br>
+                    Brand: {{ book['brand'] }} <br>
+                    Categories: |
+                    {% for category in book['categories'][0] %}
+                    {{category}} |
+                    {% endfor %} <br>
+                    Price: {{ book['price'] }} <br>
+                    Sales Ranking: <br>
+                    {% for cat, rank in book['salesRank'].items() %}
+                    {{cat}}: {{rank}}<br>
+                    {% endfor %} <br>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>
