@@ -1,6 +1,7 @@
 .idea
-.vscode
+.vscode/
 venv/
+.env
 env/
 jiawei.py
 ken.py
