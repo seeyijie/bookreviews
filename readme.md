@@ -20,3 +20,18 @@
 
 ### PyMongo material
 * [Introduction to mongodb and python](https://realpython.com/introduction-to-mongodb-and-python/)
+
+### Data analytics with Pandas and Apache Spark
+* Amazon Kindle Reviews Dataset
+    * Pandas 
+        * Pearson correlation: price vs review length
+        * TF-IDF 
+            * Review sentiment analysis
+            * Find similar reviews
+            * Extract review keywords
+    * Apache Spark
+        * Install and setup
+        * Raw csv/json -> Spark DataFrames
+        * Run SQL queries from python
+        
+* [Colab Notebook](https://colab.research.google.com/drive/1j9WC5OVgnXZ1-h82Yk6B4BRYtKCJxYTp)
