@@ -1,5 +1,17 @@
 # Database Project
 
+## Instructions (How to run):
+* Download MySQL and create a database with name "50043_DB"
+* Create a new user and give it admin permission
+* Run "export MYSQL_USER={USER}" to set environment variables
+* Run "export MYSQL_PASSWORD={PASSWORD}" to set environment variables
+* Run "export FLASK_APP=manage.py" to point the entry of "flask run" to manage.py (factory init method)
+* Run "flask db init" and then "flask db migrate".
+* Verify the new .py file in the migrations/versions and check if the upgrades are correct.
+* Run flask db upgrade to apply the migration
+* Run "flask run" and go to "127.0.0.1:5000/register"
+
+
 ## Quality of life improvements
 * [SSH Keys and Github](https://dev.to/maedahbatool/generating-a-new-ssh-key-and-adding-it-to-github-137j)
 
