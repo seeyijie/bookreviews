@@ -12,7 +12,6 @@ class LoginForm(FlaskForm):
         validators.InputRequired(), validators.Length(min=6, max=30)
     ])
 
-
     def validate(self):
         rv = FlaskForm.validate(self)
         if not rv:

@@ -2,7 +2,9 @@
 # from flask import Flask, render_template, request
 # import datetime
 # from pymongo import MongoClient
+# from pymongo import ASCENDING
 # import pymysql
+# from models.logs import LoggerObject
 #
 # import data             # this imports data.py that I created in the same folder
 #
@@ -14,6 +16,9 @@
 # db = client.test_database
 # # Create test collection in test_database if not created in MongoDB
 # collection = db.test_collection
+#
+# #Create database for log, if not created
+# loggerObject = LoggerObject()
 # #Setting up environmant variables
 # env = Env()
 # env.read_env()
@@ -28,6 +33,21 @@
 #
 # conn = pymysql.connect(host, user=user, passwd=password, db=dbname)
 #
+# @app.route('/deletelogs', methods = ['DELETE'])
+# def deletelogs():
+#     loggerObject.deleteAllLogs()
+#     return 'ok'
+#
+#
+# @app.route('/getlogs', methods = ['GET'])
+# def getlogs():
+#     return str(loggerObject.getAllLogs())
+#
+#
+# @app.route('/writelogs', methods = ['GET'])
+# def write_logs():
+#     loggerObject.log("hello world","GET")
+#     return 'Hello world'
 #
 # @app.route('/')
 # def hello_world():
