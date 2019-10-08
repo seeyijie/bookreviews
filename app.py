@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 import datetime
 from pymongo import MongoClient
 import pymysql
+from pymongo import ASCENDING
 
 import data             # this imports data.py that I created in the same folder
 
@@ -28,6 +29,37 @@ password = sql_password
 
 conn = pymysql.connect(host, user=user, passwd=password, db=dbname)
 
+
+
+db = client.my_logs
+log_collection = db.log
+log_collection.ensure_index([("timestamp", ASCENDING)])
+
+
+def log(msg, requestType):
+    """Log `msg` to MongoDB log"""
+    entry = {}
+    entry['timestamp'] = datetime.datetime.utcnow()
+    entry['msg'] = msg
+    entry['requestType'] = requestType
+    log_collection.insert(entry)
+
+
+
+@app.route('/deletelogs', methods = ['DELETE'])
+def deletelogs():
+    log_collection.remove()
+    return 'ok'
+
+
+@app.route('/getlogs', methods = ['GET'])
+def getlogs():
+    return str(list(log_collection.find()))
+
+@app.route('/writelogs', methods = ['GET'])
+def write_logs():
+    log("hello world","GET")
+    return 'Hello world'
 
 @app.route('/')
 def hello_world():
