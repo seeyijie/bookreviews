@@ -4,13 +4,13 @@ from datetime import datetime
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.VARCHAR(100))
+    name = db.Column(db.VARCHAR(100))
     email = db.Column(db.VARCHAR(100))
     password = db.Column(db.VARCHAR(100))
     recent_login = db.Column(db.DateTime)
 
-    def __init__(self, username, email, password):
-        self.username = username
+    def __init__(self, name, email, password):
+        self.name = name
         self.email = email
         self.password = password
         now = datetime.now()

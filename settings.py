@@ -1,3 +1,4 @@
+import datetime
 import os
 
 FLASK_APP = "manage.py"
@@ -11,3 +12,4 @@ MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD", default="password")
 MYSQL_URI = "mysql+pymysql://%s:%s@%s:3306/%s" % (MYSQL_USERNAME, MYSQL_PASSWORD, MYSQL_HOST, DBNAME)
 SQLALCHEMY_TRACK_MODIFICATIONS = False
 SQLALCHEMY_DATABASE_URI = MYSQL_URI
+JWT_ACCESS_TOKEN_EXPIRES = datetime.timedelta(days=1)

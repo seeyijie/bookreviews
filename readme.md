@@ -54,3 +54,13 @@ Currently, the script assumes that your local machine **does not** have a databa
         * Run SQL queries from python
         
 * [Colab Notebook](https://colab.research.google.com/drive/1j9WC5OVgnXZ1-h82Yk6B4BRYtKCJxYTp)
+
+## FAQs:
+#### 1. MySQL seem to have issues for me after git pulling. What happen?
+
+If you just ran the code, you need to set the environment variables.
+Look at the instructions again for the set up. 
+
+If it is still not working, the column tables may have changed.
+Delete the .py files in migrations/versions and rerun MySQL migration 
+set up again
