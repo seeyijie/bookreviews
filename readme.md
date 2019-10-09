@@ -35,7 +35,7 @@
 
 ### Data analytics with Pandas and Apache Spark
 * Amazon Kindle Reviews Dataset
-    * Pandas 
+    * Pandas + Scikit-Learn
         * Pearson correlation: price vs review length
         * TF-IDF 
             * Review sentiment analysis
