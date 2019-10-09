@@ -48,7 +48,7 @@
 * [Colab Notebook](https://colab.research.google.com/drive/1j9WC5OVgnXZ1-h82Yk6B4BRYtKCJxYTp)
 
 ## FAQs:
-#### MySQL seem to have issues for me after git pulling. What happen?
+####1. MySQL seem to have issues for me after git pulling. What happen?
 
 If you just ran the code, you need to set the environment variables.
 Look at the instructions again for the set up. 
