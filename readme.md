@@ -11,7 +11,6 @@
 * Run "flask db upgrade" to apply the migration
 * Run "flask run" and go to "127.0.0.1:5000/register"
 
-
 ## Quality of life improvements
 * [SSH Keys and Github](https://dev.to/maedahbatool/generating-a-new-ssh-key-and-adding-it-to-github-137j)
 
@@ -47,3 +46,13 @@
         * Run SQL queries from python
         
 * [Colab Notebook](https://colab.research.google.com/drive/1j9WC5OVgnXZ1-h82Yk6B4BRYtKCJxYTp)
+
+## FAQs:
+* MySQL seem to have issues for me after git pulling. What happen?
+
+If you just ran the code, you need to set the environment variables.
+Look at the instructions again for the set up. 
+
+If it is still not working, the column tables may have changed.
+Delete the .py files in migrations/versions and rerun MySQL migration 
+set up again
