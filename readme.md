@@ -3,14 +3,21 @@
 ## Instructions (How to run):
 * Download MySQL and create a database with name "50043_DB"
 * Create a new user and give it admin permission
-* Run "export MYSQL_USER={USER}" to set environment variables
-* Run "export MYSQL_PASSWORD={PASSWORD}" to set environment variables
-* Run "export FLASK_APP=manage.py" to point the entry of "flask run" to manage.py (factory init method)
-* Run "flask db init" and then "flask db migrate".
+* Run `export MYSQL_USER=<USER>` to set environment variables
+* Run `export MYSQL_PASSWORD=<PASSWORD>` to set environment variables
+* Run `export FLASK_APP=manage.py` to point the entry of "flask run" to manage.py (factory init method)
+* Run `flask db init` and then `flask db migrate`. **Important:** if you have issues running these commands, check the following subpoints 
+    * make sure to run `pip install -r requirements.txt` to get the `flask-migrate` library which enables the flask db commands.
+    * Make sure a database named 50043_DB exists in your local mysql environment, and users defined in the environment variables have full permissions to a database named `50043_DB`.
 * Verify the new .py file in the migrations/versions and check if the upgrades are correct.
-* Run "flask db upgrade" to apply the migration
-* Run "flask run" and go to "127.0.0.1:5000/register"
+* Run `flask db upgrade` to apply the migration
+* Run `flask run` and go to `127.0.0.1:5000/register`
 
+## Background information
+Update 9/10/2019: We have started using sqlalchemy to handle our mysql server. Also, we now use flask-migrate to handle the migration of our sqlalchemy database linked to our flask app.
+
+## Automation scripts
+Currently, the script assumes that your local machine **does not** have a database named `50043_DB` and a user named '50043_DB'@'localhost'. The script will generate the afore mentioned database and user with full permissions.
 
 ## Quality of life improvements
 * [SSH Keys and Github](https://dev.to/maedahbatool/generating-a-new-ssh-key-and-adding-it-to-github-137j)
