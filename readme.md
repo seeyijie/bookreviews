@@ -8,7 +8,7 @@
 * Run "export FLASK_APP=manage.py" to point the entry of "flask run" to manage.py (factory init method)
 * Run "flask db init" and then "flask db migrate".
 * Verify the new .py file in the migrations/versions and check if the upgrades are correct.
-* Run flask db upgrade to apply the migration
+* Run "flask db upgrade" to apply the migration
 * Run "flask run" and go to "127.0.0.1:5000/register"
 
 
