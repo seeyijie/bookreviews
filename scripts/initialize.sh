@@ -8,6 +8,6 @@ mysql -e "CREATE USER IF NOT EXISTS ${MAINDB}@localhost IDENTIFIED BY '${PASSWDD
 mysql -e "GRANT ALL PRIVILEGES ON ${MAINDB}.* TO '${MAINDB}'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
 
-# TODO: import database
-
+# import database
+mysql -u 50043_DB -ppassword < initialize.sql
 

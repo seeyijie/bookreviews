@@ -1,5 +1,4 @@
 drop table if exists reviews;
-
 CREATE TABLE reviews(
 id integer not null,
 asin varchar(100),

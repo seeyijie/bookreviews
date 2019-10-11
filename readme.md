@@ -13,11 +13,8 @@
 * Run `flask db upgrade` to apply the migration
 * Run `flask run` and go to `127.0.0.1:5000/register`
 
-## Background information
-Update 9/10/2019: We have started using sqlalchemy to handle our mysql server. Also, we now use flask-migrate to handle the migration of our sqlalchemy database linked to our flask app.
-
 ## Automation scripts
-Currently, the script assumes that your local machine **does not** have a database named `50043_DB` and a user named '50043_DB'@'localhost'. The script will generate the afore mentioned database and user with full permissions.
+* `initialize.sh`: this script checks if you have a database named `50043_DB` and a user named `'50043_DB'@'localhost'`. If not, the script creates the database and user. The script will also give the user full permissions to the `50043_DB` database. After which, the script runs `initialize.sql` with the generated user credentials. `initialize.sql` imports the contents from `kindle_reviews.csv` into a table called `reviews` inside the `50043_DB` database.
 
 ## Quality of life improvements
 * [SSH Keys and Github](https://dev.to/maedahbatool/generating-a-new-ssh-key-and-adding-it-to-github-137j)
@@ -56,7 +53,7 @@ Currently, the script assumes that your local machine **does not** have a databa
 * [Colab Notebook](https://colab.research.google.com/drive/1j9WC5OVgnXZ1-h82Yk6B4BRYtKCJxYTp)
 
 ## FAQs:
-#### 1. MySQL seem to have issues for me after git pulling. What happen?
+#### 1. MySQL seem to have issues for me after git pulling. What happened?
 
 If you just ran the code, you need to set the environment variables.
 Look at the instructions again for the set up. 
