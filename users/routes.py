@@ -7,7 +7,6 @@ from users.forms import RegisterForm, LoginForm
 
 user_app = Blueprint('user_app', __name__)
 
-
 @user_app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -21,9 +20,8 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
-        return f'User ID: {user.id}'
+        return f'User ID: {user.id}'    
     return render_template('register.html', form=form)
-
 
 @user_app.route('/login', methods=['GET', 'POST'])
 def login():
