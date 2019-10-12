@@ -1,0 +1,17 @@
+2019-10-12 23:03:46,176 : INFO : werkzeug : MainThread :  * Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)
+2019-10-12 23:03:50,670 : INFO : werkzeug : Thread-3 : 127.0.0.1 - - [12/Oct/2019 23:03:50] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:03:52,046 : INFO : werkzeug : Thread-2 : 127.0.0.1 - - [12/Oct/2019 23:03:52] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:03:52,883 : INFO : werkzeug : Thread-4 : 127.0.0.1 - - [12/Oct/2019 23:03:52] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:03:53,714 : INFO : werkzeug : Thread-5 : 127.0.0.1 - - [12/Oct/2019 23:03:53] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:03:54,407 : INFO : werkzeug : Thread-6 : 127.0.0.1 - - [12/Oct/2019 23:03:54] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:03:56,073 : INFO : werkzeug : Thread-7 : 127.0.0.1 - - [12/Oct/2019 23:03:56] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:03:57,136 : INFO : werkzeug : Thread-8 : 127.0.0.1 - - [12/Oct/2019 23:03:57] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:04:11,815 : INFO : werkzeug : Thread-10 : 127.0.0.1 - - [12/Oct/2019 23:04:11] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:04:13,673 : INFO : werkzeug : Thread-11 : 127.0.0.1 - - [12/Oct/2019 23:04:13] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:04:18,080 : INFO : werkzeug : Thread-12 : 127.0.0.1 - - [12/Oct/2019 23:04:18] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:04:27,454 : INFO : werkzeug : Thread-13 : 127.0.0.1 - - [12/Oct/2019 23:04:27] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:04:36,095 : INFO : werkzeug : Thread-14 : 127.0.0.1 - - [12/Oct/2019 23:04:36] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:04:41,542 : INFO : werkzeug : Thread-15 : 127.0.0.1 - - [12/Oct/2019 23:04:41] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:04:47,463 : INFO : werkzeug : Thread-16 : 127.0.0.1 - - [12/Oct/2019 23:04:47] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:04:48,924 : INFO : werkzeug : Thread-17 : 127.0.0.1 - - [12/Oct/2019 23:04:48] "GET /log HTTP/1.1" 200 -
+2019-10-12 23:04:50,180 : INFO : werkzeug : Thread-18 : 127.0.0.1 - - [12/Oct/2019 23:04:50] "GET /log HTTP/1.1" 200 -

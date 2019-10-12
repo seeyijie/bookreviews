@@ -13,16 +13,26 @@ class LoggerObject():
         f.close()
 
     def log(self):     
-        f = open('models/bookreviews.log','r')
+        try:
+            f = open('models/bookreviews.log','r')
+        except:
+            f = open('bookreviews.log','r')
         self.deleteAllLogs()
+        # i = 0
         for line in f.readlines():
             lineArray = line.split(' : ')
             entry = {}
-            entry['time'] = lineArray[0]
-            entry['level'] = lineArray[1]
-            entry['name'] = lineArray[2]
-            entry['threadName'] = lineArray[3]
-            entry['message'] = lineArray[4]
+            try:
+                entry['time'] = lineArray[0]
+                entry['level'] = lineArray[1]
+                entry['name'] = lineArray[2]
+                entry['threadName'] = lineArray[3]
+                entry['message'] = lineArray[4]
+                # entry[str(i)] = line
+            except:
+                print ("An error occurred, check http://127.0.0.1:5000/log or models/bookreviews.log")
+                # quit()
+            # i+=1
             log_collection.insert(entry)
         f.close()
 
