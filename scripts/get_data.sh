@@ -17,5 +17,8 @@ rm -rf kindle_reviews.json
 wget -c https://www.dropbox.com/s/zmysok83e8a4vqh/meta_kindle_store.zip?dl=0 -O meta_kindle_store.zip
 unzip meta_kindle_store.zip
 
+#add metaData into mongoDB local
+sudo mongoimport --db 500043_db --collection books_metadata --file meta_Kindle_Store.json --legacy 
+
 # Clean up
 rm -rf *.zip
