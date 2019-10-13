@@ -3,6 +3,7 @@
 venv/
 .env
 env/
+*.pyc
 jiawei.py
 ken.py
 yijie.py
