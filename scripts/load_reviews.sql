@@ -16,4 +16,4 @@ unixReviewTime integer
 load data local infile "kindle_reviews.csv" into table review fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
 
 
- update review set reviewTime = str_to_date(reviewTime,'%m %d, %Y');        
+update review set reviewTime = str_to_date(reviewTime,'%m %d, %Y');        
