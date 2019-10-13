@@ -23,17 +23,10 @@
                     <img src={{ book['imUrl'] }}>       <!-- this line may look erroneous in the IDE but don't worry it is not -->
                 </td>
                 <td>
-                    Title: {{ book['title'] }} <br>
-                    Brand: {{ book['brand'] }} <br>
-                    Categories: |
-                    {% for category in book['categories'][0] %}
-                    {{category}} |
-                    {% endfor %} <br>
-                    Price: {{ book['price'] }} <br>
-                    Sales Ranking: <br>
-                    {% for cat, rank in book['salesRank'].items() %}
-                    {{cat}}: {{rank}}<br>
-                    {% endfor %} <br>
+                    Title: {{ book['asin'] }} <br>
+
+                    Title: {{ book['imUrl'] }} <br>
+
                 </td>
             </tr>
             {% endfor %}

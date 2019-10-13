@@ -6,6 +6,7 @@ import time
 from logging.config import fileConfig   # for logging
 from models.logs import LoggerObject    # for logging
 import threading                        # to create a thread for logging
+import models.mongo_setup as mongo_setup
 # NOTE
 # with logging being recorded, there will no longer be log messages shown in the console.
 # these log messages can be found in /models/bookreviews.log.
@@ -14,7 +15,7 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
-
+    mongo_setup.global_init()
     app.config.from_pyfile('settings.py')
 
     db.init_app(app)

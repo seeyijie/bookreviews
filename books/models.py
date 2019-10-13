@@ -1,6 +1,6 @@
 from application import db
 from datetime import datetime
-
+import mongoengine
 
 class Reviews(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
@@ -35,3 +35,22 @@ class Reviews(db.Model):
 
     def __repr__(self):
         return f'<Review {self.id}>'
+
+class BookMetaData(mongoengine.Document):
+    asin = mongoengine.StringField(required=True)
+    imUrl = mongoengine.StringField(required=True)
+    related = mongoengine.DictField()
+    categories = mongoengine.ListField(required=True)
+    description = mongoengine.StringField(required=True)
+    price = mongoengine.FloatField(required = False)
+
+    meta = {
+        'db_alias' : 'core',
+        'collection': 'books_metadata'
+    }
+    def serialize(self):
+        return {
+            'asin': self.asin,
+            'imUrl': self.imUrl
+        }
+
