@@ -7,6 +7,7 @@ log_collection = db.log
 log_collection.ensure_index([("timestamp", ASCENDING)])
 
 class LoggerObject():
+    i = 0
     def clearlogtxt(self):
         f = open('models/bookreviews.log','w')
         f.write("")
@@ -17,9 +18,8 @@ class LoggerObject():
             f = open('models/bookreviews.log','r')
         except:
             f = open('bookreviews.log','r')
-        self.deleteAllLogs()
-        # i = 0
-        for line in f.readlines():
+        # self.deleteAllLogs()
+        for line in f.readlines()[self.i:]:
             lineArray = line.split(' : ')
             entry = {}
             try:
@@ -32,7 +32,7 @@ class LoggerObject():
             except:
                 print ("An error occurred, check http://127.0.0.1:5000/log or models/bookreviews.log")
                 # quit()
-            # i+=1
+            self.i+=1
             log_collection.insert(entry)
         f.close()
 
