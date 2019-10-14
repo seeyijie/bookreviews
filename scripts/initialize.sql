@@ -4,20 +4,20 @@ Finally we have to run a command to load the data from our local PC into the tab
 use 50043_DB;
 
 /* create a table for importing the data into*/
-drop table if exists reviews;
-CREATE TABLE reviews(
-    id integer not null,
-    asin varchar(100),
-    helpful varchar(100),
-    overall integer,
-    dock_count smallint,
-    reviewText varchar(255),
-    reviewTime date,
-    reviewerID varchar(100),
-    reviewerName varchar(100),
-    summary varchar(255),
-    PRIMARY KEY (id)
+create table review(
+id integer not null auto_increment primary key,
+asin varchar(100),
+helpful varchar(100),
+overall integer,
+reviewText varchar(255),
+reviewTime varchar(255),
+reviewerID varchar(100),
+reviewerName varchar(100),
+summary varchar(255),
+unixReviewTime integer
 );
 
-/* imports the csv file into the table. excludes the column names (make sure csv file is in the same directory)*/
-load data local infile "kindle_reviews.csv" into table reviews fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
+load data local infile "kindle_reviews.csv" into table review fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
+
+
+update review set reviewTime = str_to_date(reviewTime,'%m %d, %Y');
