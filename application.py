@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
 import time
+import logging
 from logging.config import fileConfig   # for logging
 from models.logs import LoggerObject    # for logging
 import threading                        # to create a thread for logging
@@ -43,10 +44,11 @@ class logThread(threading.Thread):
         self.logger.deleteAllLogs()          # clear all logs in mongoDB
         while True:
             self.logger.log()
-            print('snapshot logged: ', self.logger.getLogCount())       # comment me out in production
+            # print('snapshot logged: ', self.logger.getLogCount())       # comment me out in production
             # print (self.logger.getAllLogs())                          # comment me out in production as well
             time.sleep(5)                                               # updates log every 5 seconds
             
+# Uncomment these in Production!!
 # fileConfig('models/logging.cfg')                    # sets up log
-logging_thread = logThread(1)                       # defines a thread that transfers info from bookreviews.log into mongoDB
-logging_thread.start()                              # starts the thread
+# logging_thread = logThread(1)                       # defines a thread that transfers info from bookreviews.log into mongoDB
+# logging_thread.start()                              # starts the thread
