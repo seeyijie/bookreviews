@@ -7,6 +7,7 @@ log_collection = db.log
 log_collection.ensure_index([("timestamp", ASCENDING)])
 
 class LoggerObject():
+    # i = 0
     def clearlogtxt(self):
         f = open('models/bookreviews.log','w')
         f.write("")

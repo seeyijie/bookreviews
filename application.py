@@ -47,6 +47,6 @@ class logThread(threading.Thread):
             # print (self.logger.getAllLogs())                          # comment me out in production as well
             time.sleep(5)                                               # updates log every 5 seconds
             
-fileConfig('models/logging.cfg')                    # sets up log
+# fileConfig('models/logging.cfg')                    # sets up log
 logging_thread = logThread(1)                       # defines a thread that transfers info from bookreviews.log into mongoDB
 logging_thread.start()                              # starts the thread
