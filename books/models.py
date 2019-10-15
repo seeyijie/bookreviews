@@ -59,6 +59,12 @@ class BookMetaData(mongoengine.Document):
     def serialize(self):
         return {
             'asin': self.asin,
-            'imUrl': self.imUrl
+            'imUrl': self.imUrl,
+            'salesRank': self.salesRank,
+            'title': self.title,
+            'related': self.related,
+            'categories': self.categories,
+            'description': self.description,
+            'price': self.price
         }
 
