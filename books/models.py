@@ -44,6 +44,8 @@ class Review(db.Model):
 class BookMetaData(mongoengine.Document):
     asin = mongoengine.StringField(required=True)
     imUrl = mongoengine.StringField(required=True)
+    salesRank = mongoengine.StringField(required=True)
+    title = mongoengine.StringField(required=True)
     related = mongoengine.DictField()
     categories = mongoengine.ListField(required=True)
     description = mongoengine.StringField(required=True)
