@@ -20,7 +20,9 @@
             {% for book in arrayOfBooks %}
             <tr>
                 <td>
-                    <img src={{ book['imUrl'] }}>       <!-- this line may look erroneous in the IDE but don't worry it is not -->
+                    <a href={{ "/books/" + book['asin'] }}>
+                        <img src={{ book['imUrl'] }} />       <!-- this line may look erroneous in the IDE but don't worry it is not -->
+                    </a>
                 </td>
                 <td>
                     Title: {{ book['asin'] }} <br>

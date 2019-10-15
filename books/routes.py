@@ -7,6 +7,7 @@ from books.models import Review
 
 book_app = Blueprint('book_app', __name__)
 
+'''
 @book_app.route('/book/<asin>/reviews', methods=['GET'])
 def get_reviews(asin):
     results = Review.query.filter_by(asin=asin)
@@ -15,6 +16,7 @@ def get_reviews(asin):
         reviews.append(result.serialize())
     return jsonify(reviews)
     #return render_template('book.html', reviews=reviews)
+'''
 
 
 @book_app.route('/browse', methods=['GET'])
@@ -35,18 +37,17 @@ def get_byasin():
 
 
 #query book review
-@book_app.route('/books/', methods=['GET', 'POST'])
-def get_reviewss():
+@book_app.route('/books/<asin>', methods=['GET', 'POST'])
+def get_reviews(asin):
     reviews = []
-    search = False
-    if request.args:
-        search = True
-        asin = request.args['asin']
+    #search = False
+    book = get_book_by_asin(asin)
+    if (len(book) > 0):
+        book = book[0]
         reviews = Review.query.filter_by(asin=asin).all()
+        return render_template('books_test.html', reviews=reviews, book=book)
     else:
-        reviews = Review.query.limit(20).all()
-
-    return render_template('books_test.html', reviews=reviews, search=search)
+        return '' #render_template('not_found.html') 
 
 #add a book review
 @book_app.route('/add/', methods=['GET','POST'])
