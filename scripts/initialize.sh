@@ -8,6 +8,7 @@ mysql -e "CREATE USER IF NOT EXISTS ${MAINDB}@localhost IDENTIFIED BY '${PASSWDD
 mysql -e "GRANT ALL PRIVILEGES ON ${MAINDB}.* TO '${MAINDB}'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
 
-# import database
-mysql -u 50043_DB -ppassword < initialize.sql
+# import database # maybe dont need user to import database.. should be able to use root to import database.
+echo "Enter password for MySQL"
+mysql -u root -p < initialize.sql
 

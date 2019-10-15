@@ -53,7 +53,8 @@ class BookMetaData(mongoengine.Document):
 
     meta = {
         'db_alias' : 'core',
-        'collection': 'books_metadata'
+        'collection': 'books_metadata',
+        'strict': False,
     }
     def serialize(self):
         return {
