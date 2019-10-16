@@ -11,14 +11,29 @@
 <body>
 
     <div class="container">
-        <a href="/books">Home</a>
+        <a href="/browse">Home</a>
         <br>
-        <a href="/add">Add Book Review</a>
-        <form action="">
+        <a href="/add">Add Review</a>
+        <!--<form action="">
             <h3>Search</h3>
             <input type="text" name="asin" placeholder="search by asin">
             <input type="submit" value="Submit">
-        </form>
+        </form>-->
+        {% if book %}
+            <h1>
+                <table>
+                    <tr>
+                        <td>
+                            <img src={{ book['imUrl'] }}>
+                        </td>
+                        <td>
+                            Title: {{ book['title'] }} <br>
+                            Asin: {{ book['asin'] }}
+                        </td>
+                    </tr>
+                </table>
+            </h1>
+        {% endif %}
         {% if reviews %}
             <h1>
                     {% if search %}
