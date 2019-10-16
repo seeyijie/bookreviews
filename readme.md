@@ -21,6 +21,10 @@
 ## Quality of life improvements
 * [SSH Keys and Github](https://dev.to/maedahbatool/generating-a-new-ssh-key-and-adding-it-to-github-137j)
 
+## MySQL
+* If required, start server using:
+* sudo service mysql start
+
 ## MongoDB
 * default location to view log files from mongodb: `/var/log/mongodb/mongodb.log`
 * start mongod as a background process (allows you to use mongodb command line interface): `sudo service mongodb start`
