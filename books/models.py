@@ -14,13 +14,13 @@ class Review(db.Model):
     summary = db.Column(db.VARCHAR(255))
     unixReviewTime = db.Column(db.Integer) 
 
-    #init only with summary and asin for testing
-    def __init__(self, asin, summary):
+    #init only with summary and reviewText for now
+    def __init__(self, asin, reviewText):
         self.asin= asin
         now = date.today()
         formated = now.strftime("%m %-d, %Y")
         self.reviewTime = formated
-        self.summary = summary
+        self.reviewText = reviewText
         
 
 

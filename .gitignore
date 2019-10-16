@@ -14,4 +14,3 @@ migrations
 __pycache__/
 data_store/
 Pipfile*
-data_store/
