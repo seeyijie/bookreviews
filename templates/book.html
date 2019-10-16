@@ -15,20 +15,21 @@
             <a href="/browse">Home</a>
         </h1>
 
+        <!-- book metadata -->
         {% if book %}
-            <h1>
-                <table>
-                    <tr>
-                        <td>
-                            <img src={{ book['imUrl'] }}>
-                        </td>
-                        <td>
-                            Title: {{ book['title'] }} <br>
-                            Asin: {{ book['asin'] }}
-                        </td>
-                    </tr>
-                </table>
-            </h1>
+            <table>
+                <tr>
+                    <td>
+                        <img src={{ book['imUrl'] }}>
+                    </td>
+                    <td><h1>
+                        Title: {{ book['title'] }} <br>
+                        ASIN: {{ book['asin'] }} <br>
+                        Price: {{ book['price'] }} <br>
+                    </h1></td>
+                </tr>
+            </table>
+            <p>Description: {{ book['description'] }}</p>
         {% endif %}
         <form method="post">
             <h3>Add a review</h3>
@@ -36,17 +37,35 @@
             <input type="submit" value="Submit">
         </form>
 
+        <!-- book reviews -->
         {% if reviews %}
             <h1>
-                    {% if search %}
-                        Showing reviews for {{reviews[0].asin}}
-                    {% else %}
-                        Top reviews:
-                    {% endif %}
+                Top reviews:
                 <!-- this page allows the user to scroll and see all books in the database -->
             </h1>
             {% for r in reviews %}
-                <h2>{{r.reviewText}}</h2>
+                <p>{{r.reviewText}}</p>
+            {% endfor %}
+        {% else %}
+            <h1>Reviews:</h1>
+            <p>No reviews for this product yet.</p>
+        {% endif %}
+
+        <!-- related books -->
+        {% if book %}
+            {% for relation in book['related'] %}
+            <h2>{{ relation }}:</h2>
+            <table>
+                <tr>
+                    {% for item in book['related'][relation] %}
+                        <td></td>
+                            <a href={{ "/books/" + item }}>
+                                {{ item }}
+                            </a>
+                        </td>
+                    {% endfor %}
+                </tr>
+            </table>
             {% endfor %}
         {% endif %}
 
