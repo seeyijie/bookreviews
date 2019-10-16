@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Book Reviews</title>
+    <link rel="
+    stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h1>
+            <a href="/browse">Home</a>
+        </h1>
+
+        {% if book %}
+            <h1>
+                <table>
+                    <tr>
+                        <td>
+                            <img src={{ book['imUrl'] }}>
+                        </td>
+                        <td>
+                            Title: {{ book['title'] }} <br>
+                            Asin: {{ book['asin'] }}
+                        </td>
+                    </tr>
+                </table>
+            </h1>
+        {% endif %}
+        <form method="post">
+            <h3>Add a review</h3>
+            <input type="text" name="reviewText" placeholder="">
+            <input type="submit" value="Submit">
+        </form>
+
+        {% if reviews %}
+            <h1>
+                    {% if search %}
+                        Showing reviews for {{reviews[0].asin}}
+                    {% else %}
+                        Top reviews:
+                    {% endif %}
+                <!-- this page allows the user to scroll and see all books in the database -->
+            </h1>
+            {% for r in reviews %}
+                <h2>{{r.reviewText}}</h2>
+            {% endfor %}
+        {% endif %}
+
+    </div>
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</body>
+
+</html>
