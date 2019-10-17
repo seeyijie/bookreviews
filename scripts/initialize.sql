@@ -4,6 +4,7 @@ Finally we have to run a command to load the data from our local PC into the tab
 use 50043_DB;
 
 /* create a table for importing the data into*/
+drop table if exists review;
 create table review(
 id integer not null auto_increment primary key,
 asin varchar(100),

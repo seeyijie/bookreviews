@@ -1,4 +1,8 @@
-#!/bin/sh
+#!/bin/bash
+
+# start mysql in the background
+sudo service mysql start
+
 MAINDB="50043_DB"
 PASSWDDB="password"
 
