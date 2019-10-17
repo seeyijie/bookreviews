@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, session, url_for
+from flask import Blueprint, render_template, redirect, session, url_for, request
 from werkzeug.security import generate_password_hash
 
 from application import db
@@ -6,6 +6,8 @@ from users.models import User
 from users.forms import RegisterForm, LoginForm
 from scrape import Scraper, load_list
 import time
+from models.logs import LoggerObject
+logger = LoggerObject()
 
 user_app = Blueprint('user_app', __name__)
 
@@ -39,7 +41,8 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
-        return f'User ID: {user.id}'    
+        return f'User ID: {user.id}'
+    logger.logrequest(request)
     return render_template('register.html', form=form)
 
 @user_app.route('/login', methods=['GET', 'POST'])
@@ -56,8 +59,10 @@ def login():
         session['name'] = user.name
         # Redirection
         # '.register' if same file. Otherwise have to specify app.function
+        logger.logrequest(request)
         return redirect(url_for('.register'))
 
+    logger.logrequest(request)
     return render_template('login.html', form=form, error=error)
 
 
@@ -65,4 +70,5 @@ def login():
 def logout():
     session.pop('id')
     session.pop('name')
+    logger.logrequest(request)
     return redirect(url_for('.login'))

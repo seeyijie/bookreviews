@@ -1,4 +1,17 @@
-#!/bin/sh
+#!/bin/bash
+
+echo "Importing datasets"
+./../get_data.sh
+
+echo "Installing MySQL"
+sudo apt-get update
+sudo apt install mysql-server
+
+echo "Importing data to mysql"
+# start mysql in the background
+echo "Starting MySQL service"
+sudo service mysql start
+
 MAINDB="50043_DB"
 PASSWDDB="password"
 
@@ -11,4 +24,5 @@ mysql -e "FLUSH PRIVILEGES;"
 # import database # maybe dont need user to import database.. should be able to use root to import database.
 echo "Enter password for MySQL"
 mysql -u root -p < initialize.sql
+
 

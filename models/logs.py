@@ -1,5 +1,7 @@
+# from flask import jsonify
 from pymongo import MongoClient
 from pymongo import ASCENDING
+import datetime
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.my_logs
@@ -13,28 +15,16 @@ class LoggerObject():
         f.write("")
         f.close()
 
-    def log(self):     
-        try:
-            f = open('models/bookreviews.log','r')
-        except:
-            f = open('bookreviews.log','r')
-        # self.deleteAllLogs()
-        for line in f.readlines()[self.i:]:
-            lineArray = line.split(' : ')
-            entry = {}
-            try:
-                entry['time'] = lineArray[0]
-                entry['level'] = lineArray[1]
-                entry['name'] = lineArray[2]
-                entry['threadName'] = lineArray[3]
-                entry['message'] = lineArray[4]
-                # entry[str(i)] = line
-            except:
-                print ("An error occurred, check http://127.0.0.1:5000/log or models/bookreviews.log")
-                # quit()
-            self.i+=1
-            log_collection.insert(entry)
-        f.close()
+    def logrequest(self, request, response=None):
+        entry = {}
+        entry['timestamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        entry['method'] = request.method
+        entry['url'] = request.url
+        # entry['files'] = request.files
+        # entry['args'] = request.args
+        # entry['form'] = request.form
+        entry['response'] = response
+        log_collection.insert(entry)
 
     def deleteAllLogs(self):
         log_collection.remove()
@@ -46,7 +36,4 @@ class LoggerObject():
         return (db.log.find().count())
 
 if __name__ == "__main__":
-    log = LoggerObject()
-    log.deleteAllLogs()
-    log.log()
     print(log.getAllLogs())

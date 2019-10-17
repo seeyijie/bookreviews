@@ -4,8 +4,10 @@ from books.data_service import get_first_10_books
 from books.data_service import get_book_by_asin
 from application import db
 from books.models import Review
+from models.logs import LoggerObject    # for logging
 
 book_app = Blueprint('book_app', __name__)
+logger = LoggerObject()
 
 '''
 @book_app.route('/book/<asin>/reviews', methods=['GET'])
@@ -18,7 +20,6 @@ def get_reviews(asin):
     #return render_template('book.html', reviews=reviews)
 '''
 
-
 @book_app.route('/browse', methods=['GET'])
 def get_meta_data():
     msg=''
@@ -29,6 +30,7 @@ def get_meta_data():
     books =[]
     for book in first_10_books:
         books.append(book.serialize())
+    logger.logrequest(request)
     return render_template('browse.html', arrayOfBooks= books, msg=msg)
 
 @book_app.route('/searchbyasin', methods=['GET'])
@@ -37,12 +39,12 @@ def get_byasin():
     books =[]
     for book in first_10_books:
         books.append(book.serialize())
+    logger.logrequest(request)
     return render_template('browse.html', arrayOfBooks= books)
 
 
 @book_app.route('/books/<asin>', methods=['GET', 'POST'])
 def get_book(asin):
-
     # if a review is submitted
     if request.method == 'POST':
         asin = asin
@@ -59,9 +61,11 @@ def get_book(asin):
         book = book[0]
         reviews = Review.query.filter_by(asin=asin).all()
         reviews = reviews[::-1] #sort by latest
+        logger.logrequest(request)
         return render_template('book.html', reviews=reviews, book=book)
     else:
         err_msg = 'Book not found.'
+        logger.logrequest(request)
         return redirect(url_for('.get_meta_data', msg=err_msg))
 
 """
