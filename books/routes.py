@@ -26,7 +26,7 @@ def get_meta_data():
         msg= request.args['msg']
 
     first_10_books = get_first_10_books()
-    books =[]   
+    books =[]
     for book in first_10_books:
         books.append(book.serialize())
     return render_template('browse.html', arrayOfBooks= books, msg=msg)
@@ -51,8 +51,8 @@ def get_book(asin):
         db.session.add(review)
         db.session.commit()
 
-    # query asin from mongo and mysql 
-    book = get_book_by_asin(asin) 
+    # query asin from mongo and mysql
+    book = get_book_by_asin(asin)
 
     # if a book is found
     if (len(book) > 0):

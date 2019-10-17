@@ -2,6 +2,19 @@ from application import db
 from datetime import date
 import mongoengine
 
+
+class AsinTitle(db.Model):
+    asin = db.Column(db.VARCHAR(100), primary_key=True)
+    title = db.Column(db.VARCHAR(100), nullable=True)
+
+    def __init__(self, asin, title):
+        self.asin = asin
+        self.title = title
+
+    def __repr__(self):
+        return f'<AsinTitle {self.asin}>'
+
+
 class Review(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     asin = db.Column(db.VARCHAR(100))
@@ -12,17 +25,15 @@ class Review(db.Model):
     reviewerID = db.Column(db.VARCHAR(100))
     reviewerName = db.Column(db.VARCHAR(100))
     summary = db.Column(db.VARCHAR(255))
-    unixReviewTime = db.Column(db.Integer) 
+    unixReviewTime = db.Column(db.Integer)
 
-    #init only with summary and reviewText for now
+    # init only with summary and reviewText for now
     def __init__(self, asin, reviewText):
-        self.asin= asin
+        self.asin = asin
         now = date.today()
         formated = now.strftime("%m %-d, %Y")
         self.reviewTime = formated
         self.reviewText = reviewText
-        
-
 
     def serialize(self):
         return {
@@ -41,6 +52,7 @@ class Review(db.Model):
     def __repr__(self):
         return f'<Review {self.id}>'
 
+
 class BookMetaData(mongoengine.Document):
     asin = mongoengine.StringField(required=True)
     imUrl = mongoengine.StringField(required=True)
@@ -49,13 +61,14 @@ class BookMetaData(mongoengine.Document):
     related = mongoengine.DictField()
     categories = mongoengine.ListField(required=True)
     description = mongoengine.StringField(required=True)
-    price = mongoengine.FloatField(required = False)
+    price = mongoengine.FloatField(required=False)
 
     meta = {
-        'db_alias' : 'core',
+        'db_alias': 'core',
         'collection': 'books_metadata',
         'strict': False,
     }
+
     def serialize(self):
         return {
             'asin': self.asin,
@@ -67,4 +80,3 @@ class BookMetaData(mongoengine.Document):
             'description': self.description,
             'price': self.price
         }
-

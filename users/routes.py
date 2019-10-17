@@ -4,8 +4,27 @@ from werkzeug.security import generate_password_hash
 from application import db
 from users.models import User
 from users.forms import RegisterForm, LoginForm
+from scrape import Scraper, load_list
+import time
 
 user_app = Blueprint('user_app', __name__)
+
+@user_app.route('/scrape', methods=['GET'])
+def scrape():
+    start = time.time()
+    scraper = Scraper()
+    LIMIT = 5
+    asin_list = load_list("/home/yijie/Desktop/results.csv")
+    print(len(asin_list))
+    url_list = scraper.create_URL(asin_list)
+    res_list = scraper.get_response(url_list, upper_limit=LIMIT, lower_limit=0)
+    scraper.scrape(res_list, asin_list, limit=LIMIT, fileout="/home/yijie/Desktop/title_to_asin.csv",
+                   err_logs="/home/yijie/Desktop/err_logs.txt")
+
+    elapsed_time = time.time() - start
+    print("Duration: {}".format(elapsed_time))
+    return "Success"
+
 
 @user_app.route('/register', methods=['GET', 'POST'])
 def register():
