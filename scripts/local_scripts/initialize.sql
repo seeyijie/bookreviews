@@ -3,6 +3,16 @@ Then, we have to create a table within that database with a schema of our choosi
 Finally we have to run a command to load the data from our local PC into the table inside our local database*/
 use 50043_DB;
 
+/* create a table for storing user data*/
+drop table if exists users;
+create table users(
+    id integer primary key,
+    name varchar(100),
+    email varchar(100),
+    password varchar(100),
+    recent_login datetime
+);
+
 /* create a table for importing the data into*/
 drop table if exists review;
 create table review(
