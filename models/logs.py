@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from pymongo import ASCENDING
+import datetime
 
 client = MongoClient('mongodb://localhost:27017/')
 db = client.my_logs
@@ -15,11 +16,13 @@ class LoggerObject():
 
     def logrequest(self, request):
         entry = {}
+        entry['timestamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         entry['method'] = request.method
         entry['url'] = request.url
-        entry['files'] = request.files
-        entry['args'] = request.args
-        entry['form'] = request.form
+        # entry['files'] = request.files
+        # entry['args'] = request.args
+        # entry['form'] = request.form
+        entry['response'] = None
         log_collection.insert(entry)
 
     def deleteAllLogs(self):
