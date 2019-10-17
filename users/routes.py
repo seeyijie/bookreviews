@@ -7,10 +7,12 @@ from users.forms import RegisterForm, LoginForm
 from scrape import Scraper, load_list
 import time
 from models.logs import LoggerObject
+
 logger = LoggerObject()
 
 user_app = Blueprint('user_app', __name__)
 
+# Temporarily put in user app to upload data to MySQL
 @user_app.route('/scrape', methods=['GET'])
 def scrape():
     start = time.time()
@@ -44,6 +46,7 @@ def register():
         return f'User ID: {user.id}'
     logger.logrequest(request)
     return render_template('register.html', form=form)
+
 
 @user_app.route('/login', methods=['GET', 'POST'])
 def login():
