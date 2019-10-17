@@ -12,7 +12,6 @@ logger = LoggerObject()
 
 @user_app.route('/register', methods=['GET', 'POST'])
 def register():
-    logger.logrequest(request)
     form = RegisterForm()
     if form.validate_on_submit():
         # import pdb; pdb.set_trace() # for troubleshooting
@@ -25,11 +24,11 @@ def register():
         db.session.add(user)
         db.session.commit()
         return f'User ID: {user.id}'    
+    logger.logrequest(request)
     return render_template('register.html', form=form)
 
 @user_app.route('/login', methods=['GET', 'POST'])
 def login():
-    logger.logrequest(request)
     if session.get('name'):
         return "You are already logged in!"
 
@@ -42,14 +41,16 @@ def login():
         session['name'] = user.name
         # Redirection
         # '.register' if same file. Otherwise have to specify app.function
+        logger.logrequest(request)
         return redirect(url_for('.register'))
 
+    logger.logrequest(request)
     return render_template('login.html', form=form, error=error)
 
 
 @user_app.route('/logout')
 def logout():
-    logger.logrequest(request)
     session.pop('id')
     session.pop('name')
+    logger.logrequest(request)
     return redirect(url_for('.login'))

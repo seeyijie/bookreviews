@@ -47,8 +47,8 @@
 * [Introduction to mongodb and python](https://realpython.com/introduction-to-mongodb-and-python/)
 
 ### Web Server Logging
-* Every route in flask needs to call logger.logrequest(request)
-* All requests will be logged onto /log
+* Every route in flask needs to call logger.logrequest(request, response) just before each return statement
+* All requests and their responses will be logged onto /log
 
 ### Data analytics with Pandas and Apache Spark
 * Amazon Kindle Reviews Dataset

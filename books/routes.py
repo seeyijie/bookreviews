@@ -22,8 +22,6 @@ def get_reviews(asin):
 
 @book_app.route('/browse', methods=['GET'])
 def get_meta_data():
-    logger.logrequest(request)
-
     msg=''
     if request.args:
         msg= request.args['msg']
@@ -32,21 +30,21 @@ def get_meta_data():
     books =[]   
     for book in first_10_books:
         books.append(book.serialize())
+    logger.logrequest(request)
     return render_template('browse.html', arrayOfBooks= books, msg=msg)
 
 @book_app.route('/searchbyasin', methods=['GET'])
 def get_byasin():
-    logger.logrequest(request)
     first_10_books = get_book_by_asin('B0002IQ15S')
     books =[]
     for book in first_10_books:
         books.append(book.serialize())
+    logger.logrequest(request)
     return render_template('browse.html', arrayOfBooks= books)
 
 
 @book_app.route('/books/<asin>', methods=['GET', 'POST'])
 def get_book(asin):
-    logger.logrequest(request)
     # if a review is submitted
     if request.method == 'POST':
         asin = asin
@@ -63,9 +61,11 @@ def get_book(asin):
         book = book[0]
         reviews = Review.query.filter_by(asin=asin).all()
         reviews = reviews[::-1] #sort by latest
+        logger.logrequest(request)
         return render_template('book.html', reviews=reviews, book=book)
     else:
         err_msg = 'Book not found.'
+        logger.logrequest(request)
         return redirect(url_for('.get_meta_data', msg=err_msg))
 
 """
