@@ -1,14 +1,18 @@
-from flask import Blueprint, render_template, redirect, session, url_for
+from flask import Blueprint, render_template, redirect, session, url_for, request
 from werkzeug.security import generate_password_hash
 
 from application import db
 from users.models import User
 from users.forms import RegisterForm, LoginForm
+from models.logs import LoggerObject
 
 user_app = Blueprint('user_app', __name__)
 
+logger = LoggerObject()
+
 @user_app.route('/register', methods=['GET', 'POST'])
 def register():
+    logger.logrequest(request)
     form = RegisterForm()
     if form.validate_on_submit():
         # import pdb; pdb.set_trace() # for troubleshooting
@@ -25,6 +29,7 @@ def register():
 
 @user_app.route('/login', methods=['GET', 'POST'])
 def login():
+    logger.logrequest(request)
     if session.get('name'):
         return "You are already logged in!"
 
@@ -44,6 +49,7 @@ def login():
 
 @user_app.route('/logout')
 def logout():
+    logger.logrequest(request)
     session.pop('id')
     session.pop('name')
     return redirect(url_for('.login'))

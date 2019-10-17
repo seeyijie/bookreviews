@@ -4,8 +4,10 @@ from books.data_service import get_first_10_books
 from books.data_service import get_book_by_asin
 from application import db
 from books.models import Review
+from models.logs import LoggerObject    # for logging
 
 book_app = Blueprint('book_app', __name__)
+logger = LoggerObject()
 
 '''
 @book_app.route('/book/<asin>/reviews', methods=['GET'])
@@ -18,9 +20,10 @@ def get_reviews(asin):
     #return render_template('book.html', reviews=reviews)
 '''
 
-
 @book_app.route('/browse', methods=['GET'])
 def get_meta_data():
+    logger.logrequest(request)
+
     msg=''
     if request.args:
         msg= request.args['msg']
@@ -33,6 +36,7 @@ def get_meta_data():
 
 @book_app.route('/searchbyasin', methods=['GET'])
 def get_byasin():
+    logger.logrequest(request)
     first_10_books = get_book_by_asin('B0002IQ15S')
     books =[]
     for book in first_10_books:
@@ -42,7 +46,7 @@ def get_byasin():
 
 @book_app.route('/books/<asin>', methods=['GET', 'POST'])
 def get_book(asin):
-
+    logger.logrequest(request)
     # if a review is submitted
     if request.method == 'POST':
         asin = asin

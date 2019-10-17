@@ -47,7 +47,8 @@
 * [Introduction to mongodb and python](https://realpython.com/introduction-to-mongodb-and-python/)
 
 ### Web Server Logging
-* Logging is automatically done every 5 seconds, and stored in models/bookreviews.log
+* Every route in flask needs to call logger.logrequest(request)
+* All requests will be logged onto /log
 
 ### Data analytics with Pandas and Apache Spark
 * Amazon Kindle Reviews Dataset
