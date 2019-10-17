@@ -14,7 +14,10 @@
 * Run `flask run` and go to `127.0.0.1:5000/register`
 
 ## Automation scripts
-* `initialize.sh`: 
+* `start_init.sh`(run this):
+    * this script installs dos2unix and converts `initialize.sh` to be able to run on WSL
+    * to run, do `sudo ./start_init.sh`
+* `initialize.sh` (do not need to run this): 
     * to run, do `sudo ./initialize.sh` and enter your password.
     * this script checks if you have a database named `50043_DB` and a user named `'50043_DB'@'localhost'`. If not, the script creates the database and user. The script will also give the user full permissions to the `50043_DB` database. After which, the script runs `initialize.sql` with the generated user credentials. `initialize.sql` imports the contents from `kindle_reviews.csv` into a table called `reviews` inside the `50043_DB` database.
 
