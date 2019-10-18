@@ -10,6 +10,7 @@ yijie.py
 jinkind.py
 dom.py
 kindle_reviews.csv
+meta_Kindle_Store.json
 migrations
 __pycache__/
 data_store/
