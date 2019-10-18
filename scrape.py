@@ -5,6 +5,7 @@ import time
 import csv
 from books.models import AsinTitle
 from application import db
+from sqlalchemy.exc import IntegrityError
 
 Response = requests.models.Response
 
@@ -41,24 +42,36 @@ class Scraper:
 
         return res_list
 
-    def scrape(self, res_list: List[Response], asin_list: List[str], limit: int, fileout: str, err_logs: str):
+    def scrape(self, res_list: List[Response], asin_list: List[str], fileout: str, err_logs: str):
         index_dict = {}
         for index, res in enumerate(res_list):
             print("Scraping from response object #{}".format(index))
             try:
                 doc = lxml.html.fromstring(res.text)
-                title = doc.xpath("//*[@class='a-size-medium a-color-base a-text-normal']/text()")[0].replace(",", ";")
+                title = doc.xpath("//*[@class='a-size-medium a-color-base a-text-normal']/text()")[0]
+                title.replace(',', '|')
                 index_dict[title] = asin_list[index]
-                asin_title = AsinTitle(title, asin_list[index])
+
+                asin_title = AsinTitle(asin_list[index], title)
                 db.session.add(asin_title)
                 db.session.commit()
+
                 with open(fileout, mode="a") as fout:
                     csv_writer = csv.writer(fout, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                     csv_writer.writerow([title, asin_list[index]])
 
-            except:
+            except IntegrityError as err:
+                print("IntegrityError on Index {}".format(index))
+                db.session.rollback()
                 with open(err_logs, mode="a") as err_log:
-                    err_log.write(str(asin_list[index]) + " has no matching title" + "\n")
+                    err_log.write("ASIN: " + str(asin_list[index]) + " | Trace: " + "Key is already in database" + "\n")
+
+            except Exception as e:
+                print(e)
+                print("Unhandled error on Index {}".format(index))
+                print("ASIN: " + asin_list[index])
+                with open(err_logs, mode="a") as err_log:
+                    err_log.write("ASIN: " + asin_list[index] + " | " + "Trace: " + str(e) + "\n")
 
 
 def load_list(filein: str):
@@ -70,7 +83,6 @@ def load_list(filein: str):
 
     print("ASIN List is " + str(len(asin_list)))
     return asin_list
-
 
 # start = time.time()
 # scraper = Scraper()

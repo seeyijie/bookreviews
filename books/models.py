@@ -5,7 +5,7 @@ import mongoengine
 
 class AsinTitle(db.Model):
     asin = db.Column(db.VARCHAR(100), primary_key=True)
-    title = db.Column(db.VARCHAR(100), nullable=True)
+    title = db.Column(db.VARCHAR(1000), nullable=True)
 
     def __init__(self, asin, title):
         self.asin = asin
