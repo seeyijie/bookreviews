@@ -28,7 +28,7 @@ summary varchar(255),
 unixReviewTime integer
 );
 
-load data local infile "/home/ubuntu/data_store/kindle_reviews.csv" into table review fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
+load data local infile "/home/ubuntu/data_store/kindle_reviews.csv" into table reviews fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
 
 
-update review set reviewTime = str_to_date(reviewTime,'%m %d, %Y');
+update reviews set reviewTime = str_to_date(reviewTime,'%m %d, %Y');

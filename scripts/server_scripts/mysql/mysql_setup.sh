@@ -5,7 +5,6 @@ sudo apt-get -y update
 sudo apt-get -y upgrade
 sudo apt install -y mysql-server
 
-echo "Importing data to mysql"
 # start mysql in the background
 echo "Starting MySQL service"
 sudo service mysql start
@@ -25,9 +24,5 @@ mysql -e "CREATE DATABASE IF NOT EXISTS ${MAINDB} /*\!40100 DEFAULT CHARACTER SE
 mysql -e "CREATE USER IF NOT EXISTS ${MAINDB}@localhost IDENTIFIED BY '${PASSWDDB}';"
 mysql -e "GRANT ALL PRIVILEGES ON ${MAINDB}.* TO '${MAINDB}'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
-
-# import database # maybe dont need user to import database.. should be able to use root to import database.
-echo "Enter password for MySQL"
-mysql -u root -p < initialize_mysql.sql
 
 
