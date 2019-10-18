@@ -14,6 +14,11 @@
 * Run `flask run` and go to `127.0.0.1:5000/register`
 
 ## Automation scripts
+### Deployment to EC2 servers
+* In the folder `scripts/server_scripts` you will find 2 folders: `mysql` and `mongodb`. These folders contain the automation scripts for the setup of MySQL and MongoDB respectively
+* Scripts to be run from these two folders are `ec2_setup_mysql.sh` and `ec2_setup_mongodb.sh`. **Important:** run the scripts with `sudo` permissions.
+
+### Local machine
 * `start_init.sh`(run this):
     * this script installs dos2unix and converts `initialize.sh` to be able to run on WSL
     * to run, do `sudo ./start_init.sh`
