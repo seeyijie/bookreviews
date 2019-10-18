@@ -10,6 +10,13 @@ echo "Importing data to mysql"
 echo "Starting MySQL service"
 sudo service mysql start
 
+# need to explicitly grant access to "root" user
+sudo mysql -e 'update mysql.user set plugin = "mysql_native_password" where user = "root"'
+sudo mysql -e 'create user if not exists "root"@"%" identified by ""'
+sudo mysql -e 'grant all privileges on *.* to "root"@"%" with grant option'
+sudo mysql -e 'flush privileges'
+sudo service mysql restart
+
 MAINDB="50043_DB"
 PASSWDDB="password"
 
@@ -21,6 +28,6 @@ mysql -e "FLUSH PRIVILEGES;"
 
 # import database # maybe dont need user to import database.. should be able to use root to import database.
 echo "Enter password for MySQL"
-mysql -u root -p < initialize.sql
+mysql -u root -p < initialize_mysql.sql
 
 

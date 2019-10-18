@@ -14,8 +14,8 @@ create table users(
 );
 
 /* create a table for importing the data into*/
-drop table if exists review;
-create table review(
+drop table if exists reviews;
+create table reviews(
 id integer not null auto_increment primary key,
 asin varchar(100),
 helpful varchar(100),
@@ -28,7 +28,7 @@ summary varchar(255),
 unixReviewTime integer
 );
 
-load data local infile "kindle_reviews.csv" into table review fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
+load data local infile "/home/ubuntu/data_store/kindle_reviews.csv" into table review fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
 
 
 update review set reviewTime = str_to_date(reviewTime,'%m %d, %Y');
