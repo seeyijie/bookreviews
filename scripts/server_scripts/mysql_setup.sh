@@ -1,11 +1,9 @@
 #!/bin/bash
 
-echo "Importing datasets"
-./../get_data.sh
-
 echo "Installing MySQL"
-sudo apt-get update
-sudo apt install mysql-server
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt install -y mysql-server
 
 echo "Importing data to mysql"
 # start mysql in the background

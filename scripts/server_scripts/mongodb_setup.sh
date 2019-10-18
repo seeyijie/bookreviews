@@ -1,9 +1,6 @@
 #!/bin/bash
 
 # Yet to test
-echo "Importing datasets"
-./../get_data.sh
-
 echo "Installing MongoDB"
 wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
 
