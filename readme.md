@@ -16,7 +16,8 @@
 ## Automation scripts
 ### Deployment to EC2 servers
 * In the folder `scripts/server_scripts` you will find 2 folders: `mysql` and `mongodb`. These folders contain the automation scripts for the setup of MySQL and MongoDB respectively
-* Scripts to be run from these two folders are `ec2_setup_mysql.sh` and `ec2_setup_mongodb.sh`. **Important:** run the scripts with `sudo` permissions.
+* Scripts to be run from these two folders are `ec2_setup_mysql.sh` and `ec2_setup_mongodb.sh`
+* **Important:** replace the variables `server_ip` and `public_key` with the ip address and public key of the EC2 server. Run the scripts with `sudo` permissions.
 
 ### Local machine
 * `start_init.sh`(run this):
