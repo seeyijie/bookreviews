@@ -33,7 +33,7 @@
 ## React (How to run)
 * Prerequisites:
    * Install `yarn`. If yarn is not working, try upgrading NodeJS to the latest version.
-   * Go to `/bookreviews/react-end` and run `npm install` to install react dependencies from the `package.json` file.
+   * Go to `/bookreviews/react-end` and run `yarn install` to install react dependencies from the `package.json` file.
 * Run`yarn start` and go to `localhost:3000`
 
 ## MySQL
