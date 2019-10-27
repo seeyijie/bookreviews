@@ -5,6 +5,7 @@ from books.data_service import get_book_by_asin
 from application import db
 from books.models import Review
 from models.logs import LoggerObject    # for logging
+import json
 
 book_app = Blueprint('book_app', __name__)
 logger = LoggerObject()
@@ -63,6 +64,32 @@ def get_book(asin):
         reviews = reviews[::-1] #sort by latest
         logger.logrequest(request)
         return render_template('book.html', reviews=reviews, book=book)
+    else:
+        err_msg = 'Book not found.'
+        logger.logrequest(request)
+        return redirect(url_for('.get_meta_data', msg=err_msg))
+
+@book_app.route('/api/books/<asin>', methods=['GET', 'POST'])
+def get_book_endpoint(asin):
+    # if a review is submitted
+    if request.method == 'POST':
+        asin = asin
+        reviewText = request.form['reviewText']
+        review = Review(asin, reviewText)
+        db.session.add(review)
+        db.session.commit()
+
+    # query asin from mongo and mysql
+    book = get_book_by_asin(asin)
+
+    # if a book is found
+    if (len(book) > 0):
+        book = book[0]
+        reviews = Review.query.filter_by(asin=asin).all()
+        reviews = reviews[::-1] #sort by latest
+        logger.logrequest(request)
+        return {'book_metadata':book.serialize()}
+
     else:
         err_msg = 'Book not found.'
         logger.logrequest(request)
