@@ -37,6 +37,11 @@ class Home extends Component {
                         Browse all books
                 </Button>
                 </Link>
+                <Link to="/books/K23D" style={{ textDecoration: 'none' }}>
+                    <Button className={classes.button} variant="contained">
+                        Go to a specific book
+                </Button>
+                </Link>
             </Grid>
         </Fragment>
     }

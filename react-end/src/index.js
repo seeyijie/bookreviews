@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { Route, BrowserRouter as Router } from 'react-router-dom'
 import Home from './Home';
 import Browse from './Browse';
+import Book from './Book';
 
 
 const routing = (
@@ -15,8 +16,8 @@ const routing = (
             <Route path="/scrape" component={Scrape} />
             <Route path="/log" component={Log} /> */}
             <Route path="/browse" component={Browse} />
-            {/* <Route path="/searchbyasin" component={Search} />
-            <Route path="/books/<asin>" component={Book} /> */}
+            {/* <Route path="/searchbyasin" component={Search} /> */}
+            <Route path="/books/:bookid" component={Book} />
         </div>
     </Router>
 )
