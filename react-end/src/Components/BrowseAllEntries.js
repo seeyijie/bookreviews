@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import { Grid, List, ListItem } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -19,16 +20,18 @@ function BrowseAllEntries({ booksmetadata }) {
     const booksArray = booksmetadata.map((book) =>
         <Grid className={classes.bigGrid} container direction='row'>
             <Grid className={classes.smallGrid} item md>
-                <img src={book.imUrl} style={{ height: 220 }} alt="cannot be loaded" />
+                <Link to={"/books/" + book.asin} style={{ textDecoration: 'none' }}>
+                    <img src={book.imUrl} style={{ height: 220 }} alt="cannot be loaded" />
+                </Link>
             </Grid>
             <Grid className={classes.smallGrid} item md="10" key={book.asin}>
                 <List>
                     <ListItem>Asin: {book.asin}</ListItem>
                     <ListItem>Title: {book.title}</ListItem>
                     <ListItem>Price: {book.price}</ListItem>
-                    <ListItem>Also Bought: {book.related.also_bought.map((book) => book + " " )}</ListItem>
-                    <ListItem>Also Viewed: {book.related.also_viewed.map((book) => book + " " )}</ListItem>
-                    <ListItem>Bought Together: {book.bought_together.map((book) => book + " " )}</ListItem>
+                    <ListItem>Also Bought: {book.related.also_bought.map((book) => book + " ")}</ListItem>
+                    <ListItem>Also Viewed: {book.related.also_viewed.map((book) => book + " ")}</ListItem>
+                    <ListItem>Bought Together: {book.bought_together.map((book) => book + " ")}</ListItem>
                 </List>
             </Grid>
         </Grid>

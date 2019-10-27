@@ -17,7 +17,7 @@ const routing = (
             <Route path="/log" component={Log} /> */}
             <Route path="/browse" component={Browse} />
             {/* <Route path="/searchbyasin" component={Search} /> */}
-            <Route path="/books/:bookid" component={Book} />
+            <Route path='/books/:bookid' component={Book} />
         </div>
     </Router>
 )
