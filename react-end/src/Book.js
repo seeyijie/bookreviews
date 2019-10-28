@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Header, BookInfo } from './Components'
+import Reviews from "./Components/Reviews.js"
 import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -31,6 +32,7 @@ class Book extends Component {
             buy_after_viewing: [],
             sales_rank: null,
             title: null,
+            reviews: [],
         }
     }
 
@@ -48,9 +50,10 @@ class Book extends Component {
                     });
                     return;
                 }
-                return book.book_metadata;
-            })
-            .then(data => {
+                console.log(book);
+
+                const reviews = book.reviews;
+                const data = book.book_metadata;
                 this.setState({
                     isLoading: false,
                     imUrl: data.imUrl,
@@ -59,15 +62,17 @@ class Book extends Component {
                     sales_rank: data.sales_rank,
                     description: data.description,
                     price: data.price,
-                    also_viewed: data.related ? data.related.also_viewed : null,
-                    buy_after_viewing: data.related ? data.related.buy_after_viewing : null,
+                    also_bought: data.related ? (data.related.also_bought ? data.related.also_bought : []) : [],
+                    also_viewed: data.related ? (data.related.also_viewed ? data.related.also_viewed : []) : [],
+                    buy_after_viewing: data.related ? (data.related.buy_after_viewing ? data.related.buy_after_viewing : []) : [],
+                    reviews: reviews ? reviews : [],
                 })
             })
     }
 
     render() {
-        const { bookID, categories, description, imUrl, price, also_viewed, buy_after_viewing, sales_rank, title } = this.state;
-
+        const { bookID, categories, description, imUrl, price, also_viewed, buy_after_viewing, sales_rank, title, reviews } = this.state;
+        console.log(reviews)
         const loadingMessage = <Typography>Loading... Please wait</Typography>
         const errorMessage = <Typography>Error: Book not found</Typography>
 
@@ -75,7 +80,12 @@ class Book extends Component {
             <Header />
             {this.state.isLoading ? loadingMessage : (
                 this.state.error ? errorMessage : (
-                    <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />
+                    <div>
+                        <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />
+                        <br/>
+                        <p>Reviews:</p>
+                        <Reviews reviews={reviews}/>
+                    </div>
                 )
             )}
         </Fragment>

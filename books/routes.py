@@ -85,10 +85,13 @@ def get_book_endpoint(asin):
     # if a book is found
     if (len(book) > 0):
         book = book[0]
-        reviews = Review.query.filter_by(asin=asin).all()
-        reviews = reviews[::-1] #sort by latest
+        reviews_raw = Review.query.filter_by(asin=asin).all()
+        reviews_raw = reviews_raw[::-1] #sort by latest
+        reviews = []
+        for review in reviews_raw:
+            reviews.append(review.serialize())
         logger.logrequest(request)
-        return {'book_metadata':book.serialize()}
+        return {'book_metadata':book.serialize(), 'reviews':reviews}
 
     else:
         err_msg = 'Book not found.'
