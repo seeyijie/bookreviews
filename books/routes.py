@@ -95,6 +95,21 @@ def get_book_endpoint(asin):
         logger.logrequest(request)
         return redirect(url_for('.get_meta_data', msg=err_msg))
 
+@book_app.route('/api/allbooks', methods=['GET','POST'])
+def get_all_books_endpoint():
+    msg=''
+    if request.args:
+        msg= request.args['msg']
+
+    first_10_books = get_first_10_books()
+    books =[]
+    for book in first_10_books:
+        books.append(book.serialize())
+    retjson = jsonify(books)
+    logger.logrequest(request, books)
+    return retjson
+
+
 """
 #add a book review
 @book_app.route('/add/', methods=['GET','POST'])

@@ -71,8 +71,7 @@ class Book extends Component {
 
         return <Fragment>
             <Header />
-            {this.state.isLoading ? loadingMessage : <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />
-            }
+            {this.state.isLoading ? loadingMessage : <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />}
         </Fragment>
     }
 }
