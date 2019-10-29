@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Header, BookInfo } from './Components'
+import Reviews from "./Components/Reviews.js"
 import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -21,6 +22,7 @@ class Book extends Component {
 
         this.state = {
             isLoading: true,
+            error: false,
             bookID: this.props.match.params['bookid'],
             categories: null,
             description: null,
@@ -30,6 +32,7 @@ class Book extends Component {
             buy_after_viewing: [],
             sales_rank: null,
             title: null,
+            reviews: [],
         }
     }
 
@@ -38,40 +41,53 @@ class Book extends Component {
         // sample asin: B0002IQ15S, 1603420304
         const url = `http://127.0.0.1:5000/api/books/${this.state.bookID}`
         axios.get(url)
-            .then(response => {
-                const imUrl = response.data.book_metadata.imUrl
-                const title = response.data.book_metadata.title
-                const categories = response.data.book_metadata.categories
-                const sales_rank = response.data.book_metadata.sales_rank
-                const description = response.data.book_metadata.description
-                const price = response.data.book_metadata.price
-                const also_viewed = response.data.book_metadata.related.also_viewed
-                const buy_after_viewing = response.data.book_metadata.related.buy_after_viewing
-                return [imUrl, title, categories, sales_rank, description, price, also_viewed, buy_after_viewing]
-            })
-            .then((array) => {
+            .then(response => response.data)
+            .then(book => {
+                if (book.book_metadata == null) {
+                    this.setState({
+                        isLoading: false,
+                        error: true,
+                    });
+                    return;
+                }
+                console.log(book);
+
+                const reviews = book.reviews;
+                const data = book.book_metadata;
                 this.setState({
                     isLoading: false,
-                    imUrl: array[0],
-                    title: array[1],
-                    categories: array[2],
-                    sales_rank: array[3],
-                    description: array[4],
-                    price: array[5],
-                    also_viewed: array[6],
-                    buy_after_viewing: array[7],
+                    imUrl: data.imUrl,
+                    title: data.title,
+                    categories: data.categories,
+                    sales_rank: data.sales_rank,
+                    description: data.description,
+                    price: data.price,
+                    also_bought: data.related ? (data.related.also_bought ? data.related.also_bought : []) : [],
+                    also_viewed: data.related ? (data.related.also_viewed ? data.related.also_viewed : []) : [],
+                    buy_after_viewing: data.related ? (data.related.buy_after_viewing ? data.related.buy_after_viewing : []) : [],
+                    reviews: reviews ? reviews : [],
                 })
             })
     }
 
     render() {
-        const { bookID, categories, description, imUrl, price, also_viewed, buy_after_viewing, sales_rank, title } = this.state;
-
+        const { bookID, categories, description, imUrl, price, also_viewed, buy_after_viewing, sales_rank, title, reviews } = this.state;
+        console.log(reviews)
         const loadingMessage = <Typography>Loading... Please wait</Typography>
+        const errorMessage = <Typography>Error: Book not found</Typography>
 
         return <Fragment>
             <Header />
-            {this.state.isLoading ? loadingMessage : <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />}
+            {this.state.isLoading ? loadingMessage : (
+                this.state.error ? errorMessage : (
+                    <div>
+                        <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />
+                        <br/>
+                        <p>Reviews:</p>
+                        <Reviews reviews={reviews}/>
+                    </div>
+                )
+            )}
         </Fragment>
     }
 }
