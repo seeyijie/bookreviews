@@ -3,10 +3,12 @@ from pymongo import MongoClient
 from pymongo import ASCENDING
 import datetime
 
-client = MongoClient('mongodb://localhost:27017/')
-db = client.my_logs
-log_collection = db.log
-log_collection.ensure_index([("timestamp", ASCENDING)])
+from books.models import MongoLogObject
+
+# client = MongoClient('mongodb://localhost:27017/')
+# db = client.my_logs
+# log_collection = db.log
+# log_collection.ensure_index([("timestamp", ASCENDING)])
 
 class LoggerObject():
     i = 0
@@ -16,24 +18,28 @@ class LoggerObject():
         f.close()
 
     def logrequest(self, request, response=None):
-        entry = {}
-        entry['timestamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        entry['method'] = request.method
-        entry['url'] = request.url
+        entry = MongoLogObject()
+        entry.timestamp = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        entry.method = request.method
+        entry.url = request.url
         # entry['files'] = request.files
         # entry['args'] = request.args
         # entry['form'] = request.form
-        entry['response'] = response
-        log_collection.insert(entry)
+        entry.response = response
+        entry.save()
 
     def deleteAllLogs(self):
-        log_collection.remove()
+        # log_collection.remove()
+        pass
 
     def getAllLogs(self):
-        return list(log_collection.find())
-    
-    def getLogCount(self):
-        return (db.log.find().count())
+        query = MongoLogObject.objects[:10]
+        logs = []
+        for i in query:
+            logs.append(i.serialize())
+            print(i.serialize())
+        return logs
 
-if __name__ == "__main__":
-    print(log.getAllLogs())
+    def getLogCount(self):
+        # return (db.log.find().count())
+        pass
