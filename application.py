@@ -3,14 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
 import time
-from models.logs import LoggerObject  # for logging
 import threading  # to create a thread for logging
 import models.mongo_setup as mongo_setup
 
 db = SQLAlchemy()
 
-logger = LoggerObject()
-logger.deleteAllLogs()  # deletes all logs from MongoDB on flask run
 
 
 def create_app():
