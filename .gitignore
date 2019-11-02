@@ -12,6 +12,7 @@ dom.py
 kindle_reviews.csv
 meta_Kindle_Store.json
 migrations
+bookreviews.zip
 __pycache__/
 data_store/
 Pipfile*
