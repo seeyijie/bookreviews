@@ -1,4 +1,5 @@
 import React from 'react';
+import { Card, CardHeader, CardActions, CardContent, Typography, Avatar } from '@material-ui/core';
 
 class Reviews extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ class Reviews extends React.Component {
             return <p>No reviews for this product yet.</p>;
         }
         return (
-            <table style={{width:'80%', align:'center', border:'1px'}}>
+            <table style={{width:'100%'}}>
                 {reviews.map(review => <Review data={review} />)}
             </table>
         );
@@ -35,29 +36,25 @@ class Review extends React.Component {
 
     render() {
         const data = this.state.data;
-        console.log(data)
         if (data == null) return null;
 
-        const {reviewerID, reviewerName, summary, reviewText, reviewTime} = data;
+        const {reviewerName, summary, reviewText, reviewTime} = data;
         return (
-            <tr>
-                <td>
-                    <tr>
-                        <th>Author:</th>
-                            <td>{reviewerName}</td>
-                        <th>ID:</th>
-                            <td>{reviewerID}</td>
-                        <th>Time:</th>
-                            <td>{reviewTime}</td>
-                    </tr>
-                    <tr>
-                        <th>Summary:</th>
-                            <td>{summary}</td>
-                    </tr>
-                    <tr>
-                        <th>Text:</th>
-                            <td>{reviewText}</td>
-                    </tr>
+            <tr style={{width:'100%'}}>
+                <td style={{width:'100%'}}>
+                    <Card>
+                        <CardHeader
+                            avatar={
+                                <Avatar>{reviewerName ? reviewerName[0] : ''}</Avatar>
+                            }
+                            title={reviewerName ? reviewerName : 'Anonymous'}
+                            subheader={reviewTime}
+                        />  
+                        <CardContent>
+                            <Typography component='p'>{summary}</Typography>
+                            <Typography component='p'>{reviewText}</Typography>
+                        </CardContent>
+                    </Card>
                 </td>
             </tr>
         );

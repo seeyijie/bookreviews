@@ -83,8 +83,10 @@ class Book extends Component {
                     <div>
                         <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />
                         <br/>
-                        <p>Reviews:</p>
-                        <Reviews reviews={reviews}/>
+                        <div style={{width:'90%', margin:'auto'}}>
+                            <p>Reviews:</p>
+                            <Reviews reviews={reviews}/>
+                        </div>
                     </div>
                 )
             )}
