@@ -12,10 +12,10 @@ from books.models import MongoLogObject
 
 class LoggerObject():
     i = 0
-    def clearlogtxt(self):
-        f = open('models/bookreviews.log','w')
-        f.write("")
-        f.close()
+    # def clearlogtxt(self):
+    #     f = open('models/bookreviews.log','w')
+    #     f.write("")
+    #     f.close()
 
     def logrequest(self, request, response=None):
         entry = MongoLogObject()
@@ -25,11 +25,14 @@ class LoggerObject():
         # entry['files'] = request.files
         # entry['args'] = request.args
         # entry['form'] = request.form
-        entry.response = response
+        print(response)
+        entry.response = str(response)
         entry.save()
 
+
     def deleteAllLogs(self):
-        # log_collection.remove()
+        collection = MongoLogObject()
+        collection.drop_collection()
         pass
 
     def getAllLogs(self):

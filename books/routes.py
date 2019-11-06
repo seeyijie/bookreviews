@@ -113,22 +113,23 @@ def get_all_books_endpoint():
     return retjson
 
 
-"""
+
 #add a book review
-@book_app.route('/add/', methods=['GET','POST'])
+@book_app.route('/api/addreview', methods=['POST'])
 def add_review():
-    if request.method == 'POST':
-        asin = request.form['asin']
-        summary = request.form['summary']
-        print(request.form['summary'])
-        print(summary)
-        review = Review(asin, summary)
+    req = request.get_json(force=True)
+    asin = req['asin']
+    summary = req['summary']
+    review = Review(asin, summary)
+    if get_book_by_asin(asin):
         db.session.add(review)
         db.session.commit()
-        print(f'review_id: {review.id}')
-        return f'review_id: {review.id}'
+    # if request.method == 'POST':
+    #     asin = request.form['asin']
+    #     summary = request.form['summary']
+    #     print(request.form['summary'])
+    #     print(summary)
 
-
-    return render_template('add_review_test.html')
-
-"""
+    #     print(f'review_id: {review.id}')
+    #     return f'review_id: {review.id}'
+    return '1'
