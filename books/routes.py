@@ -71,17 +71,13 @@ def get_book(asin):
 
 @book_app.route('/api/books/<asin>', methods=['GET', 'POST'])
 def get_book_endpoint(asin):
-    # if a review is submitted
-    if request.method == 'POST':
-        asin = asin
-        reviewText = request.form['reviewText']
-        review = Review(asin, reviewText)
-        db.session.add(review)
-        db.session.commit()
-
     # query asin from mongo and mysql
-    book = get_book_by_asin(asin)
+    book = get_book_by_asin([asin])
+    print(book[0].related)# this is a dictionary
 
+    related_url = {}
+    for key in book[0].related:
+        related_url[key]=get_list_asin_details(book[0].related[key])
     # if a book is found
     if (len(book) > 0):
         book = book[0]
@@ -91,8 +87,7 @@ def get_book_endpoint(asin):
         for review in reviews_raw:
             reviews.append(review.serialize())
         logger.logrequest(request)
-        return {'book_metadata':book.serialize(), 'reviews':reviews}
-
+        return {'book_metadata':book.serialize(), 'reviews':reviews, 'related_url':related_url}
     else:
         err_msg = 'Book not found.'
         logger.logrequest(request)
@@ -124,6 +119,7 @@ def add_review():
     if get_book_by_asin(asin):
         db.session.add(review)
         db.session.commit()
+        return {'added': 'true'}
     # if request.method == 'POST':
     #     asin = request.form['asin']
     #     summary = request.form['summary']
@@ -132,4 +128,12 @@ def add_review():
 
     #     print(f'review_id: {review.id}')
     #     return f'review_id: {review.id}'
-    return '1'
+
+
+def get_list_asin_details(ls):
+    imgUrl=[]
+    books = get_book_by_asin(ls)
+    for val in books:
+        temp=[val.asin,val.imUrl]
+        imgUrl.append(temp)
+    return imgUrl
