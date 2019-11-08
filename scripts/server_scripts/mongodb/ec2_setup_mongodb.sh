@@ -1,7 +1,7 @@
 #!/bin/bash
 
-server_ip="3.18.111.43"
-public_key="experimental_instance.pem"
+server_ip="3.17.147.191"
+public_key="flaskserver.pem"
 username="ubuntu"
 
 # scp datasets to folder in ec2 instance

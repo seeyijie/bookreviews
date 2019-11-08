@@ -30,6 +30,12 @@
 ## Quality of life improvements
 * [SSH Keys and Github](https://dev.to/maedahbatool/generating-a-new-ssh-key-and-adding-it-to-github-137j)
 
+## React (How to run)
+* Prerequisites:
+   * Install `yarn`. If yarn is not working, try upgrading NodeJS to the latest version.
+   * Go to `/bookreviews/react-end` and run `yarn install` to install react dependencies from the `package.json` file.
+* Run`yarn start` and go to `localhost:3000`
+
 ## MySQL
 * If required, start server using:
 * sudo service mysql start

@@ -5,6 +5,7 @@ from books.data_service import get_book_by_asin
 from application import db
 from books.models import Review
 from models.logs import LoggerObject    # for logging
+import json
 
 book_app = Blueprint('book_app', __name__)
 logger = LoggerObject()
@@ -68,22 +69,67 @@ def get_book(asin):
         logger.logrequest(request)
         return redirect(url_for('.get_meta_data', msg=err_msg))
 
-"""
-#add a book review
-@book_app.route('/add/', methods=['GET','POST'])
-def add_review():
+@book_app.route('/api/books/<asin>', methods=['GET', 'POST'])
+def get_book_endpoint(asin):
+    # if a review is submitted
     if request.method == 'POST':
-        asin = request.form['asin']
-        summary = request.form['summary']
-        print(request.form['summary'])
-        print(summary)
-        review = Review(asin, summary)
+        asin = asin
+        reviewText = request.form['reviewText']
+        review = Review(asin, reviewText)
         db.session.add(review)
         db.session.commit()
-        print(f'review_id: {review.id}')
-        return f'review_id: {review.id}'
+
+    # query asin from mongo and mysql
+    book = get_book_by_asin(asin)
+
+    # if a book is found
+    if (len(book) > 0):
+        book = book[0]
+        reviews_raw = Review.query.filter_by(asin=asin).all()
+        reviews_raw = reviews_raw[::-1] #sort by latest
+        reviews = []
+        for review in reviews_raw:
+            reviews.append(review.serialize())
+        logger.logrequest(request)
+        return {'book_metadata':book.serialize(), 'reviews':reviews}
+
+    else:
+        err_msg = 'Book not found.'
+        logger.logrequest(request)
+        return redirect(url_for('.get_meta_data', msg=err_msg))
+
+@book_app.route('/api/allbooks', methods=['GET','POST'])
+def get_all_books_endpoint():
+    msg=''
+    if request.args:
+        msg= request.args['msg']
+
+    first_10_books = get_first_10_books()
+    books =[]
+    for book in first_10_books:
+        books.append(book.serialize())
+    retjson = jsonify(books)
+    logger.logrequest(request, books)
+    return retjson
 
 
-    return render_template('add_review_test.html')
 
-"""
+#add a book review
+@book_app.route('/api/addreview', methods=['POST'])
+def add_review():
+    req = request.get_json(force=True)
+    asin = req['asin']
+    summary = req['summary']
+    review = Review(asin, summary)
+    if get_book_by_asin(asin):
+        db.session.add(review)
+        db.session.commit()
+    # if request.method == 'POST':
+    #     asin = request.form['asin']
+    #     summary = request.form['summary']
+    #     print(request.form['summary'])
+    #     print(summary)
+
+    #     print(f'review_id: {review.id}')
+    #     return f'review_id: {review.id}'
+    return '1'
