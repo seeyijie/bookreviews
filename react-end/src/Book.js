@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Header, BookInfo } from './Components'
 import Reviews from "./Components/Reviews.js"
-import { Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 
@@ -13,6 +13,9 @@ const styles = () => ({
         marginTop: '50px',
         border: 0,
         borderRadius: 5,
+    },
+    loadtext: {
+        marginTop: '50px',
     }
 });
 
@@ -72,24 +75,27 @@ class Book extends Component {
 
     render() {
         const { bookID, categories, description, imUrl, price, also_viewed, buy_after_viewing, sales_rank, title, reviews } = this.state;
-        console.log(reviews)
-        const loadingMessage = <Typography>Loading... Please wait</Typography>
-        const errorMessage = <Typography>Error: Book not found</Typography>
+        // console.log(reviews)
+        const { classes } = this.props
+        const loadingMessage = <Typography className={classes.loadtext}>Loading... Please wait</Typography>
+        const errorMessage = <Typography className={classes.loadtext}>Error: Book not found</Typography>
 
         return <Fragment>
             <Header />
-            {this.state.isLoading ? loadingMessage : (
-                this.state.error ? errorMessage : (
-                    <div>
-                        <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />
-                        <br/>
-                        <div style={{width:'90%', margin:'auto'}}>
-                            <p>Reviews:</p>
-                            <Reviews reviews={reviews}/>
+            <Grid container alignItems='center' direction='column'>
+                {this.state.isLoading ? loadingMessage : (
+                    this.state.error ? errorMessage : (
+                        <div>
+                            <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />
+                            <br />
+                            <div style={{ width: '90%', margin: 'auto' }}>
+                                <p>Reviews:</p>
+                                <Reviews reviews={reviews} />
+                            </div>
                         </div>
-                    </div>
-                )
-            )}
+                    )
+                )}
+            </Grid>
         </Fragment>
     }
 }

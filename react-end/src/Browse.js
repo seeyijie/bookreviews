@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Header, BrowseAllEntries } from './Components'
-import { Typography } from '@material-ui/core';
+import { Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 // import { booksmetadata } from './Data/hardmongo';
@@ -13,6 +13,9 @@ const styles = () => ({
         marginTop: '50px',
         border: 0,
         borderRadius: 5,
+    },
+    loadtext: {
+        marginTop: '50px',
     }
 });
 
@@ -39,12 +42,15 @@ class Browse extends Component {
     }
 
     render() {
+        const { classes } = this.props
         const { booksmetadata } = this.state;
-        const loadingMessage = <Typography>Loading... Please wait</Typography>
+        const loadingMessage = <Typography className={classes.loadtext}>Loading... Please wait</Typography>
 
         return <Fragment>
             <Header />
-            {this.state.isLoading ? loadingMessage : <BrowseAllEntries booksmetadata={booksmetadata} />}
+            <Grid container alignItems='center' direction='column'>
+                {this.state.isLoading ? loadingMessage : <BrowseAllEntries booksmetadata={booksmetadata} />}
+            </Grid>
         </Fragment>
     }
 }

@@ -25,10 +25,9 @@ class LoggerObject():
         # entry['files'] = request.files
         # entry['args'] = request.args
         # entry['form'] = request.form
-        print(response)
+        # print(response)
         entry.response = str(response)
         entry.save()
-
 
     def deleteAllLogs(self):
         collection = MongoLogObject()
@@ -40,7 +39,7 @@ class LoggerObject():
         logs = []
         for i in query:
             logs.append(i.serialize())
-            print(i.serialize())
+            # print(i.serialize())
         return logs
 
     def getLogCount(self):

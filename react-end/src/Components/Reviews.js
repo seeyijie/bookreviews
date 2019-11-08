@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardHeader, CardActions, CardContent, Typography, Avatar } from '@material-ui/core';
+import { Card, CardHeader, CardContent, Typography, Avatar } from '@material-ui/core';
 
 class Reviews extends React.Component {
     constructor(props) {
@@ -14,7 +14,7 @@ class Reviews extends React.Component {
 
     render() {
         const reviews = this.state.reviews;
-        if (reviews == null || reviews.length == 0) {
+        if (reviews == null || reviews.length === 0) {
             return <p>No reviews for this product yet.</p>;
         }
         return (
