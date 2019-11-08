@@ -3,9 +3,9 @@ from datetime import datetime
 
 
 class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer)
     name = db.Column(db.VARCHAR(100))
-    email = db.Column(db.VARCHAR(100))
+    email = db.Column(db.VARCHAR(100), primary_key=True)
     password = db.Column(db.VARCHAR(100))
     recent_login = db.Column(db.DateTime)
 
