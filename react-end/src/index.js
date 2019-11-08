@@ -4,6 +4,7 @@ import { Route, BrowserRouter as Router } from 'react-router-dom'
 import Home from './Home';
 import Browse from './Browse';
 import Book from './Book';
+import Log from './Log';
 
 
 const routing = (
@@ -13,11 +14,11 @@ const routing = (
             {/* <Route path="/register" component={Register} />
             <Route path="/login" component={Login} />
             <Route path="/logout" component={Logout} />
-            <Route path="/scrape" component={Scrape} />
-            <Route path="/log" component={Log} /> */}
+            <Route path="/scrape" component={Scrape} />*/}
             <Route path="/browse" component={Browse} />
             {/* <Route path="/searchbyasin" component={Search} /> */}
             <Route path='/books/:bookid' component={Book} />
+            <Route path='/log' component={Log} />
         </div>
     </Router>
 )

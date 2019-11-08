@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, InputBase } from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -51,6 +52,20 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+function SearchChangeHandler(e) {
+    console.log('search is changing')
+}
+
+function SearchRequestHandler(e) {
+    if (e.key === 'Enter') {
+        // call the api 
+        const url = `http://127.0.0.1:5000/search/` + e.target.value.replace(/ /g, '+')
+        console.log(url)
+        // axios.get(url)
+        // then displayyy
+    }
+}
+
 function Header() {
     const classes = useStyles();
 
@@ -72,6 +87,8 @@ function Header() {
                         input: classes.inputInput,
                     }}
                     inputProps={{ 'aria-label': 'search' }}
+                    onChange={SearchChangeHandler.bind(this)}
+                    onKeyDown={SearchRequestHandler.bind(this)}
                 />
             </div>
             <div className={classes.blankspace}></div>

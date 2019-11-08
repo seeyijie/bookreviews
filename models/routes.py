@@ -14,6 +14,12 @@ def get_log():
     logger.logrequest(request, 'displayed on this page')
     return render_template('log.html', loglist = logger2.getAllLogs())
 
+@server_log.route('/getlog', methods=['GET'])
+def get_log_json():
+    logger_for_json = LoggerObject()
+    logger_for_json.logrequest(request, 'displayed on this page')
+    return jsonify(logger_for_json.getAllLogs())
+
 @server_log.route('/deletelogs', methods=['GET'])
 def delete_log():
     logger.deleteAllLogs()
