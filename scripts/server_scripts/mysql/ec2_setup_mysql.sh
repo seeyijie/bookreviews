@@ -2,7 +2,7 @@
 
 # run this script as sudo to avoid constant prompts
 # this script runs on our local machine and sets up the server
-server_ip="3.18.111.43"
+server_ip="52.14.103.65"
 public_key="experimental_instance.pem"
 username="ubuntu"
 if [ $# -eq 0 ]
@@ -25,7 +25,7 @@ scp -i ~/.ssh/$public_key mysql_setup.sh $username@$server_ip:/home/$username
 # run scripts in ec2 instance
 
 # grant user permission to root, setup database and users
-ssh -i ~/.ssh/$public_key $username@$server_ip "sudo ./mysql_setup.sh"
+ssh -i ~/.ssh/$public_key $username@$server_ip "sudo ./mysql_setup.sh ${dropbox_url}"
 # create tables and import data
 echo "Importing data to MySQL"
 ssh -i ~/.ssh/$public_key $username@$server_ip 'sudo mysql -u root < initialize_mysql.sql'

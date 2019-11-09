@@ -29,8 +29,8 @@ mysql -e "GRANT ALL PRIVILEGES ON ${MAINDB}.* TO '${MAINDB}'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
 
 echo "Downloading bookreviews repository"
-wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
-# wget -c $dropbox_url -O bookreviews.zip
+# wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
+wget -c $dropbox_url -O bookreviews.zip
 sudo apt-get install -y unzip
 
 echo "Unzipping bookzreview.zip"
