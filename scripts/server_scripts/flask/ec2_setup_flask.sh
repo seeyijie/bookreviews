@@ -16,7 +16,7 @@ else
     dropbox_url=$1
 fi
 
-scp -i ~/.ssh/$public_key flask_setup.sh $username@$server_ip:/home/$username
-scp -i ~/.ssh/$public_key env_setup.sh $username@$server_ip:/home/$username
+scp -i ~/.ssh/$public_key ../flask/flask_setup.sh $username@$server_ip:/home/$username
+scp -i ~/.ssh/$public_key ../flask/env_setup.sh $username@$server_ip:/home/$username
 ssh -i ~/.ssh/$public_key $username@$server_ip "sudo ./flask_setup.sh ${dropbox_url}"
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-server_ip="18.219.13.99"
+server_ip="3.132.215.240"
 public_key="experimental_instance.pem"
 username="ubuntu"
 
@@ -23,8 +23,8 @@ ssh -i ~/.ssh/$public_key $username@$server_ip './get_data.sh'
 
 # scp scripts to folder in ec2 instance
 echo "Transferring scripts to EC2 instance"
-scp -i ~/.ssh/$public_key initialize_mysql.sql $username@$server_ip:/home/$username
-scp -i ~/.ssh/$public_key mysql_setup.sh $username@$server_ip:/home/$username
+scp -i ~/.ssh/$public_key ../mysql/initialize_mysql.sql $username@$server_ip:/home/$username
+scp -i ~/.ssh/$public_key ../mysql/mysql_setup.sh $username@$server_ip:/home/$username
 
 # run scripts in ec2 instance
 

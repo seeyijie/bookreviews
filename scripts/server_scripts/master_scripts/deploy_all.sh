@@ -15,10 +15,12 @@ sudo ./../mongodb/ec2_setup_mongodb.sh ${dropbox_url}
 
 # deployment of MySQL server
 echo "************ Deploying MySQL server **************"
-# sudo ./../mysql/ec2_setup_mysql.sh ${dropbox_url}
+sudo ./../mysql/ec2_setup_mysql.sh ${dropbox_url}
 
 # deployment of Flask server
 # echo "************ Deploying Flask server **************"
 # sudo ./../flask/ec2_setup_flask.sh ${dropbox_url}
 
 echo "deployment of Servers completed"
+
+# TODO: add "&" to run deployment in background. Prerequisite, remove everything from home folder before doing installation otherwise we will not be able to answer prompts when processes are in background
