@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# dropbox url is the first command line argument
+dropbox_url=$1
+
 echo "Installing MongoDB"
 wget -qO - https://www.mongodb.org/static/pgp/server-4.2.asc | sudo apt-key add -
 
@@ -17,4 +20,11 @@ sudo systemctl enable mongod
 echo "Importing dataset to MongoDB"
 sudo mongoimport --db 50043_db --collection books_metadata --file /home/ubuntu/data_store/meta_Kindle_Store.json --legacy
 
+echo "Downloading bookreviews repository"
+# wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
+wget -c $dropbox_url -O bookreviews.zip
+sudo apt-get install -y unzip
+
+echo "Unzipping bookzreview.zip"
+unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
 
