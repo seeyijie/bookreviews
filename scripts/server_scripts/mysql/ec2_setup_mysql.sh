@@ -1,12 +1,10 @@
 #!/bin/bash
 
-server_ip="3.132.215.240"
-public_key="experimental_instance.pem"
-username="ubuntu"
+source ../config/config_mysql.sh
 
 # add ip address of server to list of known hosts. should remove the need to manually add to trusted hosts
 ssh-keygen -R $server_ip # remove host from host file if it exists
-ssh-keyscan -H $server_ip >> /root/.ssh/known_hosts # add ecdsa encrypted fingerprint of server into known hosts
+ssh-keyscan -H $server_ip >> ~/.ssh/known_hosts # add ecdsa encrypted fingerprint of server into known hosts
 
 if [ $# -eq 0 ]
     then
