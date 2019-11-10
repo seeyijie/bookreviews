@@ -3,7 +3,7 @@ import lxml.html
 from typing import List
 import time
 import csv
-from books.models import AsinTitle
+import models.Title as AsinTitle
 from application import db
 from sqlalchemy.exc import IntegrityError
 

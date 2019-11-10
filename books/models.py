@@ -1,18 +1,5 @@
 from application import db
 from datetime import date
-import mongoengine
-
-
-class AsinTitle(db.Model):
-    asin = db.Column(db.VARCHAR(100), primary_key=True)
-    title = db.Column(db.VARCHAR(1000), nullable=True)
-
-    def __init__(self, asin, title):
-        self.asin = asin
-        self.title = title
-
-    def __repr__(self):
-        return f'<AsinTitle {self.asin}>'
 
 
 class Review(db.Model):
@@ -52,48 +39,4 @@ class Review(db.Model):
     def __repr__(self):
         return f'<Review {self.id}>'
 
-class MongoLogObject(mongoengine.Document):
-    timestamp = mongoengine.DateTimeField(required = True)
-    method = mongoengine.StringField(required= True)
-    url = mongoengine.StringField(required= True)
-    response = mongoengine.StringField(required= True)
-    meta = {
-        'db_alias': 'core',
-        'collection': 'logs'
-    }
-    def serialize(self):
-        return {
-            'timestamp': self.timestamp,
-            'method': self.method,
-            'url': self.url,
-            'response': self.response
-        }
 
-
-class BookMetaData(mongoengine.Document):
-    asin = mongoengine.StringField(required=True)
-    imUrl = mongoengine.StringField(required=True)
-    salesRank = mongoengine.StringField(required=True)
-    title = mongoengine.StringField(required=True)
-    related = mongoengine.DictField()
-    categories = mongoengine.ListField(required=True)
-    description = mongoengine.StringField(required=True)
-    price = mongoengine.FloatField(required=False)
-
-    meta = {
-        'db_alias': 'core',
-        'collection': 'books_metadata',
-        'strict': False,
-    }
-
-    def serialize(self):
-        return {
-            'asin': self.asin,
-            'imUrl': self.imUrl,
-            'salesRank': self.salesRank,
-            'title': self.title,
-            'related': self.related,
-            'categories': self.categories,
-            'description': self.description,
-            'price': self.price
-        }

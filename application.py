@@ -21,10 +21,12 @@ def create_app():
 
     from users.routes import user_app
     from books.routes import book_app
+    from SearchBook.routes import search_app
     from models.routes import server_log
 
     app.register_blueprint(user_app)
     app.register_blueprint(book_app)
     app.register_blueprint(server_log)
+    app.register_blueprint(search_app)
 
     return app

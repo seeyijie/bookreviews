@@ -3,7 +3,8 @@ from pymongo import MongoClient
 from pymongo import ASCENDING
 import datetime
 
-from books.models import MongoLogObject
+from models.MongoLogObject import MongoLogObject
+
 
 # client = MongoClient('mongodb://localhost:27017/')
 # db = client.my_logs
