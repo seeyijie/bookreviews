@@ -4,7 +4,7 @@ import os
 FLASK_APP = "manage.py"
 FLASK_ENV = "development"
 MYSQL_HOST = "3.14.6.201"
-#MYSQL_HOST = "localhost" #commented the top one out to use localhost
+# MYSQL_HOST = "localhost" #commented the top one out to use localhost
 MYSQL_PORT = 3306
 DBNAME = "50043_DB"
 SECRET_KEY = os.environ.get("SECRET_KEY", default="secret")

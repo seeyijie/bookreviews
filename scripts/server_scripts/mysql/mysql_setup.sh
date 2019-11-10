@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# dropbox url is the first command line argument
+dropbox_url=$1
+
 echo "Installing MySQL"
 sudo apt-get -y update
 sudo apt-get -y upgrade
@@ -24,5 +27,13 @@ mysql -e "CREATE DATABASE IF NOT EXISTS ${MAINDB} /*\!40100 DEFAULT CHARACTER SE
 mysql -e "CREATE USER IF NOT EXISTS ${MAINDB}@localhost IDENTIFIED BY '${PASSWDDB}';"
 mysql -e "GRANT ALL PRIVILEGES ON ${MAINDB}.* TO '${MAINDB}'@'localhost';"
 mysql -e "FLUSH PRIVILEGES;"
+
+echo "Downloading bookreviews repository"
+# wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
+wget -c $dropbox_url -O bookreviews.zip
+sudo apt-get install -y unzip
+
+echo "Unzipping bookzreview.zip"
+unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
 
 

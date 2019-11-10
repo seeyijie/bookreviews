@@ -2,6 +2,7 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 import time
 import threading  # to create a thread for logging
 import models.mongo_setup as mongo_setup
@@ -18,6 +19,7 @@ def create_app():
 
     db.init_app(app)
     migrate = Migrate(app, db)
+    jwt = JWTManager(app)
 
     from users.routes import user_app
     from books.routes import book_app

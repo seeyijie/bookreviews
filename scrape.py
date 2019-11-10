@@ -49,27 +49,29 @@ class Scraper:
             try:
                 doc = lxml.html.fromstring(res.text)
                 title = doc.xpath("//*[@class='a-size-medium a-color-base a-text-normal']/text()")[0]
-                title.replace(',', '|')
                 index_dict[title] = asin_list[index]
 
                 asin_title = AsinTitle(asin_list[index], title)
                 db.session.add(asin_title)
                 db.session.commit()
 
+                title.replace(',', '|')
+
                 with open(fileout, mode="a") as fout:
                     csv_writer = csv.writer(fout, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
                     csv_writer.writerow([title, asin_list[index]])
 
             except IntegrityError as err:
-                print("IntegrityError on Index {}".format(index))
+                # print("IntegrityError on Index {}".format(index))
                 db.session.rollback()
                 with open(err_logs, mode="a") as err_log:
                     err_log.write("ASIN: " + str(asin_list[index]) + " | Trace: " + "Key is already in database" + "\n")
 
             except Exception as e:
-                print(e)
-                print("Unhandled error on Index {}".format(index))
-                print("ASIN: " + asin_list[index])
+                # print(e)
+                # print("Unhandled error on Index {}".format(index))
+                # print("ASIN: " + asin_list[index])
+                db.session.rollback()
                 with open(err_logs, mode="a") as err_log:
                     err_log.write("ASIN: " + asin_list[index] + " | " + "Trace: " + str(e) + "\n")
 
