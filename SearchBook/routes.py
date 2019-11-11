@@ -1,5 +1,4 @@
-from flask import Blueprint,jsonify
-import requests
+from flask import Blueprint,jsonify,request
 from books.data_service import get_book_by_asin
 from models.Title import Title
 
