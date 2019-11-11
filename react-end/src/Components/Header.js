@@ -59,10 +59,22 @@ function SearchChangeHandler(e) {
 function SearchRequestHandler(e) {
     if (e.key === 'Enter') {
         // call the api 
-        const url = `http://127.0.0.1:5000/search/` + e.target.value.replace(/ /g, '+')
+        // const url = `http://127.0.0.1:5000/search/` + e.target.value.replace(/ /g, '+')
+        const url = `http://127.0.1:5000/titlematching/`
         console.log(url)
         // axios.get(url)
+        //     .then(response => {
+        //         console.log(response.data)
+        //     })
         // then displayyy
+        axios.get(url, {
+            body: {
+                titleSubstring: e.target.value.replace(/ /g, '+')
+            }
+        })
+            .then(response => {
+                console.log(response.data)
+            })
     }
 }
 
