@@ -5,6 +5,7 @@ import Home from './Home';
 import Browse from './Browse';
 import Book from './Book';
 import Log from './Log';
+import SearchResults from './SearchResults';
 
 
 const routing = (
@@ -16,7 +17,7 @@ const routing = (
             <Route path="/logout" component={Logout} />
             <Route path="/scrape" component={Scrape} />*/}
             <Route path="/browse" component={Browse} />
-            {/* <Route path="/searchbyasin" component={Search} /> */}
+            <Route path="/searchresults/:searchstring" component={SearchResults} />
             <Route path='/books/:bookid' component={Book} />
             <Route path='/log' component={Log} />
         </div>

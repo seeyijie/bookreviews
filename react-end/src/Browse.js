@@ -25,12 +25,21 @@ class Browse extends Component {
 
         this.state = {
             isLoading: true,
-            booksmetadata: []
+            booksmetadata: [],
+            isSearch: false,
+            searchBooksmetadata: []
         }
     }
 
     componentDidMount() {
         // call flask api
+        // if (this.state.isSearch === true) {
+        //     this.setState({
+        //         isLoading: false,
+        //         booksmetadata: this.props.location.booksmetadata
+        //     })
+        // }
+
         const url = `http://127.0.0.1:5000/api/allbooks`
         axios.get(url)
             .then(response => {
