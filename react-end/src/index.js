@@ -6,20 +6,21 @@ import Browse from './Browse';
 import Book from './Book';
 import Log from './Log';
 import SearchResults from './SearchResults';
-
+import Register from './Components/Register'
 
 const routing = (
     <Router>
         <div>
             <Route exact path="/" component={Home} />
-            {/* <Route path="/register" component={Register} />
-            <Route path="/login" component={Login} />
-            <Route path="/logout" component={Logout} />
-            <Route path="/scrape" component={Scrape} />*/}
+            {/*<Route path="/login" component={Login} />*/}
+            <Route path="/signup" component={Register} />
             <Route path="/browse" component={Browse} />
             <Route path="/searchresults/:searchstring" component={SearchResults} />
             <Route path='/books/:bookid' component={Book} />
             <Route path='/log' component={Log} />
+            {/* <Route path="/register" component={Register} />
+            <Route path="/scrape" component={Scrape} />
+            <Route path="/searchbyasin" component={Search} /> */}
         </div>
     </Router>
 )

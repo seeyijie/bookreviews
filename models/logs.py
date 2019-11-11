@@ -36,7 +36,7 @@ class LoggerObject():
         pass
 
     def getAllLogs(self):
-        query = MongoLogObject.objects[:10]
+        query = MongoLogObject.objects.order_by('-timestamp').limit(10)
         logs = []
         for i in query:
             logs.append(i.serialize())
