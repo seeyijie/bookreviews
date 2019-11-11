@@ -59,22 +59,29 @@ function SearchChangeHandler(e) {
 function SearchRequestHandler(e) {
     if (e.key === 'Enter') {
         // call the api 
-        // const url = `http://127.0.0.1:5000/search/` + e.target.value.replace(/ /g, '+')
-        const url = `http://127.0.1:5000/titlematching/`
+        const url = `http://127.0.0.1:5000/api/titlematching/` + e.target.value.replace(/ /g, '+')
+        // const url = `http://127.0.1:5000/api/titlematching`
         console.log(url)
-        // axios.get(url)
-        //     .then(response => {
-        //         console.log(response.data)
-        //     })
-        // then displayyy
-        axios.get(url, {
-            body: {
-                titleSubstring: e.target.value.replace(/ /g, '+')
-            }
-        })
+        axios.get(url)
             .then(response => {
                 console.log(response.data)
             })
+        // // then displayyy
+        // const dt = { data: { titleSubstring: 'hello' } }
+        // axios.post(url, dt)
+        // axios({
+        //     method: 'get',
+        //     url: `http://127.0.1:5000/api/titlematching`,
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     data: {
+        //         titleSubstring: 'hello'
+        //     }
+
+        // })
+
+
     }
 }
 
