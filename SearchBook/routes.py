@@ -4,12 +4,9 @@ from models.Title import Title
 
 search_app = Blueprint('search_app', __name__)
 
-@search_app.route('/api/titlematching', methods=['GET'])
-def title_matching():
+@search_app.route('/api/titlematching/<titleSubstring>', methods=['GET'])
+def title_matching(titleSubstring):
     # obtain log from mongoDB
-
-    req = request.get_json(force=True)
-    titleSubstring = req['titleSubstring']
     search = "%{}%".format(titleSubstring)
     titles = Title.query.filter(Title.title.like(search)).limit(10).all()
     titleDict= dict()
