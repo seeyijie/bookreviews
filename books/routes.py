@@ -86,7 +86,8 @@ def get_book_endpoint(asin):
         reviews = []
         for review in reviews_raw:
             reviews.append(review.serialize())
-        logger.logrequest(request)
+        response = {'book_metadata':book.serialize(), 'reviews': reviews, 'related_url': related_url}
+        logger.logrequest(request, response)
         return {'book_metadata':book.serialize(), 'reviews':reviews, 'related_url':related_url}
     else:
         err_msg = 'Book not found.'

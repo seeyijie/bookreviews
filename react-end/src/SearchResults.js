@@ -3,7 +3,6 @@ import { Header, BrowseAllEntries } from './Components'
 import { Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-// import { booksmetadata } from './Data/hardmongo';
 
 const styles = () => ({
     title: {
@@ -32,45 +31,17 @@ class SearchResults extends Component {
         }
     }
 
-    // loadNewSearch() {
-    //     if (this.state.inPage === true && this.props.location.state.isSearch === true) {
-    //         const searchstring = this.props.location.state.searchstring
-    //         const url = `http://127.0.0.1:5000/api/titlematching/${searchstring}`
-    //         axios.get(url)
-    //             .then(response => {
-    //                 this.setState({
-    //                     isLoading: false,
-    //                     reloadPage: true,
-    //                     booksmetadata: response.data,
-    //                     inPage: false
-    //                 })
-    //             })
-    //     }
-    //     else {
-    //         // this.state.inPage = true;
-    //         this.setState({
-    //             inPage: true,
-    //             reloadPage: false
-    //         })
-    //         return null
-    //     }
-    // }
-
-    // shouldComponentUpdate() {
-    //     if (this.state.reloadPage === true) {
-    //         return true
-    //     }
-    //     else {
-    //         return false
-    //     }
-    // }
-
     render() {
+        console.log("Rendered")
         const { classes } = this.props
         const { booksmetadata } = this.state;
         const loadingMessage = <Typography className={classes.loadtext}>Loading... Please wait</Typography>
 
         // this.loadNewSearch();
+        console.log(this.props.location.state.searchstring);
+        if (this.state.inPage === true && this.props.location.state.searchstring != null) {
+            this.componentDidMount();
+        }
 
         return <Fragment>
             <Header />
@@ -81,14 +52,16 @@ class SearchResults extends Component {
     }
 
     componentDidMount() {
+        console.log("ComponentDidMount")
         const searchstring = this.props.location.state.searchstring
         const url = `http://127.0.0.1:5000/api/titlematching/${searchstring}`
         axios.get(url)
             .then(response => {
+                this.props.location.state.searchstring = null;
                 this.setState({
                     isLoading: false,
                     booksmetadata: response.data,
-                    inPage: false
+                    inPage: true
                 })
             })
     }
