@@ -28,10 +28,10 @@ summary varchar(255),
 unixReviewTime integer
 );
 
-drop table if exists title;
-create table title select asin, title from reviews;
 
 load data local infile "/home/ubuntu/data_store/kindle_reviews.csv" into table reviews fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
 
+drop table if exists title;
+create table title select asin, title from reviews;
 
 update reviews set reviewTime = str_to_date(reviewTime,'%m %d, %Y');
