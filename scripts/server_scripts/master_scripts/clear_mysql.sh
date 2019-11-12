@@ -5,9 +5,9 @@ if [ "$EUID" -eq 0 ] # Root has $EUID = 0
   exit
 fi
 
-# clear mongodb server
+# clear mysql server
 source ../config/config_mysql.sh
-echo "clearning mongodb server"
+echo "clearning mysql server"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 

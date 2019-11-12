@@ -14,34 +14,17 @@ else
     dropbox_url=$1
 fi
 
-source ../config/config_mysql.sh
-echo "adding mysql server ($server_ip) to known_hosts"
-ssh-keygen -R $server_ip
-ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
-# ssh-keyscan -t ecdsa -H 3.16.187.168 >> ~/.ssh/known_hosts
-
-source ../config/config_flask.sh
-echo "adding flask server ($server_ip) fingerprint to known_hosts"
-ssh-keygen -R $server_ip
-ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
-
-source ../config/config_mongodb.sh
-echo "adding mongodb server ($server_ip) fingerprint to known_hosts"
-ssh-keygen -R $server_ip
-ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
-
+# TODO: rectify deployment works separately but not sequentially?
 # deployment of MongoDB server
-# echo "************ Deploying MongoDB server **************"
-# sudo ./../mongodb/ec2_setup_mongodb.sh ${dropbox_url}
+echo "************ Deploying MongoDB server **************"
+./../mongodb/ec2_setup_mongodb.sh ${dropbox_url}
 
 # deployment of MySQL server
 echo "************ Deploying MySQL server **************"
-sudo ./../mysql/ec2_setup_mysql.sh ${dropbox_url}
+./../mysql/ec2_setup_mysql.sh ${dropbox_url}
 
 # deployment of Flask server
 # echo "************ Deploying Flask server **************"
-# sudo ./../flask/ec2_setup_flask.sh ${dropbox_url}
-# wait
+# ./../flask/ec2_setup_flask.sh ${dropbox_url}
+wait
 echo "deployment of Servers completed"
-
-# TODO: add "&" to run deployment in background. Prerequisite, remove everything from home folder before doing installation otherwise we will not be able to answer prompts when processes are in background

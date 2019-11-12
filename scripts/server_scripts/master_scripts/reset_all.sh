@@ -24,10 +24,10 @@ ssh -i ~/.ssh/$public_key $username@$server_ip "sudo rm -rf /home/ubuntu/*"
 ssh-keygen -R $server_ip # remove key at the end cleanup
 
 # clear flask server
-echo "clearing flask server"
-source ../config/flask.sh
-ssh-keygen -R $server_ip
-ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
+# echo "clearing flask server"
+# source ../config/flask.sh
+# ssh-keygen -R $server_ip
+# ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
-ssh -i ~/.ssh/$public_key $username@$server_ip "sudo rm -rf /home/ubuntu/*"
-ssh-keygen -R $server_ip # remove key at the end cleanup
+# ssh -i ~/.ssh/$public_key $username@$server_ip "sudo rm -rf /home/ubuntu/*"
+# ssh-keygen -R $server_ip # remove key at the end cleanup
