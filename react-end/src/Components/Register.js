@@ -1,4 +1,5 @@
-import React, {Component, Fragment} from 'react';
+import React, {Component} from 'react';
+import {Redirect} from 'react-router-dom';
 import {TextField, Grid} from '@material-ui/core';
 import axios from 'axios';
 import Typography from "@material-ui/core/Typography";
@@ -7,25 +8,10 @@ import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-// import FormControlLabel from "@material-ui/core/FormControlLabel";
-// import Box from "@material-ui/core/Box";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
 import Link from "@material-ui/core/Link";
-
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="https://material-ui.com/">
-        Your Website
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -56,13 +42,15 @@ const useStyles = makeStyles(theme => ({
 class Register extends Component {
   constructor(props){
     super(props);
-    this.state={
+    this.state = {
       name:'',
       email:'',
       password:'',
+      doRedirect: false,
       errors: {}
     };
     this.handleClick = this.handleClick.bind(this);
+    this.onChange = this.onChange.bind(this)
   }
 
   handleClick(e){
@@ -74,9 +62,8 @@ class Register extends Component {
 
     console.log(newUser);
     axios.post('http://127.0.0.1:5000/register', newUser)
-      .then(res => console.log(res.data))
+      .then(res => this.setState({ doRedirect: true}))
       .catch(err => this.setState({errors: err.response.data}));
-
   };
 
   onChange = e => this.setState({ [e.target.id]: e.target.value });
@@ -86,8 +73,8 @@ class Register extends Component {
     const {name, email, password} = this.state;
 
     return (
-      <Fragment>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="xs" >
+        { this.state.doRedirect && <Redirect to="/login" /> }
         <CssBaseline />
           <div className={classes.paper}>
           <Avatar className={classes.avatar}>
@@ -150,11 +137,10 @@ class Register extends Component {
               </Grid>
             </Grid>
             <Button
-              type="submit"
               fullWidth
               variant="contained"
               color="primary"
-              // className={classes.submit}
+              className={classes.submit}
               onClick={e => this.handleClick()}
             >
               Sign Up
@@ -169,7 +155,6 @@ class Register extends Component {
           </form>
         </div>
       </Container>
-      </Fragment>
     );
   }
 }
