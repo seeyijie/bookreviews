@@ -15,12 +15,13 @@ class Review(db.Model):
     unixReviewTime = db.Column(db.Integer)
 
     # init only with summary and reviewText for now
-    def __init__(self, asin, reviewText):
+    def __init__(self, asin, reviewText,reviewerName):
         self.asin = asin
         now = date.today()
         formated = now.strftime("%m %-d, %Y")
         self.reviewTime = formated
         self.reviewText = reviewText
+        self.reviewerName = reviewerName
 
     def serialize(self):
         return {
