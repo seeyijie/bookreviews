@@ -10,7 +10,7 @@ else
     dropbox_url=$1
 fi
 
-echo "adding mysql server ($server_ip) to known_hosts"
+echo "adding mongodb server ($server_ip) to known_hosts"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 

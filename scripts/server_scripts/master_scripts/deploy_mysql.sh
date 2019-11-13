@@ -14,16 +14,8 @@ else
     dropbox_url=$1
 fi
 
-# deployment of MongoDB server
-echo "************ Deploying MongoDB server **************"
-# ./../mongodb/ec2_setup_mongodb.sh ${dropbox_url}
-
 # deployment of MySQL server
 echo "************ Deploying MySQL server **************"
 ./../mysql/ec2_setup_mysql.sh ${dropbox_url}
-
-# deployment of Flask server
-# echo "************ Deploying Flask server **************"
-# ./../flask/ec2_setup_flask.sh ${dropbox_url}
 wait
 echo "deployment of Servers completed"
