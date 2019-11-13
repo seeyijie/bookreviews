@@ -16,3 +16,4 @@ bookreviews.zip
 __pycache__/
 data_store/
 Pipfile*
+50043_DB.dump

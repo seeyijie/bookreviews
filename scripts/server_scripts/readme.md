@@ -1,3 +1,7 @@
+# How to run scripts
+1. Firstly, change the IP addresses and keys in the config files to the IP and key for the EC2 instance. These files are found in the `config` folder under this directory.
+2. Run scripts without sudo permissions
+
 # Commands used for debugging scripts
 
 ## Adding fingerprints of servers to local machine's known hosts
