@@ -1,20 +1,19 @@
 import React, { Component, Fragment } from 'react';
 import Header from "./Components/Header";
-import Register from "./Components/Register";
 import {Grid} from "@material-ui/core";
+import Login from "./Components/Login"
 
-class SignUp extends Component {
+class SignIn extends Component {
     render() {
         return (
           <Fragment>
               <Header></Header>
               <Grid container alignItems='center' direction='column'>
-                  <Register></Register>
+                  <Login></Login>
               </Grid>
           </Fragment>
         )
     }
 }
 
-
-export default SignUp;
+export default SignIn;

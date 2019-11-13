@@ -1,21 +1,21 @@
 from application import db
-from datetime import datetime
+import string
+from random import randint
 
 
 class User(db.Model):
-    id = db.Column(db.Integer)
-    name = db.Column(db.VARCHAR(100))
-    email = db.Column(db.VARCHAR(100), primary_key=True)
-    password = db.Column(db.VARCHAR(100))
-    recent_login = db.Column(db.DateTime)
+    id = db.Column(db.VARCHAR(100), primary_key=True)  # Starts with B
+    name = db.Column(db.VARCHAR(100), nullable=False)
+    email = db.Column(db.VARCHAR(100), nullable=False)
+    password = db.Column(db.VARCHAR(100), nullable=False)
 
     def __init__(self, name, email, password):
         self.name = name
         self.email = email
         self.password = password
-        now = datetime.now()
-        formatted_date = now.strftime('%Y-%m-%d %H:%M:%S')
-        self.recent_login = formatted_date
+        self.id = "B"
+        for i in range(13):
+            self.id += string.printable[randint(0, 36)].upper()
 
     def __repr__(self):
         return f'<User {self.user}>'

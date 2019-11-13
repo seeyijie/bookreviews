@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-class SignIn extends Component {
+class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -65,7 +65,9 @@ class SignIn extends Component {
     axios.post('http://127.0.0.1:5000/login', user)
       .then(res => res.data.data)
       .then(data => {
+        console.log(data);
         localStorage.setItem('jwt', data.access_token);
+        localStorage.setItem('data', data.name);
         setAuthToken(data.access_token);
         this.setState({ doRedirect: true})
       })
@@ -130,13 +132,8 @@ class SignIn extends Component {
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -150,8 +147,8 @@ class SignIn extends Component {
   }
 }
 
-SignIn.propTypes = {
+Login.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(useStyles)(SignIn);
+export default withStyles(useStyles)(Login);

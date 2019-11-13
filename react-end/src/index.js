@@ -5,16 +5,16 @@ import Home from './Home';
 import Browse from './Browse';
 import Book from './Book';
 import Log from './Log';
-import Register from './Components/Register';
-import Signin from './Components/Login';
+import SignUp from './Signup';
+import SignIn from './SignIn';
 import SearchResults from './SearchResults';
 
 const routing = (
     <Router>
         <div>
             <Route exact path="/" component={Home} />
-            <Route path="/signin" component={Signin} />
-            <Route path="/signup" component={Register} />
+            <Route path="/signin" component={SignIn} />
+            <Route path="/signup" component={SignUp} />
             <Route path="/browse" component={Browse} />
             <Route path="/searchresults/:searchstring" component={SearchResults} />
             <Route path='/books/:bookid' component={Book} />

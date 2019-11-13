@@ -46,8 +46,7 @@ class Register extends Component {
       name:'',
       email:'',
       password:'',
-      doRedirect: false,
-      errors: {}
+      doRedirect: false
     };
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this)
@@ -63,7 +62,7 @@ class Register extends Component {
     console.log(newUser);
     axios.post('http://127.0.0.1:5000/register', newUser)
       .then(res => this.setState({ doRedirect: true}))
-      .catch(err => this.setState({errors: err.response.data}));
+      .catch(err => console.log(err));
   };
 
   onChange = e => this.setState({ [e.target.id]: e.target.value });
@@ -74,7 +73,7 @@ class Register extends Component {
 
     return (
       <Container component="main" maxWidth="xs" >
-        { this.state.doRedirect && <Redirect to="/login" /> }
+        { this.state.doRedirect && <Redirect to="/signin" /> }
         <CssBaseline />
           <div className={classes.paper}>
           <Avatar className={classes.avatar}>
@@ -147,7 +146,7 @@ class Register extends Component {
             </Button>
             <Grid container justify="flex-end">
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signin" variant="body2">
                   Already have an account? Sign in
                 </Link>
               </Grid>
