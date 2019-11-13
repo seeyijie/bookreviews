@@ -17,7 +17,7 @@ fi
 # TODO: rectify deployment works separately but not sequentially?
 # deployment of MongoDB server
 echo "************ Deploying MongoDB server **************"
-./../mongodb/ec2_setup_mongodb.sh ${dropbox_url}
+# ./../mongodb/ec2_setup_mongodb.sh ${dropbox_url}
 
 # deployment of MySQL server
 echo "************ Deploying MySQL server **************"

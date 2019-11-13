@@ -7,7 +7,7 @@ fi
 
 # clear mysql server
 source ../config/config_mysql.sh
-echo "clearning mysql server"
+echo "clearing mysql server"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 

@@ -7,7 +7,7 @@ fi
 
 # clear flask server
 source ../config/config_flask.sh
-echo "clearning flask server"
+echo "clearing flask server"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 

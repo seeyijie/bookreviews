@@ -7,7 +7,7 @@ fi
 
 # clear mongodb server
 source ../config/config_mongodb.sh
-echo "clearning mongodb server"
+echo "clearing mongodb server"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
