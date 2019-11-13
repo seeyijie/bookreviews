@@ -24,12 +24,12 @@ PASSWDDB="password"
 
 # creates a database and user named 50043_DB and gives the user all permissions for the 50043_DB database
 mysql -e "CREATE DATABASE IF NOT EXISTS ${MAINDB} /*\!40100 DEFAULT CHARACTER SET utf8 */;"
-mysql -e "CREATE USER IF NOT EXISTS ${MAINDB}@localhost IDENTIFIED BY '${PASSWDDB}';"
-mysql -e "GRANT ALL PRIVILEGES ON ${MAINDB}.* TO '${MAINDB}'@'localhost';"
+mysql -e "CREATE USER IF NOT EXISTS ${MAINDB}@'%' IDENTIFIED BY '${PASSWDDB}';"
+mysql -e "GRANT ALL PRIVILEGES ON ${MAINDB}.* TO '${MAINDB}'@'%';"
 mysql -e "FLUSH PRIVILEGES;"
+# mysql -e "alter user '50043_DB'@'%' identified by 'password';"
 
 echo "Downloading bookreviews repository"
-# wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
 wget -c $dropbox_url -O bookreviews.zip
 sudo apt-get install -y unzip
 

@@ -24,6 +24,10 @@ echo "Transferring scripts to EC2 instance"
 scp -i ~/.ssh/$public_key ../mysql/initialize_mysql.sql $username@$server_ip:/home/$username
 scp -i ~/.ssh/$public_key ../mysql/mysql_setup.sh $username@$server_ip:/home/$username
 
+# scp config file into server
+echo "copying over config file"
+scp -i ~/.ssh/$public_key ../config/mysqld.cnf $username@$server_ip:/etc/mysql/mysql.conf.d/
+
 # run scripts in ec2 instance
 
 # grant user permission to root, setup database and users
