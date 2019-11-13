@@ -33,7 +33,7 @@ function BookInfo({ bookID, categories, description, imUrl, price, also_viewed, 
             <Grid className={classes.smallGrid} item md>
                 <img src={imUrl} style={{ height: 220 }} alt="cannot be loaded" />
             </Grid>
-            <Grid className={classes.smallGrid} item md="10">
+            <Grid className={classes.smallGrid} item md={10}>
                 <List>
                     <ListItem>Asin: {bookID}</ListItem>
                     <ListItem>Title: {title}</ListItem>
