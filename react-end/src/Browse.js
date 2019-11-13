@@ -3,7 +3,6 @@ import { Header, BrowseAllEntries } from './Components'
 import { Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
-// import { booksmetadata } from './Data/hardmongo';
 
 const styles = () => ({
     title: {
@@ -32,14 +31,6 @@ class Browse extends Component {
     }
 
     componentDidMount() {
-        // call flask api
-        // if (this.state.isSearch === true) {
-        //     this.setState({
-        //         isLoading: false,
-        //         booksmetadata: this.props.location.booksmetadata
-        //     })
-        // }
-
         const url = `http://127.0.0.1:5000/api/allbooks`
         axios.get(url)
             .then(response => {
