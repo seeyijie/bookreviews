@@ -13,7 +13,6 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
 import Link from "@material-ui/core/Link";
 
-
 const useStyles = makeStyles(theme => ({
   '@global': {
     body: {

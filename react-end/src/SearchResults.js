@@ -18,33 +18,30 @@ const styles = () => ({
     }
 });
 
-class Browse extends Component {
+class SearchResults extends Component {
     constructor(props) {
         super(props)
 
         this.state = {
             isLoading: true,
             booksmetadata: [],
-            isSearch: false,
+            inPage: false,
+            reloadPage: false,
             searchBooksmetadata: []
         }
     }
 
-    componentDidMount() {
-        const url = `http://127.0.0.1:5000/api/allbooks`
-        axios.get(url)
-            .then(response => {
-                this.setState({
-                    isLoading: false,
-                    booksmetadata: response.data
-                })
-            })
-    }
-
     render() {
+        console.log("Rendered")
         const { classes } = this.props
         const { booksmetadata } = this.state;
         const loadingMessage = <Typography className={classes.loadtext}>Loading... Please wait</Typography>
+
+        // this.loadNewSearch();
+        console.log(this.props.location.state.searchstring);
+        if (this.state.inPage === true && this.props.location.state.searchstring != null) {
+            this.componentDidMount();
+        }
 
         return <Fragment>
             <Header />
@@ -53,6 +50,21 @@ class Browse extends Component {
             </Grid>
         </Fragment>
     }
+
+    componentDidMount() {
+        console.log("ComponentDidMount")
+        const searchstring = this.props.location.state.searchstring
+        const url = `http://127.0.0.1:5000/api/titlematching/${searchstring}`
+        axios.get(url)
+            .then(response => {
+                this.props.location.state.searchstring = null;
+                this.setState({
+                    isLoading: false,
+                    booksmetadata: response.data,
+                    inPage: true
+                })
+            })
+    }
 }
 
-export default withStyles(styles)(Browse);
+export default withStyles(styles)(SearchResults);

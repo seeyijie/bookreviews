@@ -1,9 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button, InputBase } from '@material-ui/core';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
-import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
     title: {
@@ -52,34 +51,22 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-function SearchChangeHandler(e) {
-    console.log('search is changing')
-}
-
-function SearchRequestHandler(e) {
-    if (e.key === 'Enter') {
-        // call the api 
-        // const url = `http://127.0.0.1:5000/search/` + e.target.value.replace(/ /g, '+')
-        const url = `http://127.0.1:5000/titlematching/`
-        console.log(url)
-        // axios.get(url)
-        //     .then(response => {
-        //         console.log(response.data)
-        //     })
-        // then displayyy
-        axios.get(url, {
-            body: {
-                titleSubstring: e.target.value.replace(/ /g, '+')
-            }
-        })
-            .then(response => {
-                console.log(response.data)
-            })
-    }
-}
-
 function Header() {
+
     const classes = useStyles();
+    let history = useHistory();
+
+    function handleSearch(e) {
+        if (e.key === 'Enter') {
+            history.push({
+                pathname: '/searchresults/' + e.target.value.replace(/ /g, '+'),
+                state: {
+                    isSearch: true,
+                    searchstring: e.target.value.replace(/ /g, '+')
+                }
+            });
+        }
+    }
 
     return <AppBar position="static">
         <Toolbar>
@@ -93,14 +80,13 @@ function Header() {
                     <SearchIcon />
                 </div>
                 <InputBase
-                    placeholder="Search by asin…"
+                    placeholder="Search"
                     classes={{
                         root: classes.inputRoot,
                         input: classes.inputInput,
                     }}
                     inputProps={{ 'aria-label': 'search' }}
-                    onChange={SearchChangeHandler.bind(this)}
-                    onKeyDown={SearchRequestHandler.bind(this)}
+                    onKeyDown={handleSearch}
                 />
             </div>
             <div className={classes.blankspace}></div>

@@ -7,6 +7,7 @@ import Book from './Book';
 import Log from './Log';
 import Register from './Components/Register';
 import Signin from './Components/Login';
+import SearchResults from './SearchResults';
 
 const routing = (
     <Router>
@@ -15,6 +16,7 @@ const routing = (
             <Route path="/signin" component={Signin} />
             <Route path="/signup" component={Register} />
             <Route path="/browse" component={Browse} />
+            <Route path="/searchresults/:searchstring" component={SearchResults} />
             <Route path='/books/:bookid' component={Book} />
             <Route path='/log' component={Log} />
             {/* <Route path="/register" component={Register} />

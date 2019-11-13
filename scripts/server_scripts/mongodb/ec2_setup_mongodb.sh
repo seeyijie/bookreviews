@@ -2,11 +2,6 @@
 
 source ../config/config_mongodb.sh
 
-# add ip address of server to list of known hosts. should remove the need to manually add to trusted hosts
-ssh-keygen -R $server_ip # remove host from host file if it exists
-# ssh-keyscan -t ecdsa $server_ip >> /root/.ssh/known_hosts # add ecdsa encrypted fingerprint of server into known hosts
-ssh-keyscan -H $server_ip >> ~/.ssh/known_hosts # add ecdsa encrypted fingerprint of server into known hosts
-
 if [ $# -eq 0 ]
     then
     echo "No url specified. Using default dropbox url"
@@ -15,6 +10,9 @@ else
     dropbox_url=$1
 fi
 
+echo "adding mysql server ($server_ip) to known_hosts"
+ssh-keygen -R $server_ip
+ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
 # scp datasets to folder in ec2 instance
 scp -i ~/.ssh/$public_key ../../get_data.sh $username@$server_ip:/home/$username
