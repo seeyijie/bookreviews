@@ -61,7 +61,7 @@ class Log extends Component {
         return <Fragment>
             <Header />
             <Grid container alignItems='center' direction='column'>
-                <Button className={classes.button} variant="contained" onClick={this.onClickHandler.bind(this)}>Delete all logs</Button>
+                {/* <Button className={classes.button} variant="contained" onClick={this.onClickHandler.bind(this)}>Delete all logs</Button> */}
                 {isLoading ? loadingMessage : <Logtable log_json={log_json} />}
             </Grid>
         </Fragment>
