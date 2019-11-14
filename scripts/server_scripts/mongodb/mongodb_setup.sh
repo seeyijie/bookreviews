@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# dropbox url is the first command line argument
 dropbox_url=$1
 
 echo "Installing MongoDB"

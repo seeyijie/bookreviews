@@ -1,7 +1,9 @@
 #!/bin/bash
 
+# import variables public_key, server_ip and username
 source ../config/config_flask.sh
 
+# check for command line argment
 if [ $# -eq 0 ]
     then
     echo "No url specified. Using default dropbox url"
@@ -10,10 +12,12 @@ else
     dropbox_url=$1
 fi
 
+# add server fingerpring to known hosts
 echo "adding flask server ($server_ip) to known_hosts"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
+# copy over scripts to server and execute them on server.
 scp -i ~/.ssh/$public_key ../flask/flask_setup.sh $username@$server_ip:/home/$username
 scp -i ~/.ssh/$public_key ../flask/env_setup.sh $username@$server_ip:/home/$username
 ssh -i ~/.ssh/$public_key $username@$server_ip "sudo ./flask_setup.sh ${dropbox_url}"
