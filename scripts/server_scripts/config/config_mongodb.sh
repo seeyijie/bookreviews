@@ -1,5 +1,5 @@
 #!/bin/bash
 
-server_ip="3.134.99.36"
-public_key="experimental_instance.pem"
+server_ip="18.219.105.46"
+public_key="50043-keypair.pem"
 username="ubuntu"

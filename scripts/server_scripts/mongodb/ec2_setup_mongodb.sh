@@ -17,6 +17,12 @@ echo "adding mongodb server ($server_ip) to known_hosts"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
+# replace mongodb config file that with bind 0.0.0.0
+scp -i ~/.ssh/$public_key ../config/mongod.conf $username@$server_ip:/home/$username
+
+# copy over create_user script
+scp -i ~/.ssh/$public_key ../mongodb/create_user.js $username@$server_ip:/home/$username
+
 # copy over scripts to import dataset to server
 scp -i ~/.ssh/$public_key ../../get_data.sh $username@$server_ip:/home/$username
 ssh -i ~/.ssh/$public_key $username@$server_ip 'sudo apt-get -y install unzip'
