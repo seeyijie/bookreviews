@@ -1,4 +1,5 @@
 import boto3
+import time
 ec2 = boto3.resource('ec2')
 
 # create a new EC2 instance. Running this part of the script automatically creates a new ec2 instance
@@ -16,6 +17,9 @@ new_instances = ec2.create_instances(
     ]
 )
 
+# filenames = ["config_flask.sh", "config_mongodb.sh", "config_mysql.sh"] # use this for generating all
+filenames = ["config_mongodb.sh"]
+index = 0
 # wait for this instance to be running then exit
 for instance in new_instances:
     # instance is an ec2.Instance() object
@@ -26,3 +30,16 @@ for instance in new_instances:
     print(instance.public_ip_address)
     print(instance.key_name)
     print(instance.launch_time)
+    print("\n")
+
+    with open (f"../scripts/server_scripts/config/{filenames[index]}", 'w') as f:
+        f.write(
+        f'''#!/bin/bash
+        server_ip="{instance.public_ip_address}"
+        public_key="{instance.key_name}.pem"
+        username="ubuntu"''')
+
+    index += 1
+
+
+

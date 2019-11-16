@@ -42,6 +42,7 @@ sudo chmod 644 /etc/mongod.conf
 
 echo "Restarting mongod service"
 sudo service mongod restart
+sleep 5 # sleep for 5 seconds to make sure service has restarted
 
 echo "creating user for database"
 mongo < /home/ubuntu/create_user.js
