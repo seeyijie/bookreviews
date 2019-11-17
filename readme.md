@@ -90,7 +90,7 @@ set up again
 endpt:localhost:5000/api/addbook
 
 {"asin":"96962717171","salesRank":"hoho","title":
-	"meme stuff","categories":[["happy","sad"]],"description":"blabla", "price":12, "related":{"also_bought":["B123444","1231233"],"also_viewed":["B233321321"],"bought_together":["Be12321]},"imUrl":"https://urlme.me/success/typed_a_url/made_a_meme.jpg?source=www"
+	"meme stuff","categories":[["happy","sad"]],"description":"blabla", "price":12, "related":{"also_bought":["B123444","1231233"],"also_viewed":["B233321321"],"bought_together":["Be12321]},"imUrl":"https://urlme.me/success/typed_a_url/made_a_meme.jpg?source=www"}
 
 response: 
 {
