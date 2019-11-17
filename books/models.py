@@ -2,7 +2,7 @@ from application import db
 from datetime import date
 
 
-class Review(db.Model):
+class Reviews(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     asin = db.Column(db.VARCHAR(100))
     helpful = db.Column(db.VARCHAR(100))

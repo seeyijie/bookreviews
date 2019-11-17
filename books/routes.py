@@ -3,8 +3,9 @@ from werkzeug.security import generate_password_hash
 from books.data_service import get_first_10_books
 from books.data_service import get_book_by_asin
 from books.data_service import deleteReview
+from books.data_service import addBook
 from application import db
-from books.models import Review
+from books.models import Reviews
 from models.logs import LoggerObject    # for logging
 import json
 
@@ -51,7 +52,7 @@ def get_book(asin):
     if request.method == 'POST':
         asin = asin
         reviewText = request.form['reviewText']
-        review = Review(asin, reviewText)
+        review = Reviews(asin, reviewText)
         db.session.add(review)
         db.session.commit()
 
@@ -61,7 +62,7 @@ def get_book(asin):
     # if a book is found
     if (len(book) > 0):
         book = book[0]
-        reviews = Review.query.filter_by(asin=asin).all()
+        reviews = Reviews.query.filter_by(asin=asin).all()
         reviews = reviews[::-1] #sort by latest
         logger.logrequest(request)
         return render_template('book.html', reviews=reviews, book=book)
@@ -82,7 +83,7 @@ def get_book_endpoint(asin):
     # if a book is found
     if (len(book) > 0):
         book = book[0]
-        reviews_raw = Review.query.filter_by(asin=asin).all()
+        reviews_raw = Reviews.query.filter_by(asin=asin).all()
         reviews_raw = reviews_raw[::-1] #sort by latest
         reviews = []
         for review in reviews_raw:
@@ -118,7 +119,7 @@ def add_review():
     name = req['name']
     asin = req['asin']
     summary = req['summary']
-    review = Review(asin, summary,name)
+    review = Reviews(asin, summary, name)
     if get_book_by_asin(asin):
         db.session.add(review)
         db.session.commit()
@@ -144,3 +145,8 @@ def get_list_asin_details(ls):
         temp=[val.asin,val.imUrl]
         imgUrl.append(temp)
     return imgUrl
+
+@book_app.route('/api/addbook', methods=['POST'])
+def add_book():
+    req = request.get_json(force=True)
+    return addBook(req['asin'],req['imUrl'],req['salesRank'],req['title'],req['related'],req['categories'],req['description'],req['price'])
