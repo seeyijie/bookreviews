@@ -88,6 +88,7 @@ set up again
 
 #### 2. Backend Queries:
 endpt:localhost:5000/api/addbook
+body:
 ```
 {"asin":"969627171717","salesRank":"hoho","title":
 	"meme stuff","categories":["ha","aa"],"description":"blabla", "price":12, "related":{"also_bought":["B123444","1231233"],"also_viewed":["B233321321"],"bought_together":["Be12321"]},"imUrl":"https://urlme.me/success/typed_a_url/made_a_meme.jpg?source=www"
@@ -95,21 +96,161 @@ endpt:localhost:5000/api/addbook
 ```
 
 response: 
+```
 {
     "added": "true"
 }
 {
     "added": "false"
 }
-
+```
 endpt: localhost:5000/api/addreview
-
+body:
+```
 {"summary":"testy Mac testy","asin":"B000ZC8DPM","name":"mcFly"}
-
+```
 response: 
+```
 {
     "added": "true"
 }
 {
     "added": "false"
 }
+```
+book detail endpoint: localhost:5000/api/books/1603420304
+reponse:
+```{
+    "book_metadata": {
+        "asin": "1603420304",
+        "categories": [
+            [
+                "Books",
+                "Cookbooks, Food & Wine",
+                "Quick & Easy"
+            ],
+            [
+                "Books",
+                "Cookbooks, Food & Wine",
+                "Special Diet"
+            ],
+            [
+                "Books",
+                "Cookbooks, Food & Wine",
+                "Vegetarian & Vegan",
+                "Non-Vegan Vegetarian"
+            ],
+            [
+                "Kindle Store",
+                "Kindle eBooks",
+                "Cookbooks, Food & Wine",
+                "Quick & Easy"
+            ],
+            [
+                "Kindle Store",
+                "Kindle eBooks",
+                "Cookbooks, Food & Wine",
+                "Special Diet",
+                "Healthy"
+            ],
+            [
+                "Kindle Store",
+                "Kindle eBooks",
+                "Cookbooks, Food & Wine",
+                "Vegetables & Vegetarian"
+            ]
+        ],
+        "description": "In less time and for less money than it takes to order pizza, you can make it yourself!Three harried but heatlh-conscious college students compiled and tested this collection of more than 200 tasty, hearty, inexpensive recipes anyone can cook -- yes, anyone!Whether you're short on cash, fearful of fat, counting your calories, or just miss home cooking, The Healthy College Cookbook offers everything you need to make good food yourself.",
+        "imUrl": "http://ecx.images-amazon.com/images/I/51IEqPrF%2B9L._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg",
+        "price": 7.69,
+        "related": {
+            "also_viewed": [
+                "B001OLRKLQ",
+                "B004J35JIC",
+                "B00505UP8M",
+                "B004GTLKEQ",
+                "B005KWMS8U",
+                "B00BS03TYU",
+                "B001MT5NXW",
+                "B00A86JE3K",
+                "B00D694Y9U",
+                "B00DSVUVXY",
+                "B008EN3W6Y",
+                "B00BS03W5Q",
+                "B008161J1O",
+                "B0089LOJH2",
+                "B00ENSBJYQ",
+                "B00C7C040U",
+                "B00DH410VY",
+                "B00CMVFW4O",
+                "B00C89GS1Q",
+                "B0035FZJ9Y",
+                "B004GTLFUK",
+                "B00H24WT2E",
+                "B00CVS44OW",
+                "B00C5W32QK",
+                "B00HY0KTPK",
+                "B00BJ8IPJU",
+                "B00JEOMV1E",
+                "B0041KKLNQ",
+                "B00CVS2JYY",
+                "B00CTVOVD0",
+                "B00ET594CC"
+            ],
+            "buy_after_viewing": [
+                "B004J35JIC",
+                "B0089LOJH2"
+            ]
+        },
+        "salesRank": null,
+        "title": "classic and with 300 the healthy quick college easy cookbook"
+    },
+    "related_url": {
+        "also_viewed": [
+            [
+                "B0041KKLNQ",
+                "http://ecx.images-amazon.com/images/I/51YnsnUU0nL._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ],
+            [
+                "B008161J1O",
+                "http://ecx.images-amazon.com/images/I/51-uyKRenVL._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ],
+            [
+                "B008EN3W6Y",
+                "http://ecx.images-amazon.com/images/I/51NhzCPoRBL._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ],
+            [
+                "B00C5W32QK",
+                "http://ecx.images-amazon.com/images/I/51y6WX3JPoL._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ],
+            [
+                "B00C89GS1Q",
+                "http://ecx.images-amazon.com/images/I/51NScvtwPzL._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ],
+            [
+                "B00CTVOVD0",
+                "http://ecx.images-amazon.com/images/I/51PMpMZJ7ML._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ],
+            [
+                "B00D694Y9U",
+                "http://ecx.images-amazon.com/images/I/519LrNNNw4L._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ],
+            [
+                "B00DSVUVXY",
+                "http://ecx.images-amazon.com/images/I/51nLWH0P-fL._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ],
+            [
+                "B00ET594CC",
+                "http://ecx.images-amazon.com/images/I/51f55uR2HhL._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ],
+            [
+                "B00HY0KTPK",
+                "http://ecx.images-amazon.com/images/I/51LY8qZY9vL._BO2,204,203,200_PIsitb-sticker-v3-big,TopRight,0,-55_SX278_SY278_PIkin4,BottomRight,1,22_AA300_SH20_OU01_.jpg"
+            ]
+        ],
+        "buy_after_viewing": []
+    },
+    "reviews": []
+}
+```
+
