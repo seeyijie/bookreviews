@@ -84,3 +84,30 @@ Look at the instructions again for the set up.
 If it is still not working, the column tables may have changed.
 Delete the .py files in migrations/versions and rerun MySQL migration 
 set up again
+
+
+#### 2. Backend Queries:
+endpt:localhost:5000/api/addbook
+
+{"asin":"96962717171","salesRank":"hoho","title":
+	"meme stuff","categories":[["happy","sad"]],"description":"blabla", "price":12, "related":{"also_bought":["B123444","1231233"],"also_viewed":["B233321321"],"bought_together":["Be12321]},"imUrl":"https://urlme.me/success/typed_a_url/made_a_meme.jpg?source=www"
+
+response: 
+{
+    "added": "true"
+}
+{
+    "added": "false"
+}
+
+endpt: localhost:5000/api/addreview
+
+{"summary":"testy Mac testy","asin":"B000ZC8DPM","name":"mcFly"}
+
+response: 
+{
+    "added": "true"
+}
+{
+    "added": "false"
+}
