@@ -37,8 +37,9 @@ def list_ec2_instances_info():
                 instance['InstanceId'],
                 instance['PublicIpAddress'],
                 instance['KeyName'],
-                instance['LaunchTime']
+                instance['LaunchTime'],
             )
+            
             instances[index] = ec2_inst # create a dictionary storing instance objects
             index += 1
     return instances
