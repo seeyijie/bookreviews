@@ -1,5 +1,5 @@
 #!/bin/bash
 
-server_ip="3.15.23.27"
-public_key="flaskserver.pem"
+server_ip="18.222.111.254"
+public_key="50043-keypair.pem"
 username="ubuntu"
