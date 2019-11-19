@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, session, url_for, request, jsonify
+from flask import Blueprint, render_template, redirect, session, url_for, request, jsonify, abort
 from werkzeug.security import generate_password_hash
 from books.data_service import get_first_10_books
 from books.data_service import get_book_by_asin
@@ -6,8 +6,10 @@ from books.data_service import deleteReview
 from books.data_service import addBook
 from application import db
 from books.models import Reviews
+from users.models import User
 from models.logs import LoggerObject    # for logging
 import json
+from flask_jwt_extended import jwt_required
 
 book_app = Blueprint('book_app', __name__)
 logger = LoggerObject()
@@ -114,10 +116,33 @@ def get_all_books_endpoint():
 
 #add a book review
 @book_app.route('/api/addreview', methods=['POST'])
+#@jwt_required
 def add_review():
     req = request.get_json(force=True)
     asin = req['asin']
-    review = Reviews(asin, req['summary'], req['reviewText'], req['reviewerID'], req['reviewerName'])
+    id = req['reviewerID']
+    name = req['reviewerName']
+
+    # we should validate id but since we got nothing in users table right now just use reviewer name
+    '''
+    users = User.query.filter_by(id=id).all()
+
+    # fallback to query by reviewer name. this is BAD can have name duplicates! fix this once we can get ID from frontend
+    if len(users) <= 0:
+        print("bad ID:", id)
+        users = User.query.filter_by(name=name).all()
+
+    # no user found
+    if len(users) <= 0:
+        print("bad name:", name)
+        abort(401)
+    else:
+        user = users[0]
+        id = user.id
+        name = user.name
+    '''
+
+    review = Reviews(asin, req['summary'], req['reviewText'], id, name)
     if get_book_by_asin(asin):
         db.session.add(review)
         db.session.commit()
