@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { Header, BookInfo } from './Components'
 import Reviews from "./Components/Reviews.js"
+import ReviewForm from "./Components/ReviewForm.js"
 import { Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
@@ -74,8 +75,9 @@ class Book extends Component {
     }
 
     render() {
-        const { bookID, categories, description, imUrl, price, also_viewed, buy_after_viewing, sales_rank, title, reviews } = this.state;
+        const { bookID, categories, description, imUrl, price, also_bought, also_viewed, buy_after_viewing, sales_rank, title, reviews } = this.state;
         // console.log(reviews)
+        //console.log(this.state)
         const { classes } = this.props
         const loadingMessage = <Typography className={classes.loadtext}>Loading... Please wait</Typography>
         const errorMessage = <Typography className={classes.loadtext}>Error: Book not found</Typography>
@@ -86,10 +88,11 @@ class Book extends Component {
                 {this.state.isLoading ? loadingMessage : (
                     this.state.error ? errorMessage : (
                         <div>
-                            <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />
+                            <BookInfo bookID={bookID} categories={categories} description={description} imUrl={imUrl} price={price} also_bought={also_bought} also_viewed={also_viewed} buy_after_viewing={buy_after_viewing} sales_rank={sales_rank} title={title} />
                             <br />
                             <div style={{ width: '90%', margin: 'auto' }}>
-                                <p>Reviews:</p>
+                                <h3>Reviews:</h3>
+                                <ReviewForm bookID={bookID} />
                                 <Reviews reviews={reviews} />
                             </div>
                         </div>
