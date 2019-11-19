@@ -116,10 +116,8 @@ def get_all_books_endpoint():
 @book_app.route('/api/addreview', methods=['POST'])
 def add_review():
     req = request.get_json(force=True)
-    name = req['name']
     asin = req['asin']
-    summary = req['summary']
-    review = Reviews(asin, summary, name)
+    review = Reviews(asin, req['summary'], req['reviewText'], req['reviewerID'], req['reviewerName'])
     if get_book_by_asin(asin):
         db.session.add(review)
         db.session.commit()
