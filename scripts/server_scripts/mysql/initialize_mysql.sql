@@ -6,11 +6,11 @@ use 50043_DB;
 /* create a table for storing user data*/
 drop table if exists users;
 create table users(
-    id integer primary key,
-    name varchar(100),
-    email varchar(100),
-    password varchar(100),
-    recent_login datetime
+    id varchar(100) NOT NULL,
+    name varchar(100) NOT NULL,
+    email varchar(100) primary key,
+    password varchar(100) NOT NULL,
+    recent_login datetime NOT NULL
 );
 
 /* create a table for importing the data into*/
