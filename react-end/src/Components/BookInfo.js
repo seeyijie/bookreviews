@@ -19,9 +19,12 @@ const useStyles = makeStyles(theme => ({
     }
 }));
 
-function BookInfo({ bookID, categories, description, imUrl, price, also_viewed, buy_after_viewing, sales_rank, title }) {
+function BookInfo({ bookID, categories, description, imUrl, price, also_bought, also_viewed, buy_after_viewing, sales_rank, title }) {
     const classes = useStyles();
 
+    console.log(also_bought)
+    console.log(also_viewed)
+    console.log(buy_after_viewing)
     return <Grid className={classes.bigGrid} container direction='column'>
 
         <Link to="/browse" style={{ textDecoration: 'none' }}>
@@ -41,8 +44,9 @@ function BookInfo({ bookID, categories, description, imUrl, price, also_viewed, 
                     <ListItem>Sales Rank: {sales_rank}</ListItem>
                     <ListItem>Description: {description}</ListItem>
                     <ListItem>Price: {price}</ListItem>
-                    {also_viewed ? <ListItem>Also Viewed: {also_viewed.map((book) => book + " ")}</ListItem> : <ListItem>Also Viewed: </ListItem>}
-                    {buy_after_viewing ? <ListItem>Also Bought: {buy_after_viewing.map((book) => book + " ")}</ListItem> : <ListItem>Also Bought: </ListItem>}
+                    <ListItem>Also Bought: {also_bought && also_bought.length > 0 ? also_bought.map((book) => book + " ") : null} </ListItem>
+                    <ListItem>Also Viewed: {also_viewed && also_viewed.length > 0 ? also_viewed.map((book) => book + " ") : null} </ListItem>
+                    <ListItem>Bought After Viewing: {buy_after_viewing && buy_after_viewing.length > 0 ? buy_after_viewing.map((book) => book + " ") : null} </ListItem>
                 </List>
             </Grid>
         </Grid>

@@ -67,7 +67,8 @@ class Login extends Component {
       .then(data => {
         console.log(data);
         localStorage.setItem('jwt', data.access_token);
-        localStorage.setItem('data', data.name);
+        localStorage.setItem('id', data.id);
+        localStorage.setItem('name', data.name);
         setAuthToken(data.access_token);
         this.setState({ doRedirect: true})
       })

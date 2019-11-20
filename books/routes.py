@@ -1,12 +1,15 @@
-from flask import Blueprint, render_template, redirect, session, url_for, request, jsonify
+from flask import Blueprint, render_template, redirect, session, url_for, request, jsonify, abort
 from werkzeug.security import generate_password_hash
 from books.data_service import get_first_10_books
 from books.data_service import get_book_by_asin
 from books.data_service import deleteReview
+from books.data_service import addBook
 from application import db
-from books.models import Review
+from books.models import Reviews
+from users.models import User
 from models.logs import LoggerObject    # for logging
 import json
+from flask_jwt_extended import jwt_required
 
 book_app = Blueprint('book_app', __name__)
 logger = LoggerObject()
@@ -51,7 +54,7 @@ def get_book(asin):
     if request.method == 'POST':
         asin = asin
         reviewText = request.form['reviewText']
-        review = Review(asin, reviewText)
+        review = Reviews(asin, reviewText)
         db.session.add(review)
         db.session.commit()
 
@@ -61,7 +64,7 @@ def get_book(asin):
     # if a book is found
     if (len(book) > 0):
         book = book[0]
-        reviews = Review.query.filter_by(asin=asin).all()
+        reviews = Reviews.query.filter_by(asin=asin).all()
         reviews = reviews[::-1] #sort by latest
         logger.logrequest(request)
         return render_template('book.html', reviews=reviews, book=book)
@@ -82,7 +85,7 @@ def get_book_endpoint(asin):
     # if a book is found
     if (len(book) > 0):
         book = book[0]
-        reviews_raw = Review.query.filter_by(asin=asin).all()
+        reviews_raw = Reviews.query.filter_by(asin=asin).all()
         reviews_raw = reviews_raw[::-1] #sort by latest
         reviews = []
         for review in reviews_raw:
@@ -113,12 +116,33 @@ def get_all_books_endpoint():
 
 #add a book review
 @book_app.route('/api/addreview', methods=['POST'])
+#@jwt_required
 def add_review():
     req = request.get_json(force=True)
-    name = req['name']
     asin = req['asin']
-    summary = req['summary']
-    review = Review(asin, summary,name)
+    id = req['reviewerID']
+    name = req['reviewerName']
+
+    # we should validate id but since we got nothing in users table right now just use reviewer name
+    '''
+    users = User.query.filter_by(id=id).all()
+
+    # fallback to query by reviewer name. this is BAD can have name duplicates! fix this once we can get ID from frontend
+    if len(users) <= 0:
+        print("bad ID:", id)
+        users = User.query.filter_by(name=name).all()
+
+    # no user found
+    if len(users) <= 0:
+        print("bad name:", name)
+        abort(401)
+    else:
+        user = users[0]
+        id = user.id
+        name = user.name
+    '''
+
+    review = Reviews(asin, req['summary'], req['reviewText'], id, name)
     if get_book_by_asin(asin):
         db.session.add(review)
         db.session.commit()
@@ -144,3 +168,8 @@ def get_list_asin_details(ls):
         temp=[val.asin,val.imUrl]
         imgUrl.append(temp)
     return imgUrl
+
+@book_app.route('/api/addbook', methods=['POST'])
+def add_book():
+    req = request.get_json(force=True)
+    return addBook(req['asin'],req['imUrl'],req['salesRank'],req['title'],req['related'],req['categories'],req['description'],req['price'])

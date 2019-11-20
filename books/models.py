@@ -1,8 +1,8 @@
 from application import db
-from datetime import date
+from datetime import datetime
 
 
-class Review(db.Model):
+class Reviews(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True)
     asin = db.Column(db.VARCHAR(100))
     helpful = db.Column(db.VARCHAR(100))
@@ -15,13 +15,17 @@ class Review(db.Model):
     unixReviewTime = db.Column(db.Integer)
 
     # init only with summary and reviewText for now
-    def __init__(self, asin, reviewText,reviewerName):
+    def __init__(self, asin, summary, reviewText, reviewerID, reviewerName):
         self.asin = asin
-        now = date.today()
-        formated = now.strftime("%m %-d, %Y")
-        self.reviewTime = formated
-        self.reviewText = reviewText
+        self.summary = summary
+        self.reviewerID = reviewerID
         self.reviewerName = reviewerName
+        self.helpful = "[0, 0]"
+        self.overall = 0
+        now = datetime.now()
+        self.reviewTime = now.strftime("%Y-%-m-%-d")
+        self.reviewText = reviewText
+        self.unixReviewTime = int(now.timestamp())
 
     def serialize(self):
         return {

@@ -107,7 +107,13 @@ response:
 endpt: localhost:5000/api/addreview
 body:
 ```
-{"summary":"testy Mac testy","asin":"B000ZC8DPM","name":"mcFly"}
+{
+    "summary":"review",
+    "asin":"B000ZC8DPM",
+    "reviewerName":"myname",
+    "reviewerID":"myID",
+    "reviewText":"this is a review",
+}
 ```
 response: 
 ```

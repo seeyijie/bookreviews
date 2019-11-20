@@ -20,7 +20,9 @@ class Reviews extends React.Component {
         }
         return (
             <table style={{ width: '100%' }}>
-                {reviews.map(review => <Review data={review} />)}
+                <tbody>
+                    {reviews.map(review => <Review data={review} />)}
+                </tbody>
             </table>
         );
     }
@@ -89,7 +91,7 @@ class Review extends React.Component {
                                 subheader={reviewTime}
                             />
                             <CardContent>
-                                <Typography component='p'>{summary}</Typography>
+                                <Typography component='p'><b>{summary}</b></Typography>
                                 <Typography component='p'>{reviewText}</Typography>
                                 <button onClick={this.onDeleteHandler.bind(this, id)} value={id}>delete comment{id}<i className="deleteButton"></i>
                                 </button>
