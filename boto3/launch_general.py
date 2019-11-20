@@ -12,12 +12,12 @@ def launch_ec2(image):
     InstanceType='t2.micro',
     KeyName='50043-keypair',
     SecurityGroups=[
-        '50043_SECURITY_GROUP_TEST',
+        '50043_SECURITY_GROUP',
     ]
     )
     return new_instances
 
-def describe_instances(instances, instance_type):
+def describe_instances(instances, instance_type, write_js):
     for instance in instances:
         instance.wait_until_running()
         instance.reload() # update attributes
@@ -34,6 +34,13 @@ def describe_instances(instances, instance_type):
         with open(f"../scripts/server_scripts/config/config_{instance_type}_ip.txt", "w") as f:
             f.write(f"{instance.public_ip_address}")
 
+        if write_js == 1:
+            create_js_ip(instance.public_ip_address)
+
+def create_js_ip(ip_address):
+    with open(f"../react-end/src/Data/config.js", "w") as f:
+        f.write(f'export const flaskip = "http://{ip_address}:5000"')
+
 def cli(mongodb="n", mysql="n", flask="n"):
     # TODO: replace images here with actual finalized images
     images = {"mongo_image":"ami-01fd5140d19a25af9", "mysql_image":"ami-0d5d9d301c853a04a","flask_image":"ami-0d5d9d301c853a04a"}
@@ -42,7 +49,7 @@ def cli(mongodb="n", mysql="n", flask="n"):
     if mongodb.lower() == "y":
         print("launching mongodb instance...")
         instance = launch_ec2(images["mongo_image"])
-        describe_instances(instance, "mongodb")
+        describe_instances(instance, "mongodb", 0)
     elif mongodb.lower() == "n":
         print("no mongodb selected")
     else:
@@ -52,7 +59,7 @@ def cli(mongodb="n", mysql="n", flask="n"):
     if mysql.lower() == "y":
         print("launching mysql instance...")
         instance = launch_ec2(images["mysql_image"])
-        describe_instances(instance, "mysql")
+        describe_instances(instance, "mysql", 0)
     elif mysql.lower() == "n":
         print("no mysql selected")
     else:
@@ -62,7 +69,7 @@ def cli(mongodb="n", mysql="n", flask="n"):
     if flask.lower() == "y":
         print("launching flask instance...")
         instance = launch_ec2(images["flask_image"])
-        describe_instances(instance, "flask")
+        describe_instances(instance, "flask", 1)
     elif flask.lower() == "n":
         print("no flask selected")
     else:

@@ -12,6 +12,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
 import Link from "@material-ui/core/Link";
+import * as config from '../Data/config';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -58,9 +59,9 @@ class Register extends Component {
       name: this.state.name,
       password: this.state.password
     };
-
     console.log(newUser);
-    axios.post('http://127.0.0.1:5000/register', newUser)
+    axios.post(`${config.flaskip}/register`, newUser)
+    // axios.post('http://127.0.0.1:5000/register', newUser)
       .then(res => this.setState({ doRedirect: true}))
       .catch(err => console.log(err));
   };

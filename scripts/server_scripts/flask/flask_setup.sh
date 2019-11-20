@@ -34,11 +34,10 @@ pip install -r requirements.txt
 # install react dependencies
 cd react-end
 yarn install
-
 # launch flask server
 source /home/ubuntu/env_setup.sh
 # flask run
-
+# cd to react-end then sudo yarn start
 #CAUTION: if you execute `flask run`, pressing Ctrl+C ends the local ssh connection, not the flask server.
 #To end the flask server, ssh into the server and find its process id. by running ps -ef | grep flask, then run sudo kill -9 <process_id>
 #Instructions here https://superuser.com/questions/446808/how-to-manually-stop-a-python-script-that-runs-continuously-on-linux

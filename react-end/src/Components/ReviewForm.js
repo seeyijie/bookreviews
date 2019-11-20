@@ -1,7 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
 import { Card, CardHeader, CardContent, TextField, Button, Typography, Avatar } from '@material-ui/core';
 import axios from 'axios';
+import * as config from '../Data/config';
 
 class ReviewForm extends React.Component {
     constructor(props) {
@@ -9,18 +9,21 @@ class ReviewForm extends React.Component {
         this.state = {
             bookID: props.bookID,
             isLoading: false,
-            successful: false,
+            successful: null,
             revewerID: null,
             reviewerName: null,
+            token: null,
         }
     }
 
     componentDidMount() {
-        const reviewerID = 123; // we should get the ID from localStorage instead (need to figure out how to do this)
-        const reviewerName = localStorage.getItem('data');
+        const reviewerID = localStorage.getItem('id')
+        const reviewerName = localStorage.getItem('name');
+        const token = localStorage.getItem('jwt')
         this.setState({
             reviewerID: reviewerID,
             reviewerName: reviewerName,
+            token: token,
         });
     }
 
@@ -35,34 +38,44 @@ class ReviewForm extends React.Component {
     handleSubmit = (event) => {
         event.preventDefault();
 
-        const {bookID, summary, reviewText, reviewerID, reviewerName} = this.state;
-        const url = 'http://127.0.0.1:5000/api/addreview';
+        // re-authorize since user may have signed out since component last rendered
+        const reviewerID = localStorage.getItem('id')
+        const reviewerName = localStorage.getItem('name');
+        const token = localStorage.getItem('jwt')
+
+        const {bookID, summary, reviewText} = this.state;
+        const url = `${config.flaskip}/api/addreview`;
+        // const url = 'http://127.0.0.1:5000/api/addreview';
 
         this.setState({
             isLoading: true,
+            successful: null,
         }, () => {
             axios.post(
                 url,
                 {
                     asin: bookID,
                     reviewerID: reviewerID,
-                    reviewerName: reviewerName,
                     summary: summary,
                     reviewText: reviewText,
                 },
                 {
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded',
+                        'Authorization': `Bearer ${token}`,
                     },
                 })
-                .then(response => {
-                    console.log(response);
+                .then(() => {
                     this.setState({
                         summary: '',
                         reviewText: '',
+                        reviewerID: reviewerID,
+                        reviewerName: reviewerName,
+                        token: token,
                         isLoading: false,
                         successful: true,
                     });
+                    this.props.onChange();
                 })
                 .catch(error => {
                     console.log(error);
@@ -76,8 +89,7 @@ class ReviewForm extends React.Component {
 
     render() {
         const {summary, reviewText, reviewerID, reviewerName, isLoading, successful} = this.state;
-        // we should actually check if reviewerID is set once we figure out how to retrieve it
-        if (reviewerName === null || reviewerName === '') {
+        if (reviewerID === null || reviewerID === '') {
             return (
                 <div style={{ width: '100%', paddingBottom: '30px'}}>
                     <Typography><b><a href="/signin">Sign in</a> to leave a review.</b></Typography>
@@ -123,7 +135,12 @@ class ReviewForm extends React.Component {
                                 rows='3'
                             />
                             <Button size='small' color='primary' onClick={this.handleSubmit}>Submit</Button>
-                            {successful ? <Typography variant='caption' style={{color:'green'}}>Review submitted.</Typography> : null}
+                            {successful ?
+                                <Typography variant='caption' style={{color:'green'}}>Review submitted.</Typography>
+                                : (successful === false ?
+                                    <Typography variant='caption' style={{color:'red'}}>Something went wrong. Please refresh and try again.</Typography>
+                                    : null)
+                            }
                         </form>
                     </CardContent>
                 </Card>

@@ -3,6 +3,7 @@ import { Header, BrowseAllEntries } from './Components'
 import { Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import * as config from './Data/config';
 
 const styles = () => ({
     title: {
@@ -54,7 +55,8 @@ class SearchResults extends Component {
     componentDidMount() {
         console.log("ComponentDidMount")
         const searchstring = this.props.location.state.searchstring
-        const url = `http://127.0.0.1:5000/api/titlematching/${searchstring}`
+        // const url = `http://127.0.0.1:5000/api/titlematching/${searchstring}`
+        const url =`${config.flaskip}/api/titlematching/${searchstring}`
         axios.get(url)
             .then(response => {
                 this.props.location.state.searchstring = null;

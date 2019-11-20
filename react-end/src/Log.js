@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import { Header } from './Components'
 import { Logtable } from './Components'
-import { Grid, Typography, Button } from '@material-ui/core';
+import { Grid, Typography} from '@material-ui/core';
+// import { Button } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import * as config from './Data/config';
 
 const styles = () => ({
     title: {
@@ -31,7 +33,8 @@ class Log extends Component {
 
     componentDidMount() {
         // call flask api to get all logs and store into log_json
-        const url = `http://127.0.0.1:5000/getlog`
+        // const url = `http://127.0.0.1:5000/getlog`
+        const url = `${config.flaskip}/getlog`
         axios.get(url)
             .then(response => response.data)
             .then(log => {
@@ -44,7 +47,8 @@ class Log extends Component {
 
     onClickHandler(e) {
         // call flask api to delete all logs
-        const url = `http://127.0.0.1:5000/deletelogs`
+        // const url = `http://127.0.0.1:5000/deletelogs`
+        const url = `${config.flaskip}/deletelogs`
         axios.get(url)
         this.setState({
             isLoading: true,
