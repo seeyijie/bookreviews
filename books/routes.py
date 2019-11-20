@@ -14,17 +14,6 @@ from flask_jwt_extended import jwt_required
 book_app = Blueprint('book_app', __name__)
 logger = LoggerObject()
 
-'''
-@book_app.route('/book/<asin>/reviews', methods=['GET'])
-def get_reviews(asin):
-    results = Review.query.filter_by(asin=asin)
-    reviews = []
-    for result in results:
-        reviews.append(result.serialize())
-    return jsonify(reviews)
-    #return render_template('book.html', reviews=reviews)
-'''
-
 @book_app.route('/browse', methods=['GET'])
 def get_meta_data():
     msg=''
@@ -48,6 +37,7 @@ def get_byasin():
     return render_template('browse.html', arrayOfBooks= books)
 
 
+'''
 @book_app.route('/books/<asin>', methods=['GET', 'POST'])
 def get_book(asin):
     # if a review is submitted
@@ -72,6 +62,7 @@ def get_book(asin):
         err_msg = 'Book not found.'
         logger.logrequest(request)
         return redirect(url_for('.get_meta_data', msg=err_msg))
+'''
 
 @book_app.route('/api/books/<asin>', methods=['GET', 'POST'])
 def get_book_endpoint(asin):
@@ -81,22 +72,30 @@ def get_book_endpoint(asin):
 
     related_url = {}
     for key in book[0].related:
+        book[0].related[key] = book[0].related[key][:10] # limit to first 10
         related_url[key]=get_list_asin_details(book[0].related[key])
     # if a book is found
     if (len(book) > 0):
         book = book[0]
-        reviews_raw = Reviews.query.filter_by(asin=asin).all()
-        reviews_raw = reviews_raw[::-1] #sort by latest
-        reviews = []
-        for review in reviews_raw:
-            reviews.append(review.serialize())
-        response = {'book_metadata':book.serialize(), 'reviews': reviews, 'related_url': related_url}
+        response = {'book_metadata':book.serialize(), 'related_url': related_url}
         logger.logrequest(request, response)
-        return {'book_metadata':book.serialize(), 'reviews':reviews, 'related_url':related_url}
+        return response
     else:
         err_msg = 'Book not found.'
         logger.logrequest(request)
         return redirect(url_for('.get_meta_data', msg=err_msg))
+
+@book_app.route('/api/books/<asin>/reviews', methods=['GET'])
+def get_reviews(asin):
+    reviews_raw = Reviews.query.filter_by(asin=asin).all()
+    reviews_raw = reviews_raw[::-1] #sort by latest
+    reviews = []
+    for review in reviews_raw:
+        reviews.append(review.serialize())
+    response = {'reviews':reviews}
+    logger.logrequest(request, response)
+    return response
+    #return render_template('book.html', reviews=reviews)
 
 @book_app.route('/api/allbooks', methods=['GET','POST'])
 def get_all_books_endpoint():
