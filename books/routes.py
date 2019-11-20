@@ -116,31 +116,20 @@ def get_all_books_endpoint():
 
 #add a book review
 @book_app.route('/api/addreview', methods=['POST'])
-#@jwt_required
+@jwt_required
 def add_review():
     req = request.get_json(force=True)
     asin = req['asin']
     id = req['reviewerID']
-    name = req['reviewerName']
 
-    # we should validate id but since we got nothing in users table right now just use reviewer name
-    '''
     users = User.query.filter_by(id=id).all()
 
-    # fallback to query by reviewer name. this is BAD can have name duplicates! fix this once we can get ID from frontend
     if len(users) <= 0:
-        print("bad ID:", id)
-        users = User.query.filter_by(name=name).all()
-
-    # no user found
-    if len(users) <= 0:
-        print("bad name:", name)
         abort(401)
     else:
         user = users[0]
         id = user.id
         name = user.name
-    '''
 
     review = Reviews(asin, req['summary'], req['reviewText'], id, name)
     if get_book_by_asin(asin):
