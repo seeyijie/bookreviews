@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import { Card, CardHeader, CardContent, TextField, Button, Typography, Avatar } from '@material-ui/core';
 import axios from 'axios';
+import * as config from '../Data/config';
 
 class ReviewForm extends React.Component {
     constructor(props) {
@@ -36,7 +37,8 @@ class ReviewForm extends React.Component {
         event.preventDefault();
 
         const {bookID, summary, reviewText, reviewerID, reviewerName} = this.state;
-        const url = 'http://127.0.0.1:5000/api/addreview';
+        const url = `${config.flaskip}/api/addreview`;
+        // const url = 'http://127.0.0.1:5000/api/addreview';
 
         this.setState({
             isLoading: true,

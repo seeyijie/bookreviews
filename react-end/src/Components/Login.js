@@ -17,7 +17,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
 import {Redirect} from "react-router-dom";
 import setAuthToken from "../util/setAuthToken";
-// import * as config from '../Data/config';
+import * as config from '../Data/config';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -63,7 +63,8 @@ class Login extends Component {
     };
 
     console.log(user);
-    axios.post('http://127.0.0.1:5000/login', user)
+    axios.post(`${config.flaskip}/login, user`)
+    // axios.post('http://127.0.0.1:5000/login', user)
       .then(res => res.data.data)
       .then(data => {
         console.log(data);

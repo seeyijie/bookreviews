@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardHeader, CardContent, Typography, Avatar } from '@material-ui/core';
 import axios from 'axios';
+import * as config from '../Data/config';
 
 class Reviews extends React.Component {
     constructor(props) {
@@ -39,7 +40,8 @@ class Review extends React.Component {
     }
     onDeleteHandler(id, e) {
         // call flask api to delete all logs
-        const url = `http://127.0.0.1:5000/api/deletereview/` + id
+        const url = `${config.flaskip}/api/deetereview/` + id
+        // const url = `http://127.0.0.1:5000/api/deletereview/` + id
         axios.delete(url)
         this.setState({
             isLoading: true
