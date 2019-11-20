@@ -12,7 +12,7 @@ def launch_ec2(image):
     InstanceType='t2.micro',
     KeyName='50043-keypair',
     SecurityGroups=[
-        '50043_SECURITY_GROUP_TEST',
+        '50043_SECURITY_GROUP',
     ]
     )
     return new_instances
@@ -39,7 +39,7 @@ def describe_instances(instances, instance_type, write_js):
 
 def create_js_ip(ip_address):
     with open(f"../react-end/src/Data/config.js", "w") as f:
-        f.write(f"export const flaskip = {ip_address}")
+        f.write(f'export const flaskip = "http://{ip_address}:5000"')
 
 def cli(mongodb="n", mysql="n", flask="n"):
     # TODO: replace images here with actual finalized images
