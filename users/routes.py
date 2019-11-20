@@ -68,6 +68,7 @@ def auth_user():
             refresh_token = create_refresh_token(identity=data)
             token = {
                 'name': user.name,
+                'id': user.id,
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }
