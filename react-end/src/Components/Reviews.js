@@ -7,10 +7,19 @@ class Reviews extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            isLoading: true,
+            isLoading: props.isLoading,
             error: false,
             bookID: this.props.bookID ? this.props.bookID : null,
             reviews: this.props.reviews ? this.props.reviews : [],
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps !== this.props) {
+            this.setState({
+                isLoading: this.props.isLoading,
+                reviews: this.props.reviews ? this.props.reviews : [],
+            });
         }
     }
 
@@ -22,7 +31,8 @@ class Reviews extends React.Component {
         return (
             <table style={{ width: '100%' }}>
                 <tbody>
-                    {reviews.map(review => <Review data={review} />)}
+                    {this.state.isLoading ? <tr><Typography>Loading reviews...</Typography></tr> : null}
+                    {reviews.map(review => <Review data={review} key={review.id} onChange={this.props.onChange}/>)}
                 </tbody>
             </table>
         );
@@ -35,43 +45,26 @@ class Review extends React.Component {
         super(props)
         this.state = {
             isLoading: false,
+            isDeleted: false,
             data: this.props.data,
         }
     }
-    onDeleteHandler(id, e) {
-        // call flask api to delete all logs
-        const url = `${config.flaskip}/api/deetereview/` + id
-        // const url = `http://127.0.0.1:5000/api/deletereview/` + id
-        axios.delete(url)
-        this.setState({
-            isLoading: true
-        })
-    }
-    componentDidMount() {
-        // call flask api
-        // sample asin: B0002IQ15S, 1603420304
-        if (this.state.isLoading === true) {
-            const url = `http://127.0.0.1:5000/api/books/${this.state.bookID}`
-            axios.get(url)
-                .then(response => response.data)
-                .then(book => {
-                    if (book.book_metadata == null) {
-                        this.setState({
-                            isLoading: false,
-                            error: true,
-                        });
-                        return;
-                    }
-                    console.log(book);
 
-                    const reviews = book.reviews;
-                    // const data = book.book_metadata;
+    onDeleteHandler(id, e) {
+        this.setState({
+            isLoading: true,
+        }, () => {
+            // call flask api to delete all logs
+            const url = `${config.flaskip}/api/deletereview/` + id
+            // const url = `http://127.0.0.1:5000/api/deletereview/` + id
+            axios.delete(url)
+                .then(() => {
                     this.setState({
                         isLoading: false,
-                        reviews: reviews ? reviews : [],
-                    })
-                })
-        }
+                        isDeleted: true
+                    });
+                });
+        });
     }
 
     render() {
@@ -81,7 +74,7 @@ class Review extends React.Component {
         const { reviewerName, summary, reviewText, reviewTime, id } = data;
         return (
 
-            this.state.isLoading ? null :
+            this.state.isDeleted ? null :
                 <tr style={{ width: '100%' }}>
                     <td style={{ width: '100%' }}>
                         <Card>
@@ -95,7 +88,7 @@ class Review extends React.Component {
                             <CardContent>
                                 <Typography component='p'><b>{summary}</b></Typography>
                                 <Typography component='p'>{reviewText}</Typography>
-                                <button onClick={this.onDeleteHandler.bind(this, id)} value={id}>delete comment{id}<i className="deleteButton"></i>
+                                <button disabled={this.state.isLoading} onClick={this.onDeleteHandler.bind(this, id)} value={id}>delete comment{id}<i className="deleteButton"></i>
                                 </button>
                             </CardContent>
                         </Card>

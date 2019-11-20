@@ -22,9 +22,6 @@ const useStyles = makeStyles(theme => ({
 function BookInfo({ bookID, categories, description, imUrl, price, also_bought, also_viewed, buy_after_viewing, sales_rank, title }) {
     const classes = useStyles();
 
-    console.log(also_bought)
-    console.log(also_viewed)
-    console.log(buy_after_viewing)
     return <Grid className={classes.bigGrid} container direction='column'>
 
         <Link to="/browse" style={{ textDecoration: 'none' }}>

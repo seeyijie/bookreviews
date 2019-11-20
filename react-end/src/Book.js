@@ -26,7 +26,8 @@ class Book extends Component {
         super(props)
 
         this.state = {
-            isLoading: true,
+            isLoading: false,
+            isLoadingReviews: false,
             error: false,
             bookID: this.props.match.params['bookid'],
             categories: null,
@@ -42,26 +43,32 @@ class Book extends Component {
     }
 
     componentDidMount() {
-        // call flask api
+        this.setState({
+            isLoading: true,
+        }, () => this.fetchData());
+    }
+
+    fetchData() {
         // sample asin: B0002IQ15S, 1603420304
         const url = `${config.flaskip}/api/books/${this.state.bookID}`
-        // const url
+        // const url = `http://127.0.0.1:5000/api/books/${this.state.bookID}`
         axios.get(url)
             .then(response => response.data)
             .then(book => {
                 if (book.book_metadata == null) {
                     this.setState({
                         isLoading: false,
+                        isLoadingReviews: false,
                         error: true,
                     });
                     return;
                 }
-                console.log(book);
 
                 const reviews = book.reviews;
                 const data = book.book_metadata;
                 this.setState({
                     isLoading: false,
+                    isLoadingReviews: false,
                     imUrl: data.imUrl,
                     title: data.title,
                     categories: data.categories,
@@ -76,10 +83,15 @@ class Book extends Component {
             })
     }
 
+    handleChange = () => {
+        // re-render reviews when a new review is submitted
+        this.setState({
+            isLoadingReviews: true,
+        }, () => this.fetchData());
+    }
+
     render() {
         const { bookID, categories, description, imUrl, price, also_bought, also_viewed, buy_after_viewing, sales_rank, title, reviews } = this.state;
-        // console.log(reviews)
-        //console.log(this.state)
         const { classes } = this.props
         const loadingMessage = <Typography className={classes.loadtext}>Loading... Please wait</Typography>
         const errorMessage = <Typography className={classes.loadtext}>Error: Book not found</Typography>
@@ -94,8 +106,8 @@ class Book extends Component {
                             <br />
                             <div style={{ width: '90%', margin: 'auto' }}>
                                 <h3>Reviews:</h3>
-                                <ReviewForm bookID={bookID} />
-                                <Reviews reviews={reviews} />
+                                <ReviewForm bookID={bookID} onChange={this.handleChange}/>
+                                <Reviews reviews={reviews} onChange={this.handleChange} isLoading={this.state.isLoadingReviews}/>
                             </div>
                         </div>
                     )
