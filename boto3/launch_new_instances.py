@@ -14,7 +14,7 @@ new_instances = ec2.create_instances(
     InstanceType='t2.micro',
     KeyName='50043-keypair',
     SecurityGroups=[
-        '50043_SECURITY_GROUP_TEST',
+        '50043_SECURITY_GROUP',
     ]
 )
 

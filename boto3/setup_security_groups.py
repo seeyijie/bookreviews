@@ -38,6 +38,11 @@ try:
             {'IpProtocol': 'tcp',
              'FromPort': 5000,
              'ToPort': 5000,
+             'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+            # for react
+            {'IpProtocol': 'tcp',
+             'FromPort': 3000,
+             'ToPort': 3000,
              'IpRanges': [{'CidrIp': '0.0.0.0/0'}]}
         ])
     print('Ingress Successfully Set %s' % data)
