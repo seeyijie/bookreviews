@@ -61,8 +61,6 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     };
-
-    console.log(user);
     axios.post(`${config.flaskip}/login`, user)
     // axios.post('http://127.0.0.1:5000/login', user)
       .then(res => res.data.data)

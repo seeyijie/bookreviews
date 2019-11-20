@@ -5,9 +5,6 @@ import Login from "./Components/Login"
 import Box from "@material-ui/core/Box";
 
 class SignIn extends Component {
-    constructor(props) {
-        super(props)
-    }
     render() {
         return (
           <Fragment>
