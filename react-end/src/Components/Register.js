@@ -58,7 +58,6 @@ class Register extends Component {
       name: this.state.name,
       password: this.state.password
     };
-
     console.log(newUser);
     axios.post('http://127.0.0.1:5000/register', newUser)
       .then(res => this.setState({ doRedirect: true}))
