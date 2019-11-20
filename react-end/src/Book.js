@@ -82,8 +82,8 @@ class Book extends Component {
     }
 
     fetchReviews() {
-        const url = `${config.flaskip}/api/books/${this.state.bookID}`
-        // const url = `http://127.0.0.1:5000/api/books/${this.state.bookID}`
+        const url = `${config.flaskip}/api/books/${this.state.bookID}/reviews`
+        // const url = `http://127.0.0.1:5000/api/books/${this.state.bookID}/reviews`
         axios.get(url)
             .then(response => response.data)
             .then(data => {
