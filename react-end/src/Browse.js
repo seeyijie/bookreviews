@@ -3,6 +3,7 @@ import { Header, BrowseAllEntries } from './Components'
 import { Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import * as config from './Data/config';
 
 const styles = () => ({
     title: {
@@ -31,8 +32,9 @@ class Browse extends Component {
     }
 
     componentDidMount() {
-        const url = `http://127.0.0.1:5000/api/allbooks`
-        // const url = `http://13.58.76.2/api/allbooks`
+        // const url = `http://127.0.0.1:5000/api/allbooks`
+        const url = `${config.flaskip}/api/allbooks`
+
         axios.get(url)
             .then(response => {
                 this.setState({

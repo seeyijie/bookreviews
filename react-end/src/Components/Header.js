@@ -68,6 +68,14 @@ function Header() {
         }
     }
 
+    function redirectToLogin() {
+        history.push('/signin');
+    }
+
+    function redirectToSignup() {
+        history.push('/signup');
+    }
+
     return <AppBar position="static">
         <Toolbar>
             <Link to="/" style={{ textDecoration: 'none', color: 'white' }}>
@@ -90,7 +98,13 @@ function Header() {
                 />
             </div>
             <div className={classes.blankspace}></div>
-            <Button className={classes.button} color="inherit">LOGIN</Button>
+            <Button className={classes.button}
+                    onClick={redirectToLogin}
+                    color="inherit">LOGIN</Button>
+            <Button className={classes.button}
+                    onClick={redirectToSignup}
+                    color="inherit">REGISTER</Button>
+
         </Toolbar>
     </AppBar>
 }

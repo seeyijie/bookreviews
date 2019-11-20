@@ -5,6 +5,7 @@ import ReviewForm from "./Components/ReviewForm.js"
 import { Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import * as config from './Data/config';
 
 const styles = () => ({
     title: {
@@ -43,7 +44,8 @@ class Book extends Component {
     componentDidMount() {
         // call flask api
         // sample asin: B0002IQ15S, 1603420304
-        const url = `http://127.0.0.1:5000/api/books/${this.state.bookID}`
+        const url = `${config.flaskip}/api/books/${this.state.bookID}`
+        // const url
         axios.get(url)
             .then(response => response.data)
             .then(book => {

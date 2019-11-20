@@ -17,6 +17,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import axios from "axios";
 import {Redirect} from "react-router-dom";
 import setAuthToken from "../util/setAuthToken";
+// import * as config from '../Data/config';
 
 const useStyles = makeStyles(theme => ({
   '@global': {
