@@ -10,6 +10,7 @@ const useStyles = makeStyles(theme => ({
     },
     button: {
         marginRight: theme.spacing(2),
+        textTransform: "none"
     },
     blankspace: {
         flexGrow: 1
@@ -52,7 +53,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function Header() {
-
+    const isAuth = !!localStorage.getItem('jwt');
     const classes = useStyles();
     let history = useHistory();
 
@@ -63,17 +64,14 @@ function Header() {
                 state: {
                     isSearch: true,
                     searchstring: e.target.value.replace(/ /g, '+')
-                }
+                    }
             });
         }
     }
 
-    function redirectToLogin() {
-        history.push('/signin');
-    }
-
-    function redirectToSignup() {
-        history.push('/signup');
+    function logout() {
+        localStorage.clear();
+        window.location = '/';
     }
 
     return <AppBar position="static">
@@ -98,18 +96,26 @@ function Header() {
                 />
             </div>
             <div className={classes.blankspace}></div>
-                <Button className={classes.button}
+            {
+                isAuth ?
+                    <Button className={classes.button}
                         color="inherit"
-                        href="/signin"
-                >
-                    LOGIN
-                </Button>
-                <Button className={classes.button}
-                        color="inherit"
-                        href="/signup"
-                >
-                    REGISTER
-                </Button>
+                        onClick={logout}>
+                        Logout
+                    </Button>
+                        : (<div>
+                                <Button className={classes.button}
+                                 color="inherit"
+                                 href="/signin">
+                                    Login
+                                </Button>
+                                <Button className={classes.button}
+                                        color="inherit"
+                                        href="/signup">
+                                    Register
+                                </Button>
+                            </div>)
+            }
         </Toolbar>
     </AppBar>
 }

@@ -1,5 +1,4 @@
-from flask import Blueprint, render_template, redirect, session, url_for, request, jsonify, abort
-from werkzeug.security import generate_password_hash
+from flask import Blueprint, render_template, redirect, session, url_for, request, jsonify
 from books.data_service import get_first_10_books
 from books.data_service import get_book_by_asin
 from books.data_service import deleteReview
@@ -8,7 +7,6 @@ from application import db
 from books.models import Reviews
 from users.models import User
 from models.logs import LoggerObject    # for logging
-import json
 from flask_jwt_extended import jwt_required
 
 book_app = Blueprint('book_app', __name__)

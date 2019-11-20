@@ -63,11 +63,10 @@ class Login extends Component {
     };
 
     console.log(user);
-    axios.post(`${config.flaskip}/login, user`)
+    axios.post(`${config.flaskip}/login`, user)
     // axios.post('http://127.0.0.1:5000/login', user)
       .then(res => res.data.data)
       .then(data => {
-        console.log(data);
         localStorage.setItem('jwt', data.access_token);
         localStorage.setItem('id', data.id);
         localStorage.setItem('name', data.name);
