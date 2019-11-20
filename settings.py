@@ -1,10 +1,11 @@
 import datetime
 import os
+from util.getIP import getIP
 
 FLASK_APP = "manage.py"
 FLASK_ENV = "development"
-MYSQL_HOST = "3.14.6.201"
-# MYSQL_HOST = "localhost" #commented the top one out to use localhost
+MYSQL_HOST = "3.14.6.201"  # use getIP to get Dominic's script generation name
+# MYSQL_HOST = getIP('localhost')
 MYSQL_PORT = 3306
 DBNAME = "50043_DB"
 SECRET_KEY = os.environ.get("SECRET_KEY", default="secret")

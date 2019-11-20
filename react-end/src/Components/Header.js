@@ -98,13 +98,18 @@ function Header() {
                 />
             </div>
             <div className={classes.blankspace}></div>
-            <Button className={classes.button}
-                    onClick={redirectToLogin}
-                    color="inherit">LOGIN</Button>
-            <Button className={classes.button}
-                    onClick={redirectToSignup}
-                    color="inherit">REGISTER</Button>
-
+                <Button className={classes.button}
+                        color="inherit"
+                        href="/signin"
+                >
+                    LOGIN
+                </Button>
+                <Button className={classes.button}
+                        color="inherit"
+                        href="/signup"
+                >
+                    REGISTER
+                </Button>
         </Toolbar>
     </AppBar>
 }

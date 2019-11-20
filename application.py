@@ -9,8 +9,6 @@ import models.mongo_setup as mongo_setup
 
 db = SQLAlchemy()
 
-
-
 def create_app():
     app = Flask(__name__)
     mongo_setup.global_init()
