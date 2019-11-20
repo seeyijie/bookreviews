@@ -4,9 +4,9 @@ from random import randint
 
 
 class User(db.Model):
-    id = db.Column(db.VARCHAR(100), primary_key=True)  # Starts with B
+    id = db.Column(db.VARCHAR(100), nullable=False)  # Starts with B
     name = db.Column(db.VARCHAR(100), nullable=False)
-    email = db.Column(db.VARCHAR(100), nullable=False)
+    email = db.Column(db.VARCHAR(100), primary_key=True)
     password = db.Column(db.VARCHAR(100), nullable=False)
 
     def __init__(self, name, email, password):
