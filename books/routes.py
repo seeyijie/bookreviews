@@ -142,8 +142,10 @@ def add_review():
 
     #     print(f'review_id: {review.id}')
     #     return f'review_id: {review.id}'
+
 #add a book review
 @book_app.route('/api/deletereview/<id>', methods=['POST','DELETE'])
+@jwt_required
 def delete_review(id):
     return str(deleteReview(id))
 
