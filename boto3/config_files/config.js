@@ -1,0 +1,1 @@
+export const flaskip = "http://3.134.81.0:5000"
