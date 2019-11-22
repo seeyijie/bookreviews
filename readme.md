@@ -125,7 +125,8 @@ response:
 }
 ```
 book detail endpoint: localhost:5000/api/books/1603420304
-reponse:
+
+response:
 ```{
     "book_metadata": {
         "asin": "1603420304",
@@ -181,27 +182,6 @@ reponse:
                 "B00A86JE3K",
                 "B00D694Y9U",
                 "B00DSVUVXY",
-                "B008EN3W6Y",
-                "B00BS03W5Q",
-                "B008161J1O",
-                "B0089LOJH2",
-                "B00ENSBJYQ",
-                "B00C7C040U",
-                "B00DH410VY",
-                "B00CMVFW4O",
-                "B00C89GS1Q",
-                "B0035FZJ9Y",
-                "B004GTLFUK",
-                "B00H24WT2E",
-                "B00CVS44OW",
-                "B00C5W32QK",
-                "B00HY0KTPK",
-                "B00BJ8IPJU",
-                "B00JEOMV1E",
-                "B0041KKLNQ",
-                "B00CVS2JYY",
-                "B00CTVOVD0",
-                "B00ET594CC"
             ],
             "buy_after_viewing": [
                 "B004J35JIC",
@@ -255,8 +235,41 @@ reponse:
             ]
         ],
         "buy_after_viewing": []
-    },
-    "reviews": []
+    }
 }
 ```
 
+book reviews endpoint: localhost:5000/api/books/B000F83SZQ/reviews
+
+response:
+```
+{
+    "reviews": [
+        {
+            "asin": "B000F83SZQ",
+            "helpful": "[1, 1]",
+            "id": 7,
+            "overall": 4,
+            "reviewText": "Never heard of Amy Brewster. But I don't need to like Amy Brewster to like this book. Actually, Amy Brewster is a side kick in this story, who added mystery to the story not the one resolved it. The story brings back the old times, simple life, simple peo",
+            "reviewTime": "2014-03-22",
+            "reviewerID": "A3DE6XGZ2EPADS",
+            "reviewerName": "WPY",
+            "summary": "Enjoyable reading and reminding the old times",
+            "unixReviewTime": 1395446400
+        },
+        {
+            "asin": "B000F83SZQ",
+            "helpful": "[0, 0]",
+            "id": 6,
+            "overall": 4,
+            "reviewText": "I enjoyed this one tho I'm not sure why it's called An Amy Brewster Mystery as she's not in it very much. It was clean, well written and the characters well drawn.",
+            "reviewTime": "2014-06-10",
+            "reviewerID": "A2HSAKHC3IBRE6",
+            "reviewerName": "Wolfmist",
+            "summary": "Nice old fashioned story",
+            "unixReviewTime": 1402358400
+        },
+	...
+    ]
+}
+```
