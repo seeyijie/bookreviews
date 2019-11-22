@@ -1,7 +1,9 @@
 #!/bin/bash
+scriptdir="$(dirname "$0")"
+cd "$scriptdir"
 
 # import server_ip, username, public_key variables
-source ../config/config_mongodb.sh
+source ../../config_files/config_mongodb.sh
 
 # check for command line arguments
 if [ $# -eq 0 ]
@@ -13,12 +15,12 @@ else
 fi
 
 # add fingerprint of server to known hosts
-echo "adding mongodb server ($server_ip) to known_hosts"
-ssh-keygen -R $server_ip
-ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
+# echo "adding mongodb server ($server_ip) to known_hosts"
+# ssh-keygen -R $server_ip
+# ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
 # replace mongodb config file that with bind 0.0.0.0
-scp -i ~/.ssh/$public_key ../config/mongod.conf $username@$server_ip:/home/$username
+scp -i ~/.ssh/$public_key ../../config_files/mongod.conf $username@$server_ip:/home/$username
 
 # copy over create_user script
 scp -i ~/.ssh/$public_key ../mongodb/create_user.js $username@$server_ip:/home/$username

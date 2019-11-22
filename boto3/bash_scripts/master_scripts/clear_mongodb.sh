@@ -6,7 +6,7 @@ if [ "$EUID" -eq 0 ] # Root has $EUID = 0
 fi
 
 # clear mongodb server
-source ../config/config_mongodb.sh
+../../config_files/config_mongodb.sh
 echo "clearing mongodb server"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts

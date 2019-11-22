@@ -7,7 +7,7 @@ if [ "$EUID" -eq 0 ] # Root has $EUID = 0
 fi
 
 # clear flask server
-source ../config/config_mysql.sh
+../../config_files/config_mysql.sh
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 

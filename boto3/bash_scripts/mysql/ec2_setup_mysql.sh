@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # import variables server_ip, public_key, username
-source ../config/config_mysql.sh
+../../config_files/config_mysql.sh
 
 # check if there is a command line argument
 if [ $# -eq 0 ]

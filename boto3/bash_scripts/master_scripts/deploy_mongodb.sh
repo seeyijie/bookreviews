@@ -1,4 +1,8 @@
 #!/bin/bash
+scriptdir="$(dirname "$0")"
+cd "$scriptdir"
+
+source ../../config_files/config_mongodb.sh
 
 if [ "$EUID" -eq 0 ] # Root has $EUID = 0
   then echo "Please run this script as non-root (no sudo)."
@@ -16,6 +20,7 @@ fi
 
 # deployment of MongoDB server
 echo "************ Deploying MongoDB server **************"
+echo $PWD
 ./../mongodb/ec2_setup_mongodb.sh ${dropbox_url}
 wait
 echo "deployment of Servers completed"

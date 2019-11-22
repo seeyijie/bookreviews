@@ -1,10 +1,11 @@
+# not in use
 import boto3
 import time
 ec2 = boto3.resource('ec2')
 
 
 new_instances = ec2.create_instances(
-    ImageId='ami-0d5d9d301c853a04a', # TODO: replace this with finalized monogodb image
+    ImageId='ami-0d5d9d301c853a04a', # replace this with finalized monogodb image
     MinCount=1, # create at least MinCount instances or dont create any
     MaxCount=1, # give me at most MaxCount instances
     InstanceType='t2.micro',

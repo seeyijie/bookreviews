@@ -13,7 +13,7 @@ echo "Starting MySQL service"
 sudo service mysql start
 
 # need to explicitly grant access to "root" user
-# TODO: test the change in root host connection from "%" to "localhost" to prevent external connections to root
+# test the change in root host connection from "%" to "localhost" to prevent external connections to root
 sudo mysql -e 'update mysql.user set plugin = "mysql_native_password" where user = "root"'
 sudo mysql -e 'create user if not exists "root"@"localhost" identified by ""'
 sudo mysql -e 'grant all privileges on *.* to "root"@"localhost" with grant option'

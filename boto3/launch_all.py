@@ -1,6 +1,8 @@
-import boto3
 import time
 import fire
+import subprocess
+import boto3
+from botocore.exceptions import ClientError
 
 # preconditions:
 # 1. there should not be any existing security groups named "50043_SECURITY_GROUP"
@@ -11,8 +13,8 @@ ec2 = boto3.resource('ec2')
 def launch_ec2(image, keyname): # key = 50043-keypair
     new_instances = ec2.create_instances(
     ImageId=image,
-    MinCount=4, # create at least MinCount instances or dont create any
-    MaxCount=4, # give me at most MaxCount instances
+    MinCount=1, # create at least MinCount instances or dont create any
+    MaxCount=1, # give me at most MaxCount instances
     InstanceType='t2.micro',
     KeyName= keyname,
     SecurityGroups=[
@@ -40,9 +42,14 @@ def write_config_files(instance, instance_type):
         f.write(f'#!/bin/bash\nserver_ip="{instance.public_ip_address}"\npublic_key="{instance.key_name}.pem"\nusername="ubuntu"')
     return None
 
+def write_fingerprint_config(instance, instance_type):
+    with open(f"config_files/fingerprint_{instance_type}.sh", 'w') as f:
+        f.write(f'#!/bin/bash\nssh-keygen -R {instance.public_ip_address}\nssh-keyscan -t ecdsa -H {instance.public_ip_address} >> ~/.ssh/known_hosts')
+
 # calls all the necessary functions to generate ip files
 def write_instances(instances):
-    server_types = ["react", "mongodb", "mysql", "flask"]
+    # server_types = ["react", "mongodb", "mysql", "flask"]
+    server_types = ["mongodb"] # for testing purposes
     i = 0
     for instance in instances:
         instance.wait_until_running()
@@ -56,18 +63,79 @@ def write_instances(instances):
         # write IP addresses and config files for respective images
         write_config_files(instance, server_types[i])
         write_ip_addresses(instance, server_types[i])
+        write_fingerprint_config(instance, server_types[i])
         if server_types[i] == "react":
             write_ip_to_js(instance)
         i += 1
     return None
 
-# TODO: write a function that calls the launch_ec2 function, gets the return value and passes it to write_instances function
+def create_security_group(group_name, description):
+    ec2_client = boto3.client('ec2')
+    response = ec2_client.describe_vpcs()
+    vpc_id = response.get('Vpcs', [{}])[0].get('VpcId', '')
+
+    try:
+        response = ec2_client.create_security_group(GroupName=group_name,
+                                            Description=description,
+                                            VpcId=vpc_id)
+        security_group_id = response['GroupId']
+        print('Security Group Created %s in vpc %s.' % (security_group_id, vpc_id))
+
+        data = ec2_client.authorize_security_group_ingress(
+            GroupId=security_group_id,
+            IpPermissions=[
+                {'IpProtocol': 'tcp',
+                'FromPort': 80,
+                'ToPort': 80,
+                'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+                {'IpProtocol': 'tcp',
+                'FromPort': 22,
+                'ToPort': 22,
+                'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+                # for mysql
+                {'IpProtocol': 'tcp',
+                'FromPort': 3306,
+                'ToPort': 3306,
+                'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+                # for mongodb
+                {'IpProtocol': 'tcp',
+                'FromPort': 27017,
+                'ToPort': 27017,
+                'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+                # for flask
+                {'IpProtocol': 'tcp',
+                'FromPort': 5000,
+                'ToPort': 5000,
+                'IpRanges': [{'CidrIp': '0.0.0.0/0'}]},
+                # for react
+                {'IpProtocol': 'tcp',
+                'FromPort': 3000,
+                'ToPort': 3000,
+                'IpRanges': [{'CidrIp': '0.0.0.0/0'}]}
+            ])
+        print('Ingress Successfully Set %s' % data)
+    except ClientError as e:
+        print(e)
+    return None
+    
 # function needs to take in image id and keyname
 def cli(image, keyname): # default ubuntu image for 18.04 is ami-0d5d9d301c853a04a
-    import setup_security_groups # runs the setup security group python file
+    # create security group
+    create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
+
+    # launch instances
     instances = launch_ec2(image, keyname)
+
+    # write ip addresses into text files and bash files
     write_instances(instances)
-    # at the end, call a script to scp over files to servers
+
+    # call bash script to install software on servers
+    # subprocess.call(['./config_files/fingerprint_mongodb.sh'])
+
+    # subprocess.call(['./bash_scripts/master_scripts/deploy_mongodb.sh'])
+    print("subprocess call ended")
+
+    # TODO: at the end, call a script to scp over files to servers
 
 if __name__ == '__main__':
   fire.Fire(cli)

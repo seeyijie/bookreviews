@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # import variables public_key, server_ip and username
-source ../config/config_flask.sh
+../../config_files/config_flask.sh
 
 # check for command line argment
 if [ $# -eq 0 ]

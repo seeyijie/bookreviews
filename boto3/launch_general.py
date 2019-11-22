@@ -1,3 +1,4 @@
+# not in use
 import boto3
 import time
 import fire
@@ -42,7 +43,7 @@ def create_js_ip(ip_address):
         f.write(f'export const flaskip = "http://{ip_address}:5000"')
 
 def cli(mongodb="n", mysql="n", flask="n"):
-    # TODO: replace images here with actual finalized images
+    # replace images here with actual finalized images
     images = {"mongo_image":"ami-01fd5140d19a25af9", "mysql_image":"ami-0d5d9d301c853a04a","flask_image":"ami-0d5d9d301c853a04a"}
     
     # mongodb
