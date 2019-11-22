@@ -158,6 +158,7 @@ def get_list_asin_details(ls):
     return imgUrl
 
 @book_app.route('/api/addbook', methods=['POST'])
+@jwt_required
 def add_book():
     req = request.get_json(force=True)
     return addBook(req['imUrl'],req['salesRank'],req['title'],req['related'],req['categories'],req['description'],req['price'])

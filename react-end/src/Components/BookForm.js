@@ -53,10 +53,18 @@ class BookForm extends Component {
       isLoading: false,
       error: false,
       doRedirect: false,
+      token: null,
       asin: null, // asin of newly created book if successful
     };
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this)
+  }
+
+  componentDidMount() {
+    const token = localStorage.getItem('jwt')
+    this.setState({
+        token: token,
+    });
   }
 
   parseCategories() {
@@ -75,7 +83,9 @@ class BookForm extends Component {
     }
   }
 
-  handleClick(e){
+  handleClick(e) {
+    const token = localStorage.getItem('jwt')
+
     const newBook = {
       title: this.state.title || '',
       salesRank: this.state.salesRank || '',
@@ -98,9 +108,18 @@ class BookForm extends Component {
       imUrl: newBook.imUrl,
       categories: this.state.categories || '',
       isLoading: true,
+      token: token,
     }, () => {
       // axios.post(`${config.flaskip}/api/addbook`, newBook)
-      axios.post('http://127.0.0.1:5000/api/addbook', newBook)
+      axios.post(
+        'http://127.0.0.1:5000/api/addbook',
+        newBook,
+        {
+          headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Authorization': `Bearer ${token}`,
+          },
+        })
         .then((response) => {
           this.setState({
             asin: response.data.asin,
@@ -111,6 +130,7 @@ class BookForm extends Component {
         .catch(err => {
           console.log(err);
           this.setState({
+            isLoading: false,
             error: true,
           });
         })
