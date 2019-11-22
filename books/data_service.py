@@ -1,4 +1,6 @@
 from models.BooksMetaData import BookMetaData
+import string
+from random import randint
 
 from books.models import Reviews
 from models.Title import Title
@@ -25,12 +27,17 @@ def deleteReview(id):
         return {'deleted': 'true'}
     return {'deleted': 'false'}
 
-def addBook(asin,imUrl,salesRank,title,related, categories,description, price):
+def addBook(imUrl, salesRank, title, related, categories, description, price):
+    asin = 'C'
+    for i in range(10):
+        asin += string.printable[randint(0, 36)].upper()
+    if imUrl == "":
+        imUrl = "https://urlme.me/success/typed_a_url/made_a_meme.jpg?source=www"
     if not get_book_by_asin(asin):
         titleEntry = Title(asin= asin, title= title)
         db.session.add(titleEntry)
         db.session.commit()
         book = BookMetaData(asin=asin,imUrl=imUrl,salesRank=salesRank,text=title,related=related, categories=categories,description=description, price=price)
         book.save()
-        return {'added': 'true'}
+        return {'added': 'true', 'asin': asin}
     return {'added':'false'}

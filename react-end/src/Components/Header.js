@@ -98,11 +98,18 @@ function Header() {
             <div className={classes.blankspace}></div>
             {
                 isAuth ?
-                    <Button className={classes.button}
-                        color="inherit"
-                        onClick={logout}>
-                        Logout
-                    </Button>
+                    <div>
+                        <Button className={classes.button}
+                            color="inherit"
+                            href="/addbook">
+                            Add Book
+                        </Button>
+                        <Button className={classes.button}
+                            color="inherit"
+                            onClick={logout}>
+                            Logout
+                        </Button>
+                    </div>
                         : (<div>
                                 <Button className={classes.button}
                                  color="inherit"

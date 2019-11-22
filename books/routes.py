@@ -160,4 +160,4 @@ def get_list_asin_details(ls):
 @book_app.route('/api/addbook', methods=['POST'])
 def add_book():
     req = request.get_json(force=True)
-    return addBook(req['asin'],req['imUrl'],req['salesRank'],req['title'],req['related'],req['categories'],req['description'],req['price'])
+    return addBook(req['imUrl'],req['salesRank'],req['title'],req['related'],req['categories'],req['description'],req['price'])
