@@ -47,22 +47,50 @@ class Review extends React.Component {
             isLoading: false,
             isDeleted: false,
             data: this.props.data,
+            loggedInID: null,
+            token: null,
         }
     }
 
+    componentDidMount() {
+        const loggedInID = localStorage.getItem('id')
+        const token = localStorage.getItem('jwt')
+        this.setState({
+            loggedInID: loggedInID,
+            token: token,
+        });
+    }
+
     onDeleteHandler(id, e) {
+        const loggedInID = localStorage.getItem('id')
+        const token = localStorage.getItem('jwt')
+        
         this.setState({
             isLoading: true,
+            loggedInID: loggedInID,
+            token: token,
         }, () => {
             // call flask api to delete all logs
             const url = `${config.flaskip}/api/deletereview/` + id
             // const url = `http://127.0.0.1:5000/api/deletereview/` + id
-            axios.delete(url)
+            axios.delete(
+                url,
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                    },
+                })
                 .then(() => {
                     this.setState({
                         isLoading: false,
                         isDeleted: true
                     });
+                })
+                .catch((error) => {
+                    this.setState({
+                        isLoading: false,
+                        isDeleted: false,
+                    })
                 });
         });
     }
@@ -71,7 +99,9 @@ class Review extends React.Component {
         const data = this.state.data;
         if (data == null) return null;
 
-        const { reviewerName, summary, reviewText, reviewTime, id } = data;
+        const { reviewerID, reviewerName, summary, reviewText, reviewTime, id } = data;
+        const loggedInID = this.state.loggedInID;
+
         return (
 
             this.state.isDeleted ? null :
@@ -84,12 +114,16 @@ class Review extends React.Component {
                                 }
                                 title={reviewerName ? reviewerName : 'Anonymous'}
                                 subheader={reviewTime}
+                                action={
+                                    reviewerID === loggedInID ?
+                                        <button disabled={this.state.isLoading} onClick={this.onDeleteHandler.bind(this, id)} value={id}>x<i className="deleteButton"></i>
+                                        </button>
+                                    : null
+                                }
                             />
                             <CardContent>
                                 <Typography component='p'><b>{summary}</b></Typography>
                                 <Typography component='p'>{reviewText}</Typography>
-                                <button disabled={this.state.isLoading} onClick={this.onDeleteHandler.bind(this, id)} value={id}>delete comment{id}<i className="deleteButton"></i>
-                                </button>
                             </CardContent>
                         </Card>
                     </td>

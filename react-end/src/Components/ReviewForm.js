@@ -10,7 +10,7 @@ class ReviewForm extends React.Component {
             bookID: props.bookID,
             isLoading: false,
             successful: null,
-            revewerID: null,
+            reviewerID: null,
             reviewerName: null,
             token: null,
         }
