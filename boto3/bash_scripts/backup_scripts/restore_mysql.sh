@@ -13,6 +13,6 @@ ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
 # copy helper script over to server and execute it on the server
-scp -i ~/.ssh/$public_key helper_mysql.sh $username@$server_ip:/home/$username
-ssh -i ~/.ssh/$public_key $username@$server_ip "sudo ./helper_mysql.sh"
+scp -o StrictHostKeyChecking=no -i ~/.ssh/$public_key helper_mysql.sh $username@$server_ip:/home/$username
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/$public_key $username@$server_ip "sudo ./helper_mysql.sh"
 ssh-keygen -R $server_ip # remove key at the end (cleanup)

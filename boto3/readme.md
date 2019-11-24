@@ -6,6 +6,10 @@ The automation script launches 4 different instances and stores the IP addresses
 * fire
     * installed by `pip3 install fire`
 
+## Other dependencies
+* openssh-server
+* openssh-client
+
 To run the script, do `python3 launch_all.py --image=<image_id> --keyname=<key_pair>`. where `<image_id>` is an empty ubuntu 18.04 image and `<key_pair>` is the name of an existing .pem keypair which will be used to ssh into the servers.
 
 Expected output:

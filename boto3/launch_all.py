@@ -10,11 +10,11 @@ from botocore.exceptions import ClientError
 ec2 = boto3.resource('ec2')
 # inputs from command line: pem key, aws ami image id of ubuntu 18.04
 # launches 4 instances and returns
-def launch_ec2(image, keyname): # key = 50043-keypair
+def launch_ec2(image, keyname, count): # key = 50043-keypair
     new_instances = ec2.create_instances(
     ImageId=image,
-    MinCount=1, # create at least MinCount instances or dont create any
-    MaxCount=1, # give me at most MaxCount instances
+    MinCount=count, # create at least MinCount instances or dont create any
+    MaxCount=count, # give me at most MaxCount instances
     InstanceType='t2.micro',
     KeyName= keyname,
     SecurityGroups=[
@@ -47,9 +47,7 @@ def write_fingerprint_config(instance, instance_type):
         f.write(f'#!/bin/bash\nssh-keygen -R {instance.public_ip_address}\nssh-keyscan -t ecdsa -H {instance.public_ip_address} >> ~/.ssh/known_hosts')
 
 # calls all the necessary functions to generate ip files
-def write_instances(instances):
-    # server_types = ["react", "mongodb", "mysql", "flask"]
-    server_types = ["mongodb"] # for testing purposes
+def write_instances(instances, server_types):
     i = 0
     for instance in instances:
         instance.wait_until_running()
@@ -63,7 +61,7 @@ def write_instances(instances):
         # write IP addresses and config files for respective images
         write_config_files(instance, server_types[i])
         write_ip_addresses(instance, server_types[i])
-        write_fingerprint_config(instance, server_types[i])
+        # write_fingerprint_config(instance, server_types[i])
         if server_types[i] == "react":
             write_ip_to_js(instance)
         i += 1
@@ -123,17 +121,17 @@ def cli(image, keyname): # default ubuntu image for 18.04 is ami-0d5d9d301c853a0
     # create security group
     create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
 
+    # server_types = ["react", "mongodb", "mysql", "flask"]
+    server_types = ["react"] # for testing purposes
+
     # launch instances
-    instances = launch_ec2(image, keyname)
-
+    instances = launch_ec2(image, keyname, len(server_types))
+    
     # write ip addresses into text files and bash files
-    write_instances(instances)
+    write_instances(instances, server_types)
 
-    # call bash script to install software on servers
-    # subprocess.call(['./config_files/fingerprint_mongodb.sh'])
-
-    # subprocess.call(['./bash_scripts/master_scripts/deploy_mongodb.sh'])
-    print("subprocess call ended")
+    for server in server_types:
+        subprocess.call([f'./bash_scripts/master_scripts/deploy_{server}.sh'])
 
     # TODO: at the end, call a script to scp over files to servers
 

@@ -12,5 +12,5 @@ ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
 # create a backup in the home folder of the server
-ssh -i ~/.ssh/$public_key $username@$server_ip "sudo mysqldump -u root -p 50043_DB > 50043_DB.dump"
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/$public_key $username@$server_ip "sudo mysqldump -u root -p 50043_DB > 50043_DB.dump"
 ssh-keygen -R $server_ip # remove key at the end cleanup

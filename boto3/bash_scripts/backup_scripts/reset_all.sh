@@ -11,7 +11,7 @@ echo "clearing mysql server"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
-ssh -i ~/.ssh/$public_key $username@$server_ip "sudo rm -rf /home/ubuntu/*"
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/$public_key $username@$server_ip "sudo rm -rf /home/ubuntu/*"
 ssh-keygen -R $server_ip # remove key at the end cleanup
 
 # clear mongodb server
@@ -20,7 +20,7 @@ echo "clearning mongodb server"
 ssh-keygen -R $server_ip
 ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
-ssh -i ~/.ssh/$public_key $username@$server_ip "sudo rm -rf /home/ubuntu/*"
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/$public_key $username@$server_ip "sudo rm -rf /home/ubuntu/*"
 ssh-keygen -R $server_ip # remove key at the end cleanup
 
 # clear flask server
@@ -29,5 +29,5 @@ ssh-keygen -R $server_ip # remove key at the end cleanup
 # ssh-keygen -R $server_ip
 # ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
 
-# ssh -i ~/.ssh/$public_key $username@$server_ip "sudo rm -rf /home/ubuntu/*"
+# ssh -o StrictHostKeyChecking=no -i ~/.ssh/$public_key $username@$server_ip "sudo rm -rf /home/ubuntu/*"
 # ssh-keygen -R $server_ip # remove key at the end cleanup

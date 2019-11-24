@@ -16,8 +16,8 @@ else
     dropbox_url=$1
 fi
 
-# deployment of MySQL server
-echo "************ Deploying MySQL server **************"
-./../mysql/ec2_setup_mysql.sh ${dropbox_url}
+# deployment of Flask server
+echo "************ Deploying Flask server **************"
+./../react/ec2_setup_react.sh ${dropbox_url}
 wait
 echo "deployment of Servers completed"

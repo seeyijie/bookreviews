@@ -35,7 +35,13 @@ pip install -r requirements.txt
 cd react-end
 yarn install
 # launch flask server
-source /home/ubuntu/env_setup.sh
+# source /home/ubuntu/env_setup.sh
+echo 'export FLASK_APP=manage.py' >> ~/.bashrc
+echo 'export PORT=80' >> ~/.bashrc
+source ~/.bashrc
+
+pip install gunicorn
+
 # flask run
 # cd to react-end then sudo yarn start
 #CAUTION: if you execute `flask run`, pressing Ctrl+C ends the local ssh connection, not the flask server.

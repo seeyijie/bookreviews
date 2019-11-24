@@ -1,4 +1,6 @@
 #!/bin/bash
+scriptdir="$(dirname "$0")"
+cd "$scriptdir"
 
 if [ "$EUID" -eq 0 ] # Root has $EUID = 0
   then echo "Please run this script as non-root (no sudo)."

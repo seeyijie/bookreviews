@@ -1,7 +1,9 @@
 #!/bin/bash
+scriptdir="$(dirname "$0")"
+cd "$scriptdir"
 
 # import variables server_ip, public_key, username
-../../config_files/config_mysql.sh
+source ../../config_files/config_mysql.sh
 
 # check if there is a command line argument
 if [ $# -eq 0 ]
@@ -12,29 +14,24 @@ else
     dropbox_url=$1
 fi
 
-# adding server fingerprint to known hosts
-echo "adding mysql server ($server_ip) to known_hosts"
-ssh-keygen -R $server_ip
-ssh-keyscan -t ecdsa -H $server_ip >> ~/.ssh/known_hosts
-
 # scp datasets to folder in ec2 instance
-scp -i ~/.ssh/$public_key ../../get_data.sh $username@$server_ip:/home/$username
-ssh -i ~/.ssh/$public_key $username@$server_ip 'sudo apt-get -y install unzip'
-ssh -i ~/.ssh/$public_key $username@$server_ip './get_data.sh'
+scp -o StrictHostKeyChecking=no -i ~/.ssh/$public_key ../get_data.sh $username@$server_ip:/home/$username
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/$public_key $username@$server_ip 'sudo apt-get -y install unzip'
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/$public_key $username@$server_ip './get_data.sh'
 
 # scp scripts to folder in ec2 instance
 echo "Transferring scripts to EC2 instance"
-scp -i ~/.ssh/$public_key ../mysql/initialize_mysql.sql $username@$server_ip:/home/$username
-scp -i ~/.ssh/$public_key ../mysql/mysql_setup.sh $username@$server_ip:/home/$username
+scp -o StrictHostKeyChecking=no -i ~/.ssh/$public_key initialize_mysql.sql $username@$server_ip:/home/$username
+scp -o StrictHostKeyChecking=no -i ~/.ssh/$public_key mysql_setup.sh $username@$server_ip:/home/$username
 
 # scp config file into server
 echo "copying over config file"
-scp -i ~/.ssh/$public_key ../config/mysqld.cnf $username@$server_ip:/etc/mysql/mysql.conf.d/
+scp -o StrictHostKeyChecking=no -i ~/.ssh/$public_key ../../config_files/mysqld.cnf $username@$server_ip:/etc/mysql/mysql.conf.d/
 
 # run scripts in ec2 instance
 
 # grant user permission to root, setup database and users
-ssh -i ~/.ssh/$public_key $username@$server_ip "sudo ./mysql_setup.sh ${dropbox_url}"
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/$public_key $username@$server_ip "sudo ./mysql_setup.sh ${dropbox_url}"
 # create tables and import data
 echo "Importing data to MySQL"
-ssh -i ~/.ssh/$public_key $username@$server_ip 'sudo mysql -u root < initialize_mysql.sql'
+ssh -o StrictHostKeyChecking=no -i ~/.ssh/$public_key $username@$server_ip 'sudo mysql -u root < initialize_mysql.sql'
