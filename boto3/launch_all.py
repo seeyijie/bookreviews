@@ -10,7 +10,7 @@ from botocore.exceptions import ClientError
 ec2 = boto3.resource('ec2')
 # inputs from command line: pem key, aws ami image id of ubuntu 18.04
 # launches 4 instances and returns
-def launch_ec2(image, keyname, count): # key = 50043-keypair
+def launch_ec2(image, keyname, count, userdata): # key = 50043-keypair
     new_instances = ec2.create_instances(
     ImageId=image,
     MinCount=count, # create at least MinCount instances or dont create any
@@ -19,7 +19,8 @@ def launch_ec2(image, keyname, count): # key = 50043-keypair
     KeyName= keyname,
     SecurityGroups=[
         '50043_SECURITY_GROUP',
-    ]
+    ],
+    UserData=userdata
     )
     return new_instances
 
@@ -122,16 +123,27 @@ def cli(image, keyname): # default ubuntu image for 18.04 is ami-0d5d9d301c853a0
     create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
 
     # server_types = ["react", "mongodb", "mysql", "flask"]
-    server_types = ["react"] # for testing purposes
+    server_types = ["mysql"] # for testing purposes
+
+
+    f1 = open("bash_scripts/user_data/ud_mysql.sh","r")
+    mysql_ud = f1.read()
+
+    user_data = {"mysql": mysql_ud}
 
     # launch instances
-    instances = launch_ec2(image, keyname, len(server_types))
-    
-    # write ip addresses into text files and bash files
-    write_instances(instances, server_types)
+    instances = []
+    for i in range(len(server_types)):
+        instance = launch_ec2(image, keyname, 1, user_data[server_types[i]])
+        instances.append(instance)
+            
+        # write ip addresses into text files and bash files
+        write_instances(instance, [server_types[i]])
 
-    for server in server_types:
-        subprocess.call([f'./bash_scripts/master_scripts/deploy_{server}.sh'])
+    
+
+    # for server in server_types:
+    #     subprocess.call([f'./bash_scripts/master_scripts/deploy_{server}.sh'])
 
     # TODO: at the end, call a script to scp over files to servers
 
