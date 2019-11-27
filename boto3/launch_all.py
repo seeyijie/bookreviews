@@ -60,7 +60,7 @@ def write_instances(instances, server_types):
         print(instance.launch_time)
 
         # write IP addresses and config files for respective images
-        # write_config_files(instance, server_types[i])
+        write_config_files(instance, server_types[i])
         write_ip_addresses(instance, server_types[i])
         # write_fingerprint_config(instance, server_types[i])
         if server_types[i] == "react":
