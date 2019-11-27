@@ -2,16 +2,21 @@
 # this script checks if the server has finished executing the user data script
 # boot-finished file will be generated upon completion of user data script
 
-# TODO: add strict host checking flag to "no"
+public_ip="3.134.79.98"
+keypair="50043-keypair"
+username="ubuntu"
+
 status=false
-
-if ssh -o StrictHostKeyChecking=no -i ~/.ssh/50043-keypair.pem ubuntu@18.222.173.254 stat "/var/lib/cloud/instance/boot-finished" \> /dev/null 2\>\&1
-            then
-                    status=true
-                    echo "File exists"
-            else
-                    status=false
-                    echo "File does not exist"
-fi
-
+while [ $status == false ]
+        do
+                if ssh -o StrictHostKeyChecking=no -i ~/.ssh/$keypair.pem $username@$public_ip stat /var/lib/cloud/instance/boot-finished \> /dev/null 2\>\&1
+                        then
+                                status=true
+                                echo "File exists, exiting loop"
+                        else
+                                status=false
+                                echo "File does not exist"
+                                sleep 5
+                fi
+        done
 echo $status

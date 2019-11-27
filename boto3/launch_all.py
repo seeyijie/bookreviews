@@ -134,6 +134,7 @@ def cli(image, keyname): # default ubuntu image for 18.04 is ami-0d5d9d301c853a0
     # launch instances
     instances = []
     for i in range(len(server_types)):
+        # TODO: add inputs for size of EC2, eg t2.micro
         instance = launch_ec2(image, keyname, 1, user_data[server_types[i]])
         instances.append(instance)
             
