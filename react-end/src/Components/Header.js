@@ -86,7 +86,7 @@ function Header() {
                     <SearchIcon />
                 </div>
                 <InputBase
-                    placeholder="Search"
+                    placeholder="Search asin, title, author"
                     classes={{
                         root: classes.inputRoot,
                         input: classes.inputInput,

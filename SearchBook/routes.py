@@ -20,6 +20,6 @@ def title_matching(titleSubstring):
         lsOfBooks[book]['title']= titleDict[lsOfBooks[book]['asin']]
         lsOfBooks[book] = lsOfBooks[book].serialize()
 
-    logger.logrequest(request, lsOfBooks)
+    logger.logrequest(request, jsonify(lsOfBooks))
     return jsonify(lsOfBooks)
 
