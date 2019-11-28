@@ -76,7 +76,7 @@ def get_book_endpoint(asin):
     if (len(book) > 0):
         book = book[0]
         response = {'book_metadata':book.serialize(), 'related_url': related_url}
-        logger.logrequest(request, response)
+        logger.logrequest(request, jsonify(response))
         return response
     else:
         err_msg = 'Book not found.'
@@ -91,7 +91,7 @@ def get_reviews(asin):
     for review in reviews_raw:
         reviews.append(review.serialize())
     response = {'reviews':reviews}
-    logger.logrequest(request, response)
+    logger.logrequest(request, jsonify(response))
     return response
     #return render_template('book.html', reviews=reviews)
 
@@ -106,7 +106,7 @@ def get_all_books_endpoint():
     for book in first_10_books:
         books.append(book.serialize())
     retjson = jsonify(books)
-    logger.logrequest(request, books)
+    logger.logrequest(request, retjson)
     return retjson
 
 
@@ -132,8 +132,12 @@ def add_review():
     if get_book_by_asin(asin):
         db.session.add(review)
         db.session.commit()
-        return {'added': 'true'}
-    return {'added':'false'}
+        res = {'added': 'true'}
+        logger.logrequest(request, jsonify(res))
+        return res
+    res = {'added':'false'}
+    logger.logrequest(request, jsonify(res))
+    return res
     # if request.method == 'POST':
     #     asin = request.form['asin']
     #     summary = request.form['summary']
@@ -161,4 +165,6 @@ def get_list_asin_details(ls):
 @jwt_required
 def add_book():
     req = request.get_json(force=True)
-    return addBook(req['imUrl'],req['salesRank'],req['title'],req['related'],req['categories'],req['description'],req['price'])
+    res = addBook(req['imUrl'],req['salesRank'],req['title'],req['related'],req['categories'],req['description'],req['price'])
+    # logger.logrequest(request, jsonify(res))
+    return res

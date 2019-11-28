@@ -51,10 +51,16 @@ def register():
         )
         db.session.add(user)
         db.session.commit()
-        return jsonify({'ok': True, 'message': 'User created successfully!'}), 200
+        res = jsonify({'ok': True, 'message': 'User created successfully!'}), 200
+        res[0].status_code = 200
+        logger.logrequest(request, res[0])
+        return res
     else:
-        return jsonify({'ok': False, 'message': 'Bad request parameters: {}'
+        res = jsonify({'ok': False, 'message': 'Bad request parameters: {}'
                        .format(data['message'])}), 400
+        res[0].status_code = 400
+        logger.logrequest(request, res[0])
+        return res
 
 
 @user_app.route('/login', methods=['POST'])
@@ -72,12 +78,20 @@ def auth_user():
                 'access_token': access_token,
                 'refresh_token': refresh_token
             }
-            return jsonify({'ok': True, 'data': token}), 200
+            res = jsonify({'ok': True, 'data': token}), 200
+            res[0].status_code = 200
+            logger.logrequest(request, res[0])
+            return res
         else:
-            return jsonify({'ok': False, 'message': 'Invalid username or password'}), 401
+            res = jsonify({'ok': False, 'message': 'Invalid username or password'}), 401
+            res[0].status_code = 401
+            logger.logrequest(request, res[0])
+            return res
     else:
-        return jsonify({'ok': False, 'message': 'Bad request parameters: {}'
+        res = jsonify({'ok': False, 'message': 'Bad request parameters: {}'
                        .format(data['message'])}), 400
+        res[0].status_code = 400
+        return res
 
 
 @user_app.route('/refresh', methods=['POST'])
