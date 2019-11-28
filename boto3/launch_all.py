@@ -121,32 +121,26 @@ def create_security_group(group_name, description):
 def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.04 is ami-0d5d9d301c853a04a
     # create security group
     create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
-
     # server_types = ["react", "mongodb", "mysql", "flask"]
-    server_types = ["mysql"] # for testing purposes
+    server_types = ["mongodb"] # for testing purposes
 
-
+    # storing user data files into strings
     f1 = open("bash_scripts/user_data/ud_mysql.sh","r")
     mysql_ud = f1.read()
 
-    user_data = {"mysql": mysql_ud}
+    f2 = open("bash_scripts/user_data/ud_mongodb.sh","r")
+    mysql_ud = f2.read()
+
+    user_data = {"mysql": mysql_ud, "mongodb" : mysql_ud}
 
     # launch instances
     instances = []
     for i in range(len(server_types)):
-        # TODO: add inputs for size of EC2, eg t2.micro
+        # launch the actual instance
         instance = launch_ec2(image, keyname, 1, user_data[server_types[i]], instancetype)
         instances.append(instance)
-            
         # write ip addresses into text files and bash files
         write_instances(instance, [server_types[i]])
-
-    
-
-    # for server in server_types:
-    #     subprocess.call([f'./bash_scripts/master_scripts/deploy_{server}.sh'])
-
-    # TODO: at the end, call a script to scp over files to servers
 
 if __name__ == '__main__':
   fire.Fire(cli)

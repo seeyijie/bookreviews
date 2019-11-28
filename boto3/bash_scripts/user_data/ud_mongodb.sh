@@ -26,13 +26,13 @@ yes | pip3 install fire # install dependencies for merge_cover_texts.py
 $home="/home/ubuntu"
 sudo chown -R ubuntu:ubuntu $home/bookreviews
 sudo chmod +x $home/bookreviews/boto3/bash_scripts/get_data.sh
-./$home/bookreviews/boto3/bash_scripts/get_data.sh
+source $home/bookreviews/boto3/bash_scripts/get_data.sh
 
 # run script to merge data
-python3 /home/ubuntu/bookreviews/scripts/server_scripts/mongodb/merge_cover_texts.py --meta_json="/home/ubuntu/data_store/meta_Kindle_Store.json" --texts_csv="/home/ubuntu/bookreviews/extra_data/kindle_cover_texts.csv" --output_json="/home/ubuntu/data_store/meta_new.json"
+python3 /home/ubuntu/bookreviews/boto3/bash_scripts/mongodb/merge_cover_texts.py --meta_json="/home/ubuntu/bookreviews/data_store/meta_Kindle_Store.json" --texts_csv="/home/ubuntu/bookreviews/extra_data/kindle_cover_texts.csv" --output_json="/home/ubuntu/bookreviews/data_store/meta_new.json"
 
 # importing dataset
-sudo mongoimport --db 50043_db --collection books_metadata --file /home/ubuntu/data_store/meta_new.json --legacy
+sudo mongoimport --db 50043_db --collection books_metadata --file /home/ubuntu/bookreviews/data_store/meta_new.json --legacy
 
 # replacing default config files
 yes | sudo rm /etc/mongod.conf
