@@ -120,10 +120,10 @@ def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.
     mysql_ud = f1.read()
     f2 = open("bash_scripts/user_data/ud_mongodb.sh","r")
     mongodb_ud = f2.read()
-    f2 = open("bash_scripts/user_data/ud_flask.sh","r")
-    flask_ud = f2.read()
-    f2 = open("bash_scripts/user_data/ud_react.sh","r")
-    react_ud = f2.read()
+    f3 = open("bash_scripts/user_data/ud_flask.sh","r")
+    flask_ud = f3.read()
+    f4 = open("bash_scripts/user_data/ud_react.sh","r")
+    react_ud = f4.read()
 
     # user data storing paths to user data scripts
     user_data = {"mysql": mysql_ud, "mongodb" : mongodb_ud, "flask" : flask_ud, "react" : react_ud}
