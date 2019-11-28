@@ -151,6 +151,8 @@ def add_review():
 @book_app.route('/api/deletereview/<id>', methods=['POST','DELETE'])
 @jwt_required
 def delete_review(id):
+    res = jsonify({'delete': 'yes'})
+    logger.logrequest(request, res)
     return str(deleteReview(id))
 
 def get_list_asin_details(ls):
@@ -166,5 +168,5 @@ def get_list_asin_details(ls):
 def add_book():
     req = request.get_json(force=True)
     res = addBook(req['imUrl'],req['salesRank'],req['title'],req['related'],req['categories'],req['description'],req['price'])
-    # logger.logrequest(request, jsonify(res))
+    logger.logrequest(request, jsonify(res))
     return res
