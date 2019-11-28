@@ -10,12 +10,12 @@ from botocore.exceptions import ClientError
 ec2 = boto3.resource('ec2')
 # inputs from command line: pem key, aws ami image id of ubuntu 18.04
 # launches 4 instances and returns
-def launch_ec2(image, keyname, count, userdata): # key = 50043-keypair
+def launch_ec2(image, keyname, count, userdata, instancetype): # key = 50043-keypair
     new_instances = ec2.create_instances(
     ImageId=image,
     MinCount=count, # create at least MinCount instances or dont create any
     MaxCount=count, # give me at most MaxCount instances
-    InstanceType='t2.micro',
+    InstanceType=instancetype,
     KeyName= keyname,
     SecurityGroups=[
         '50043_SECURITY_GROUP',
@@ -118,7 +118,7 @@ def create_security_group(group_name, description):
     return None
     
 # function needs to take in image id and keyname
-def cli(image, keyname): # default ubuntu image for 18.04 is ami-0d5d9d301c853a04a
+def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.04 is ami-0d5d9d301c853a04a
     # create security group
     create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
 
@@ -135,7 +135,7 @@ def cli(image, keyname): # default ubuntu image for 18.04 is ami-0d5d9d301c853a0
     instances = []
     for i in range(len(server_types)):
         # TODO: add inputs for size of EC2, eg t2.micro
-        instance = launch_ec2(image, keyname, 1, user_data[server_types[i]])
+        instance = launch_ec2(image, keyname, 1, user_data[server_types[i]], instancetype)
         instances.append(instance)
             
         # write ip addresses into text files and bash files
