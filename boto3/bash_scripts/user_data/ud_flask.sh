@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #!/bin/bash
 
 ## install dependencies and updates
@@ -71,3 +72,6 @@ sudo ufw allow 'Nginx Full'
 
 # Resource
 # https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-18-04#step-5-%E2%80%94-configuring-nginx-to-proxy-requests
+=======
+#!/bin/bash
+>>>>>>> 87fc7f39f88a53f4a0b78fc63add1e4b745e0a70

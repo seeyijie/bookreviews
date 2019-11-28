@@ -4,13 +4,8 @@ import subprocess
 import boto3
 from botocore.exceptions import ClientError
 
-# preconditions:
-# 1. there should not be any existing security groups named "50043_SECURITY_GROUP"
-# 2. image id must be ubuntu 18.04
 ec2 = boto3.resource('ec2')
-# inputs from command line: pem key, aws ami image id of ubuntu 18.04
-# launches 4 instances and returns
-def launch_ec2(image, keyname, count, userdata, instancetype): # key = 50043-keypair
+def launch_ec2(image, keyname, count, userdata, instancetype): # key = 50043-keypair , no .pem
     new_instances = ec2.create_instances(
     ImageId=image,
     MinCount=count, # create at least MinCount instances or dont create any
@@ -36,16 +31,15 @@ def write_ip_to_js(instance):
         f.write(f'export const flaskip = "http://{instance.public_ip_address}:5000"')
     return None
 
-# writes instance information (mongodb, flask, react, mysql)
+# writes instance information (mongodb, flask, react, mysql) into bash files
 def write_config_files(instance, instance_type):
-    # write into bash files
     with open (f"config_files/config_{instance_type}.sh", 'w') as f:
         f.write(f'#!/bin/bash\nserver_ip="{instance.public_ip_address}"\npublic_key="{instance.key_name}.pem"\nusername="ubuntu"')
     return None
 
-def write_fingerprint_config(instance, instance_type):
-    with open(f"config_files/fingerprint_{instance_type}.sh", 'w') as f:
-        f.write(f'#!/bin/bash\nssh-keygen -R {instance.public_ip_address}\nssh-keyscan -t ecdsa -H {instance.public_ip_address} >> ~/.ssh/known_hosts')
+# def write_fingerprint_config(instance, instance_type):
+#     with open(f"config_files/fingerprint_{instance_type}.sh", 'w') as f:
+#         f.write(f'#!/bin/bash\nssh-keygen -R {instance.public_ip_address}\nssh-keyscan -t ecdsa -H {instance.public_ip_address} >> ~/.ssh/known_hosts')
 
 # calls all the necessary functions to generate ip files
 def write_instances(instances, server_types):
@@ -62,7 +56,6 @@ def write_instances(instances, server_types):
         # write IP addresses and config files for respective images
         write_config_files(instance, server_types[i])
         write_ip_addresses(instance, server_types[i])
-        # write_fingerprint_config(instance, server_types[i])
         if server_types[i] == "react":
             write_ip_to_js(instance)
         i += 1
@@ -121,24 +114,31 @@ def create_security_group(group_name, description):
 def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.04 is ami-0d5d9d301c853a04a
     # create security group
     create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
+<<<<<<< HEAD
     # server_types = ["react", "mongodb", "mysql", "flask"]
     server_types = ["mysql"] # for testing purposes
+=======
+>>>>>>> 87fc7f39f88a53f4a0b78fc63add1e4b745e0a70
 
     # storing user data files into strings
     f1 = open("bash_scripts/user_data/ud_mysql.sh","r")
     mysql_ud = f1.read()
-
     f2 = open("bash_scripts/user_data/ud_mongodb.sh","r")
-    mysql_ud = f2.read()
+    mongodb_ud = f2.read()
+    f3 = open("bash_scripts/user_data/ud_flask.sh","r")
+    flask_ud = f3.read()
+    f4 = open("bash_scripts/user_data/ud_react.sh","r")
+    react_ud = f4.read()
 
-    user_data = {"mysql": mysql_ud, "mongodb" : mysql_ud}
+    # user data storing paths to user data scripts
+    user_data = {"mysql": mysql_ud, "mongodb" : mongodb_ud, "flask" : flask_ud, "react" : react_ud}
 
     # launch instances
-    instances = []
+    # server_types = ["react", "mongodb", "mysql", "flask"]
+    server_types = ["mysql","mongodb"] # for testing purposes
     for i in range(len(server_types)):
         # launch the actual instance
         instance = launch_ec2(image, keyname, 1, user_data[server_types[i]], instancetype)
-        instances.append(instance)
         # write ip addresses into text files and bash files
         write_instances(instance, [server_types[i]])
 
