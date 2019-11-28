@@ -1,17 +1,7 @@
-#!/bin/bash
-
-3.134.90.197 - react
-
-ssh -vvv -i ~/.ssh/awspem2.pem ubuntu@3.134.90.197
-
-18.191.2.8 - blank
-
-
-ssh -vvv -i ~/.ssh/awspem2.pem ubuntu@18.191.2.8
 
 ! step 1: wget the dropbox
 
-dropbox_url=https://www.dropbox.com/s/ye4vqh94qy1qg0c/bookreviews.zip?dl=0
+dropbox_url=https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0
 wget -c $dropbox_url -O bookreviews.zip
 
 sudo apt-get update

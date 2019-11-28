@@ -1,4 +1,4 @@
 #!/bin/bash
-server_ip="3.17.134.127"
-public_key="50043-keypair.pem"
+server_ip="18.220.49.88"
+public_key="awspem2.pem"
 username="ubuntu"
