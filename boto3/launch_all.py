@@ -123,13 +123,14 @@ def cli(image, keyname): # default ubuntu image for 18.04 is ami-0d5d9d301c853a0
     create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
 
     # server_types = ["react", "mongodb", "mysql", "flask"]
-    server_types = ["mysql"] # for testing purposes
+    server_types = ["mysql", "blank"] # for testing purposes
 
 
     f1 = open("bash_scripts/user_data/ud_mysql.sh","r")
     mysql_ud = f1.read()
-
-    user_data = {"mysql": mysql_ud}
+    f3 = open("bash_scripts/user_data/empty.sh","r")
+    empty_ud = f3.read()
+    user_data = {"mysql": mysql_ud, "blank": empty_ud}
 
     # launch instances
     instances = []

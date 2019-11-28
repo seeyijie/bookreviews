@@ -1,5 +1,5 @@
-#!/bin/bash
-python3 launch_all.py --image=ami-0d5d9d301c853a04a --keyname=50043-keypair # runs instance and loads
+#!/bin/bash -X
+python3 launch_all.py --image=ami-0d5d9d301c853a04a --keyname=awspem2 # runs instance and loads
 
 source ./config_files/config_mysql.sh
 echo "Server deployment done. Installing required software..."
