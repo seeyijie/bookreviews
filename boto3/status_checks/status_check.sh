@@ -1,7 +1,6 @@
 #!/bin/bash
 # this script checks if the server has finished executing the user data script
 # boot-finished file will be generated upon completion of user data script
-
 public_ip=$1
 keypair=$2
 username=$3

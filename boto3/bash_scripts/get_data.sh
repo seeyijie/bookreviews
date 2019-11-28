@@ -4,7 +4,7 @@
 # Creates a folder data_store under project root directory to store the datasets
 
 # Create data folder in parent directory
-cd ~/bookreviews
+cd /home/ubuntu/bookreviews # cannot use ~ in user data. will go to root folder
 mkdir data_store
 cd data_store
 

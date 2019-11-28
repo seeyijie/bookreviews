@@ -31,7 +31,11 @@ mysql -e "GRANT ALL PRIVILEGES ON ${MAINDB}.* TO '${MAINDB}'@'%';"
 mysql -e "FLUSH PRIVILEGES;"
 
 # getting data
-./$HOME/bookreviews/bash_scripts/get_data.sh
-sudo mysql -u root < $HOME/bookreviews/bash_scripts/mysql/initialize_mysql.sql
+home="/home/ubuntu"
+sudo chown -R ubuntu:ubuntu $home/bookreviews
+sudo chmod +x $home/bookreviews/boto3/bash_scripts/get_data.sh
+
+source $home/bookreviews/boto3/bash_scripts/get_data.sh
+sudo mysql -u root < $home/bookreviews/boto3/bash_scripts/mysql/initialize_mysql.sql
 rm /etc/mysql/mysql.conf.d/mysqld.cnf
-mv $HOME/bookreviews/boto3/config_files/mongod.conf
+mv $home/bookreviews/boto3/config_files/mysqld.cnf /etc/mysql/mysql.conf.d/

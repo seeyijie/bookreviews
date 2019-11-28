@@ -28,17 +28,13 @@ summary varchar(255),
 unixReviewTime integer
 );
 
-
-load data local infile "/home/ubuntu/data_store/kindle_reviews.csv" into table reviews fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
-
 drop table if exists title;
 create table title(
     asin varchar(100) primary key,
     title varchar(1000)
 );
 
+load data local infile "/home/ubuntu/bookreviews/data_store/kindle_reviews.csv" into table reviews fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
 load data local infile "/home/ubuntu/bookreviews/extra_data/kindle_cover_texts.csv" into table title fields terminated by ',' enclosed by '"' escaped by '"' lines terminated by '\n' ignore 1 rows;
-
-
 
 update reviews set reviewTime = str_to_date(reviewTime,'%m %d, %Y');
