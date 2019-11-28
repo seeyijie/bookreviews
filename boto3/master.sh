@@ -8,8 +8,7 @@ mysql_server_ip=$server_ip
 mysql_public_key=$public_key
 mysql_username=$username # NOTE: server username, not mysql database username
 # check status and transfer new ip addresses
-source ./status_checks/status_check.sh $mysql_server_ip $mysql_public_key $mysql_username
-
+source ./status_checks/status_check.sh $server_ip $mysql_public_key $mysql_username
 
 # repeat status checks for all 3 other servers.
 
