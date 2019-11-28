@@ -122,16 +122,16 @@ def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.
     # create security group
     create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
     # server_types = ["react", "mongodb", "mysql", "flask"]
-    server_types = ["mysql"] # for testing purposes
+    server_types = ["mongodb"] # for testing purposes
 
     # storing user data files into strings
     f1 = open("bash_scripts/user_data/ud_mysql.sh","r")
     mysql_ud = f1.read()
 
     f2 = open("bash_scripts/user_data/ud_mongodb.sh","r")
-    mysql_ud = f2.read()
+    mongodb_ud = f2.read()
 
-    user_data = {"mysql": mysql_ud, "mongodb" : mysql_ud}
+    user_data = {"mysql": mysql_ud, "mongodb" : mongodb_ud}
 
     # launch instances
     instances = []
