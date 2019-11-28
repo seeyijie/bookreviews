@@ -25,7 +25,7 @@ for instance in new_instances:
     print("\n")
     # write into bash files
     with open (f"../scripts/server_scripts/config/config_mongodb.sh", 'w') as f:
-    f.write(f'#!/bin/bash\nserver_ip="{instance.public_ip_address}"\npublic_key="{instance.key_name}.pem"\nusername="ubuntu"')
+        f.write(f'#!/bin/bash\nserver_ip="{instance.public_ip_address}"\npublic_key="{instance.key_name}.pem"\nusername="ubuntu"')
 
     # write IP addresses to a text file (scp this to the new server)
     f = open(f"../scripts/server_scripts/config/config_mongodb_ip.txt", "w")
