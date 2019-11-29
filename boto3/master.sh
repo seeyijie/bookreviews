@@ -1,6 +1,6 @@
 #!/bin/bash
 # check status of MySQL server
-python3 launch_all.py --image=ami-0d5d9d301c853a04a --keyname=yijie-ec2 --instancetype=t2.micro # runs instance and loads
+python3 launch_all.py --image=ami-0d5d9d301c853a04a --keyname=awspem2 --instancetype=t2.micro # runs instance and loads
 #source ./config_files/config_mysql.sh
 #echo "Server deployment done. Checking status of mysql."
 #mysql_server_ip=$server_ip
