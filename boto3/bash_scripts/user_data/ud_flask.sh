@@ -6,7 +6,6 @@ sudo apt-get -y upgrade
 # install dependencies and updates
 sudo apt-get install -y python3-pip
 sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
-sudo apt-get install -y python3-venv
 
 
 # download the bookreviews repository
@@ -20,9 +19,9 @@ unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
 cd bookreviews || exit
 
 # create and update virtual environment requirements
-sudo python3 -m venv env
-source env/bin/activate
 sudo pip3 install -r requirements.txt
+sudo virtualenv env
+source ./env/bin/activate
 sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app &
 
 ## install nginx
