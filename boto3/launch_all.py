@@ -114,11 +114,6 @@ def create_security_group(group_name, description):
 def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.04 is ami-0d5d9d301c853a04a
     # create security group
     create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
-<<<<<<< HEAD
-    # server_types = ["react", "mongodb", "mysql", "flask"]
-    server_types = ["mysql"] # for testing purposes
-=======
->>>>>>> 87fc7f39f88a53f4a0b78fc63add1e4b745e0a70
 
     # storing user data files into strings
     f1 = open("bash_scripts/user_data/ud_mysql.sh","r")
@@ -135,7 +130,7 @@ def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.
 
     # launch instances
     # server_types = ["react", "mongodb", "mysql", "flask"]
-    server_types = ["mysql","mongodb"] # for testing purposes
+    server_types = ["flask"] # for testing purposes
     for i in range(len(server_types)):
         # launch the actual instance
         instance = launch_ec2(image, keyname, 1, user_data[server_types[i]], instancetype)

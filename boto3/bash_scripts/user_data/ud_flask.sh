@@ -1,21 +1,24 @@
-<<<<<<< HEAD
-#!/bin/bash
+#!/bin/bash -x
 
-## install dependencies and updates
-#sudo apt-get install -y python3-pip
-#sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
-#sudo apt-get install -y python3-venv
-#
-## install nginx
-#sudo apt update
-#sudo apt install -y nginx
-#sudo ufw allow 'Nginx HTTP'
-#sudo ufw status
-#
-## download the bookreviews repository
-#wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
-#sudo apt-get install -y unzip
-#unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
+sudo apt-get -y update
+sudo apt-get -y upgrade
+
+# install dependencies and updates
+sudo apt-get install -y python3-pip
+sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
+sudo apt-get install -y python3-venv
+
+# install nginx
+sudo apt install -y nginx
+sudo ufw allow 'Nginx HTTP'
+sudo ufw status
+
+# download the bookreviews repository
+# yijie dropbox test
+wget -c https://www.dropbox.com/s/u0x86zzos43s1m6/bookreviews.zip?dl=0 -O bookreviews.zip
+# wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
+sudo apt-get install -y unzip
+unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
 
 cd bookreviews
 
@@ -72,6 +75,3 @@ sudo ufw allow 'Nginx Full'
 
 # Resource
 # https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-18-04#step-5-%E2%80%94-configuring-nginx-to-proxy-requests
-=======
-#!/bin/bash
->>>>>>> 87fc7f39f88a53f4a0b78fc63add1e4b745e0a70
