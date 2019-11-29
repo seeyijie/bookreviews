@@ -2,7 +2,10 @@
 sudo apt-get -y update
 sudo apt-get -y upgrade
 # download repository
-dropbox_url=https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0
+# yijie dropbox
+dropbox_url=https://www.dropbox.com/s/oq77ssvj8d4cdfn/bookreviews.zip?dl=0
+#dominic dropbox
+#dropbox_url=https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0
 wget -c $dropbox_url -O bookreviews.zip
 sudo apt-get install -y unzip
 

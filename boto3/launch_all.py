@@ -130,7 +130,7 @@ def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.
 
     # launch instances
     # server_types = ["react", "mongodb", "mysql", "flask"]
-    server_types = ["flask"] # for testing purposes
+    server_types = ["flask", "mongodb", "mysql"] # for testing purposes
     for i in range(len(server_types)):
         # launch the actual instance
         instance = launch_ec2(image, keyname, 1, user_data[server_types[i]], instancetype)
