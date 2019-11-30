@@ -20,7 +20,7 @@ source ./status_checks/status_check.sh $mongo_server_ip $mongo_public_key $mongo
 
 # check status of flask
 source ./config_files/config_flask.sh
-echo "Checking status of mongodb"
+echo "Checking status of flask"
 flask_server_ip=$server_ip
 flask_public_key=$public_key
 flask_username=$username
