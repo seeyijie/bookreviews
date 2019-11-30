@@ -6,67 +6,23 @@ sudo apt-get -y upgrade
 # install dependencies and updates
 sudo apt-get install -y python3-pip
 sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
-
+sudo apt-get install -y python3-venv
 
 # download the bookreviews repository
 # yijie dropbox test
 wget -c https://www.dropbox.com/s/oq77ssvj8d4cdfn/bookreviews.zip?dl=0 -O bookreviews.zip
 # dominic dropbox
 # wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
-sudo apt-get install -y unzip
+apt-get install -y unzip
 unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
 
-cd bookreviews || exit
+cd "/home/ubuntu/bookreviews" || exit
 
 # create and update virtual environment requirements
-sudo pip3 install -r requirements.txt
-sudo virtualenv env
-source ./env/bin/activate
+sudo python3 -m venv env
+source env/bin/activate
+sudo python3 -m pip install -r requirements.txt
 sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app &
-
-## install nginx
-#sudo apt install -y nginx
-#sudo ufw allow 'Nginx HTTP'
-#sudo ufw status
-#
-##If you followed the initial server setup guide, you should have a UFW firewall enabled.
-## To test the application, you need to allow access to port 5000:
-#sudo ufw allow 5000
-#
-#echo -e "[Unit]\nDescription=Gunicorn instance to serve bookreviews\nAfter=network.target\n\n[Service]\nUser=ubuntu
-#Group=www-data\nWorkingDirectory=/home/ubuntu/bookreviews
-#Environment='PATH=/home/ubuntu/bookreviews/env/bin'
-#ExecStart=/home/ubuntu/bookreviews/env/bin/gunicorn --workers 3 --bind unix:bookreviews -m 007 wsgi:app\n
-#[Install]
-#WantedBy=multi-user.target
-#" | sudo tee /etc/systemd/system/bookreviews.service
-#
-#sudo systemctl start bookreviews
-#sudo systemctl enable bookreviews
-#sudo systemctl status bookreviews
-#
-#echo -e "
-#server {
-#    listen 80;
-#    server_name 18.218.52.212;
-#
-#    location / {
-#        include proxy_params;
-#        proxy_pass http://unix:/home/ubuntu/bookreviews/bookreviews.sock;
-#    }
-#}" | sudo tee /etc/nginx/sites-available/bookreviews
-#
-## Change the config file to allow long domain
-## Here the "s" specifies the substitution operation. The "/" are delimiters. The "unix" is the search pattern and the "linux" is the replacement string.
-#sudo sed -i "s/# server_names_hash_bucket_size 64;/server_names_hash_bucket_size 128;/" /etc/nginx/nginx.conf
-#
-#sudo ln -s /etc/nginx/sites-available/bookreviews /etc/nginx/sites-enabled
-#
-#sudo nginx -t # should give a successful message
-#
-#sudo systemctl restart nginx
-#sudo ufw delete allow 5000
-#sudo ufw allow 'Nginx Full'
 
 # Resource
 # https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-18-04#step-5-%E2%80%94-configuring-nginx-to-proxy-requests
