@@ -15,7 +15,10 @@ systemctl enable mongod
 service mongod start
 
 # downloading of our code repository
-wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
+# yijie dropbox
+wget -c https://www.dropbox.com/s/oq77ssvj8d4cdfn/bookreviews.zip?dl=0 -O bookreviews.zip
+# dominic dropbox
+# wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
 apt-get install -y unzip
 unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
 

@@ -1,4 +1,4 @@
 #!/bin/bash
-server_ip="52.14.181.40"
+server_ip="3.15.155.190"
 public_key="yijie-ec2.pem"
 username="ubuntu"
