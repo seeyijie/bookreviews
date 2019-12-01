@@ -35,15 +35,18 @@ flask_username=$username
 source ./status_checks/status_check.sh $flask_server_ip $flask_public_key $flask_username
 
 # check status of react
-# source ./config_files/config_react.sh
-# echo "Checking status of flask"
-# react_server_ip=$server_ip
-# react_public_key=$public_key
-# react_username=$username
-# # check status and transfer new ip addresses
-# source ./status_checks/status_check.sh $react_server_ip $react_public_key $react_username
+source ./config_files/config_react.sh
+echo "Checking status of flask"
+react_server_ip=$server_ip
+react_public_key=$public_key
+react_username=$username
+# check status and transfer new ip addresses
+source ./status_checks/status_check.sh $react_server_ip $react_public_key $react_username
 
 # start flask server
 ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip:/home/$flask_username/bookreviews "source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app &"
 
-# start react server
+# replace react js config file
+scp -i ~/.ssh/$keypair config_files/config.js $react_username@react_server_ip:/home/$react_username/bookreviews/react-end/src/Data
+# setup react server to use new IP addresses
+ssh -i ~/.ssh/$keypair $react_username@react_server_ip:/home/ubuntu/bookreviews/react-end "yarn build ; apt-get install -y nginx ; rm /etc/nginx/sites-available/default ; cp /home/ubuntu/bookreviews/boto3/config_files/default /etc/nginx/sites-available ; service nginx start ; service nginx restart"

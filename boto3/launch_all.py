@@ -56,7 +56,7 @@ def write_instances(instances, server_types):
         # write IP addresses and config files for respective images
         write_config_files(instance, server_types[i])
         write_ip_addresses(instance, server_types[i])
-        if server_types[i] == "react":
+        if server_types[i] == "flask":
             write_ip_to_js(instance)
         i += 1
     return None
@@ -140,7 +140,7 @@ def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.
 
     # launch instances
     # server_types = ["react", "mongodb", "mysql", "flask"]
-    server_types = ["flask", "mongodb", "mysql"] # for testing purposes
+    server_types = ["mongodb", "mysql", "flask", "react"] # for testing purposes
     for i in range(len(server_types)):
         # launch the actual instance
         instance = launch_ec2(image, keyname, 1, user_data[server_types[i]], instancetype)
