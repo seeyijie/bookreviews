@@ -1,7 +1,7 @@
 #!/bin/bash
 # ! step 1: wget the dropbox
-wget -c  https://www.dropbox.com/s/oq77ssvj8d4cdfn/bookreviews.zip?dl=0 -O bookreviews.zip
-# wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
+# wget -c  https://www.dropbox.com/s/oq77ssvj8d4cdfn/bookreviews.zip?dl=0 -O bookreviews.zip
+wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookreviews.zip
 sudo apt-get install -y unzip
 unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
 
