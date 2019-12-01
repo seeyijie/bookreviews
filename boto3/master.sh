@@ -1,6 +1,13 @@
 #!/bin/bash
+# replace with command line arguments
+keypair="50043-keypair"
+image_id="ami-0d5d9d301c853a04a"
+instance_type="t2.micro"
+
+# launch instances
+python3 launch_all.py --image=$image_id --keyname=$keypair --instancetype=$instance_type # runs instance and loads
+
 # check status of MySQL server
-python3 launch_all.py --image=ami-0d5d9d301c853a04a --keyname=yijie-ec2 --instancetype=t2.micro # runs instance and loads
 source ./config_files/config_mysql.sh
 echo "Server deployment done. Checking status of mysql."
 mysql_server_ip=$server_ip
@@ -25,8 +32,18 @@ flask_server_ip=$server_ip
 flask_public_key=$public_key
 flask_username=$username
 # check status and transfer new ip addresses
-source ./status_checks/status_check.sh "$flask_server_ip" "$flask_public_key" "$flask_username"
+source ./status_checks/status_check.sh $flask_server_ip $flask_public_key $flask_username
 
 # check status of react
+# source ./config_files/config_react.sh
+# echo "Checking status of flask"
+# react_server_ip=$server_ip
+# react_public_key=$public_key
+# react_username=$username
+# # check status and transfer new ip addresses
+# source ./status_checks/status_check.sh $react_server_ip $react_public_key $react_username
 
-# start server services after copying all ip addresses done in status check
+# start flask server
+ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip:/home/$flask_username/bookreviews "source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app &"
+
+# start react server

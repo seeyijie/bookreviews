@@ -109,8 +109,18 @@ def create_security_group(group_name, description):
     except ClientError as e:
         print(e)
     return None
+
+def edit_script(filename, ipList):
+    with open(filename, "r") as file:
+        lines = file.readlines()
+    for ip in range(len(ipList)):
+        lines[ip+1] = "ip_{ip}={ipList[ip]}" + "\n"
+    with open(filename, "w") as file:
+        for line in lines:
+            file.write(line)
     
 # function needs to take in image id and keyname
+# "Main function"
 def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.04 is ami-0d5d9d301c853a04a
     # create security group
     create_security_group("50043_SECURITY_GROUP", "security group for 50043 database project")
@@ -137,14 +147,5 @@ def cli(image, keyname, instancetype='t2.micro'): # default ubuntu image for 18.
         # write ip addresses into text files and bash files
         write_instances(instance, [server_types[i]])
 
-
-def edit_script(filename, ipList):
-    with open(filename, "r") as file:
-        lines = file.readlines()
-    for ip in range(len(ipList)):
-        lines[ip+1] = "ip_{ip}={ipList[ip]}" + "\n"
-    with open(filename, "w") as file:
-        for line in lines:
-            file.write(line)
 if __name__ == '__main__':
   fire.Fire(cli)
