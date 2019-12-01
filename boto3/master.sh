@@ -53,6 +53,6 @@ ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookrev
 echo "Transferring new configuration files for flask server"
 scp -i ~/.ssh/$keypair config_files/config.js $react_username@$react_server_ip:/home/$react_username/bookreviews/react-end/src/Data
 # setup react server to use new IP addresses
-ssh -i ~/.ssh/$keypair $react_username@$react_server_ip "cd /home/ubuntu/bookreviews/react-end ; yarn build ; apt-get install -y nginx ; rm /etc/nginx/sites-available/default ; cp /home/ubuntu/bookreviews/boto3/config_files/default /etc/nginx/sites-available ; service nginx start ; service nginx restart"
+ssh -i ~/.ssh/$keypair $react_username@$react_server_ip "cd /home/ubuntu/bookreviews/react-end ; sudo yarn build ; sudo apt-get install -y nginx ; sudo rm /etc/nginx/sites-available/default ; sudo cp /home/ubuntu/bookreviews/boto3/config_files/default /etc/nginx/sites-available ; sudo service nginx start ; sudo service nginx restart"
 
 echo "Deployment done! Thank you for your patience! Go to the following link: http://$react_server_ip:80"
