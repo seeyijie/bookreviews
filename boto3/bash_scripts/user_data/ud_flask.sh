@@ -16,6 +16,9 @@ wget -c https://www.dropbox.com/s/6g4zfii8f0d7yny/bookreviews.zip?dl=0 -O bookre
 apt-get install -y unzip
 unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
 
+home="/home/ubuntu"
+sudo chown -R ubuntu:ubuntu $home/bookreviews
+
 cd "/home/ubuntu/bookreviews" || exit
 
 # create and update virtual environment requirements
