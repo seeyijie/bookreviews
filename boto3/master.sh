@@ -49,12 +49,11 @@ source ./status_checks/status_check.sh $react_server_ip $react_public_key $react
 # ================== Phase 2 - launch nginx and gunicorn ====================
 # ssh -i ~/.ssh/$keypair $mysql_username@$mysql_server_ip "sudo service mysql restart"
 # ssh -i ~/.ssh/$keypair $mongo_username@$mongo_server_ip "sudo service mongod restart"
-scp -i ~/.ssh/$keypair 
 
 # start flask server
 # need to further test this (suspect that it closes once session ends)
 ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "sudo chmod +x /home/ubuntu/bookreviews/boto3/bash_scripts/run_servers/run_flask.sh"
-ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "sudo nohup ./home/ubuntu/bookreviews/boto3/bash_scripts/run_servers/run_flask.sh"
+ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "sudo nohup /home/ubuntu/bookreviews/boto3/bash_scripts/run_servers/run_flask.sh"
 # replace react js config file
 echo "Transferring new configuration files for flask server"
 scp -i ~/.ssh/$keypair config_files/config.js $react_username@$react_server_ip:/home/$react_username/bookreviews/react-end/src/Data
