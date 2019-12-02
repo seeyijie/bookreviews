@@ -48,7 +48,7 @@ function Logtable({ log_json }) {
                     </TableHead>
                     <TableBody>
                         {rows.map(row => (
-                            <TableRow>
+                            <TableRow key = {row.timestamp}>
                                 <TableCell component="th" scope="row">
                                     {row.timestamp}
                                 </TableCell>

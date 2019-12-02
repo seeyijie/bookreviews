@@ -33,13 +33,13 @@ class SearchResults extends Component {
     }
 
     render() {
-        console.log("Rendered")
+        // console.log("Rendered")
         const { classes } = this.props
         const { booksmetadata } = this.state;
         const loadingMessage = <Typography className={classes.loadtext}>Loading... Please wait</Typography>
 
         // this.loadNewSearch();
-        console.log(this.props.location.state.searchstring);
+        // console.log(this.props.location.state.searchstring);
         if (this.state.inPage === true && this.props.location.state.searchstring != null) {
             this.componentDidMount();
         }
@@ -53,7 +53,7 @@ class SearchResults extends Component {
     }
 
     componentDidMount() {
-        console.log("ComponentDidMount")
+        // console.log("ComponentDidMount")
         const searchstring = this.props.location.state.searchstring
         // const url = `http://127.0.0.1:5000/api/titlematching/${searchstring}`
         const url =`${config.flaskip}/api/titlematching/${searchstring}`

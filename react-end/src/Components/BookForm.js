@@ -6,12 +6,9 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
-import Link from "@material-ui/core/Link";
 import * as config from '../Data/config';
 
 const useStyles = makeStyles(theme => ({
@@ -112,7 +109,7 @@ class BookForm extends Component {
     }, () => {
       // axios.post(`${config.flaskip}/api/addbook`, newBook)
       axios.post(
-        'http://127.0.0.1:5000/api/addbook',
+        `${config.flaskip}/api/addbook`,
         newBook,
         {
           headers: {
