@@ -17,7 +17,6 @@ logger = LoggerObject()
 
 user_app = Blueprint('user_app', __name__)
 
-
 # Temporarily put in user app to upload data to MySQL
 # @user_app.route('/scrape', methods=['GET'])
 # def scrape():
@@ -36,7 +35,6 @@ user_app = Blueprint('user_app', __name__)
 #     elapsed_time = time.time() - start
 #     print("Duration: {}".format(elapsed_time))
 #     return "Success"
-
 
 @user_app.route('/register', methods=['POST'])
 def register():
@@ -61,7 +59,6 @@ def register():
         res.status_code = 400
         logger.logrequest(request, res)
         return res
-
 
 @user_app.route('/login', methods=['POST'])
 def auth_user():
@@ -93,17 +90,9 @@ def auth_user():
         res.status_code = 400
         return res
 
-
 # @user_app.route('/refresh', methods=['POST'])
 # @jwt_refresh_token_required
 # def refresh():
 #     current_user = get_jwt_identity()
 #     access_token = create_access_token(identity=current_user)
 #     return {'access_token': access_token}
-
-
-# @user_app.route('/hello', methods=['GET'])
-# # protect routes
-# @jwt_required
-# def hello():
-#     return jsonify({'data': 'Hello world'}), 200
