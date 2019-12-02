@@ -5,7 +5,7 @@ from util.getIP import getIP
 FLASK_APP = "manage.py"
 FLASK_ENV = "development"
 
-f = open("/home/ubuntu/config_mysql_ip.txt","r")
+f = open("boto3/ip_addresses/config_mysql_ip.txt","r")
 MYSQL_HOST = f.read()
 # MYSQL_HOST = "3.14.6.201"  # use getIP to get Dominic's script generation name
 # MYSQL_HOST = getIP('localhost')

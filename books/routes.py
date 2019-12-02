@@ -5,7 +5,7 @@ from books.data_service import deleteReview
 from books.data_service import addBook
 from application import db
 from books.models import Reviews
-from users.models import User
+from users.models import Users
 from models.logs import LoggerObject    # for logging
 from flask_jwt_extended import jwt_required
 
@@ -119,7 +119,7 @@ def add_review():
     asin = req['asin']
     id = req['reviewerID']
 
-    users = User.query.filter_by(id=id).all()
+    users = Users.query.filter_by(id=id).all()
 
     if len(users) <= 0:
         abort(401)

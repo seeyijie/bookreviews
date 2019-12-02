@@ -6,7 +6,7 @@ from users.user_schema import validate_user
 from werkzeug.security import generate_password_hash, check_password_hash
 
 from application import db
-from users.models import User
+from users.models import Users
 from users.forms import RegisterForm, LoginForm
 from scrape import Scraper, load_list
 import time
@@ -44,7 +44,7 @@ def register():
     if data['ok']:
         data = data['data']
         hashed_password = generate_password_hash(data['password'])  # Salt + SHA256
-        user = User(
+        user = Users(
             data['name'],
             data['email'],
             hashed_password
@@ -68,7 +68,7 @@ def auth_user():
     data = validate_user(request.get_json())
     if data['ok']:
         data = data['data']
-        user = User.query.filter_by(email=data['email']).first()
+        user = Users.query.filter_by(email=data['email']).first()
         if user and check_password_hash(user.password, data['password']):
             access_token = create_access_token(identity=data)
             refresh_token = create_refresh_token(identity=data)

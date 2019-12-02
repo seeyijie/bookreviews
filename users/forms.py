@@ -3,7 +3,7 @@ from wtforms import validators, StringField, PasswordField, ValidationError
 from wtforms.fields.html5 import EmailField
 from werkzeug.security import check_password_hash
 
-from users.models import User
+from users.models import Users
 
 
 class LoginForm(FlaskForm):
@@ -17,7 +17,7 @@ class LoginForm(FlaskForm):
         if not rv:
             return False
 
-        user = User.query.filter_by(
+        user = Users.query.filter_by(
             email=self.email.data
         ).first()
 
@@ -42,6 +42,6 @@ class RegisterForm(FlaskForm):
     ])
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = Users.query.filter_by(email=email.data).first()
         if user is not None:
             raise ValidationError('Email already in use, please use a different one.')
