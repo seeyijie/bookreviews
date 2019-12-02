@@ -1,6 +1,53 @@
-# Database Project
+# 50.043 Database Project
 
-## Instructions (How to run):
+## Automation script
+The automation script is located in `boto3/master.sh`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
+
+
+**NOTE:** 
+* Please make sure you have a good internet connection when you try and run the automation scripts.
+* if you see the warning `ssh connection refused`, let the script continue to run. It should eventually add the IP address of the particular server into your `~/.ssh/known_hosts` file.
+
+### Prerequisite python3 libraries
+* boto3
+* fire
+    * installed by `pip3 install fire`
+
+### Other dependencies
+* openssh-server
+* openssh-client
+
+### Expected output
+``` 
+******** mongodb server info ********
+new instance: i-0fa186cd7f0b2cf7e
+3.17.147.142
+50043-keypair
+2019-12-01 08:41:58+00:00
+
+******** mysql server info ********
+new instance: i-08c8538f85bc6fdd8
+13.58.110.71
+50043-keypair
+2019-12-01 08:42:31+00:00
+
+******** flask server info ********
+new instance: i-0d1bfb6d1616d1551
+3.15.160.61
+50043-keypair
+2019-12-01 08:43:04+00:00
+
+******** react server info ********
+new instance: i-0520729e7b669ed40
+3.15.154.165
+50043-keypair
+2019-12-01 08:43:37+00:00
+Server deployment done. Checking status of mysql.
+Checking server status: (NOTE: ignore warnings for connection refused)
+Warning: Permanently added '13.58.110.71' (ECDSA) to the list of known hosts.
+```
+
+## General Instructions for Group members (How to run):
 * Download MySQL and create a database with name "50043_DB"
 * Create a new user and give it admin permission
 * Run `export MYSQL_USER=<USER>` to set environment variables
@@ -12,18 +59,6 @@
 * Verify the new .py file in the migrations/versions and check if the upgrades are correct.
 * Run `flask db upgrade` to apply the migration
 * Run `flask run` and go to `127.0.0.1:5000/register`
-
-## Automation scripts
-### Deployment to EC2 servers
-* go to `scripts/server_scripts` to view the full readme for all the automation scripts
-
-### Local machine
-* `start_init.sh`(run this):
-    * this script installs dos2unix and converts `initialize.sh` to be able to run on WSL
-    * to run, do `sudo ./start_init.sh`
-* `initialize.sh` (do not need to run this): 
-    * to run, do `sudo ./initialize.sh` and enter your password.
-    * this script checks if you have a database named `50043_DB` and a user named `'50043_DB'@'localhost'`. If not, the script creates the database and user. The script will also give the user full permissions to the `50043_DB` database. After which, the script runs `initialize.sql` with the generated user credentials. `initialize.sql` imports the contents from `kindle_reviews.csv` into a table called `reviews` inside the `50043_DB` database.
 
 ## Quality of life improvements
 * [SSH Keys and Github](https://dev.to/maedahbatool/generating-a-new-ssh-key-and-adding-it-to-github-137j)
