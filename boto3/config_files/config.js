@@ -1,1 +1,1 @@
-export const flaskip = "http://18.219.44.182:5000"
+export const flaskip = "http://18.188.181.238:5000"

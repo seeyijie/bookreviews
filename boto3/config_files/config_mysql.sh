@@ -1,4 +1,4 @@
 #!/bin/bash
-server_ip="3.135.223.30"
+server_ip="18.221.46.160"
 public_key="50043-keypair.pem"
 username="ubuntu"

@@ -3,7 +3,7 @@ alias = 'core'
 db = '50043_db'
 
 # this IP is transferred over to the server after status check
-f = open("boto3/ip_addresses/config_mongodb_ip.txt","r")
+f = open("/home/ubuntu/config_mongodb_ip.txt","r")
 mongodb_ip = f.read()
 
 # old ip address: 3.16.15.52
