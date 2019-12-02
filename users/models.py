@@ -2,7 +2,6 @@ from application import db
 import string
 from random import randint
 
-
 class User(db.Model):
     id = db.Column(db.VARCHAR(100), nullable=False)  # Starts with B
     name = db.Column(db.VARCHAR(100), nullable=False)
