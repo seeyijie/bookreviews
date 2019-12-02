@@ -42,3 +42,5 @@ source $home/bookreviews/boto3/bash_scripts/get_data.sh
 sudo mysql -u root < $home/bookreviews/boto3/bash_scripts/mysql/initialize_mysql.sql
 rm /etc/mysql/mysql.conf.d/mysqld.cnf
 mv $home/bookreviews/boto3/config_files/mysqld.cnf /etc/mysql/mysql.conf.d/
+
+sudo service mysql restart

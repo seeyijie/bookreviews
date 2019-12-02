@@ -9,8 +9,7 @@ create table users(
     id varchar(100) NOT NULL,
     name varchar(100) NOT NULL,
     email varchar(100) primary key,
-    password varchar(100) NOT NULL,
-    recent_login datetime NOT NULL
+    password varchar(100) NOT NULL
 );
 
 /* create a table for importing the data into*/

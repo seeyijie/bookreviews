@@ -42,3 +42,9 @@ yes | sudo rm /etc/mongod.conf
 mv $home/bookreviews/boto3/config_files/mongod.conf /etc/
 chown -R root:root /etc/mongod.conf # give back root permissions to the config file
 chmod 644 /etc/mongod.conf
+
+sudo service mongod restart
+
+mongo < /home/ubuntu/bookreviews/boto3/bash_scripts/mongodb/create_user.js
+
+sudo service mongod restart
