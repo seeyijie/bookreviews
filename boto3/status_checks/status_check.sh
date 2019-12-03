@@ -5,7 +5,7 @@ public_ip=$1
 keypair=$2
 username=$3
 
-echo "Checking server status: (NOTE: ignore warnings for connection refused)"
+echo -e "\nChecking server status: (NOTE: ignore warnings for connection refused)"
 
 status=false
 while [ $status == false ]
