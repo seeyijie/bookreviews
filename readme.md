@@ -16,9 +16,70 @@ The automation script is located in `boto3/master.sh`. It launches 4 EC2 instanc
 * openssh-server
 * openssh-client
 
+### Other requisites
+Please make sure that no security group named `50043_SECURITY_GROUP` exists in your aws user account.
+
 ### Instructions to launch automation script
 * from the `boto3` folder, run `python3 call_master.py --keyname=<keyname> --image_id=<image_id> --instance_type=<instance_type>`.
 * Example: `python3 call_master.py --keyname=50043-keypair --image_id=ami-0d5d9d301c853a04a --instance_type="t2.micro"`
+
+Expected output:
+First, you should see that the script creates a security group.
+
+```
+Security Group Created sg-01fedfc8fd3c46b0d in vpc vpc-f4aa599f.
+Ingress Successfully Set {'ResponseMetadata': {'RequestId': '1af7fbe3-8cdd-4f93-b797-41aced6c686d', 'HTTPStatusCode': 200, 'HTTPHeaders': {'content-type': 'text/xml;charset=UTF-8', 'content-length': '259', 'date': 'Fri, 22 Nov 2019 03:14:29 GMT', 'server': 'AmazonEC2'}, 'RetryAttempts': 0}}
+```
+Then, you should observe that the servers are being launched via boto3. You would see the details of the servers being printed to the console. Launching the servers generate several text files and bash scripts inside `boto3/ip_addresses` and `boto3/config_files` respectively.
+```
+******** mongodb server info ********
+new instance: i-0e89b57f6c8c2e77f
+18.222.205.153
+50043-keypair
+2019-12-03 14:21:49+00:00
+
+******** mysql server info ********
+new instance: i-0d97337cf8702863f
+13.58.169.137
+50043-keypair
+2019-12-03 14:22:22+00:00
+
+******** flask server info ********
+new instance: i-03c8be10d66d5bac3
+3.14.147.43
+50043-keypair
+2019-12-03 14:22:54+00:00
+
+******** react server info ********
+new instance: i-04c733c0b36cdaad4
+18.189.31.214
+50043-keypair
+2019-12-03 14:23:27+00:00
+```
+After which, the script starts checking if the servers have finished running the user data scripts. This will take awhile. so grab a cup of coffee and prepare to be amazed.
+```
+Server deployment done. Checking status of mysql.
+
+Checking server status: (NOTE: ignore warnings for connection refused)
+Warning: Permanently added '13.58.169.137' (ECDSA) to the list of known hosts.
+.................................................
+```
+Once the servers have been deployed successfully, the script transfers the newly generated IP addresses and `config.js` file into every server.
+```
+Server done with deployment. Transferring new IP addresses to server
+config_flask_ip.txt                                                                                                                                                                              100%   11     0.0KB/s   00:00    
+config_mongodb_ip.txt                                                                                                                                                                            100%   14     0.1KB/s   00:00    
+config_mysql_ip.txt                                                                                                                                                                              100%   13     0.1KB/s   00:00    
+config_react_ip.txt                                                                                                                                                                              100%   13     0.1KB/s   00:00    
+Done
+```
+Then the script runs the new flask and react servers. This installs sets up and installs a couple of software packages into the react server before being fully operational. Lastly, a link will be printed to the console for you to access our project via any browser.
+```
+*************************************************
+Deployment done! Thank you for your patience! 
+Access the webpage via the following link: http://18.189.31.214:80
+```
+
 
 ## General Instructions for Group members (How to run):
 * Download MySQL and create a database with name "50043_DB"
