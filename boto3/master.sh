@@ -8,7 +8,6 @@ instance_type="t2.micro"
 # launch instances
 python3 launch_all.py --image=$image_id --keyname=$keypair --instancetype=$instance_type # runs instance and loads
 
-
 # ===================== Phase 1 - status checks (check if server has finished running user data) =====================
 # check status of MySQL server
 source ./config_files/config_mysql.sh
@@ -47,13 +46,10 @@ react_username=$username
 source ./status_checks/status_check.sh $react_server_ip $react_public_key $react_username
 
 # ================== Phase 2 - launch nginx and gunicorn ====================
-# ssh -i ~/.ssh/$keypair $mysql_username@$mysql_server_ip "sudo service mysql restart"
-# ssh -i ~/.ssh/$keypair $mongo_username@$mongo_server_ip "sudo service mongod restart"
-
 # start flask server
-# need to further test this (suspect that it closes once session ends)
-ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "sudo chmod +x /home/ubuntu/bookreviews/boto3/bash_scripts/run_servers/run_flask.sh"
-ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "sudo nohup /home/ubuntu/bookreviews/boto3/bash_scripts/run_servers/run_flask.sh"
+# TODO: run further tests to check if shutting down local machine still leaves servers running
+ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &" # TODO: try --daemon
+
 # replace react js config file
 echo "Transferring new configuration files for flask server"
 scp -i ~/.ssh/$keypair config_files/config.js $react_username@$react_server_ip:/home/$react_username/bookreviews/react-end/src/Data
