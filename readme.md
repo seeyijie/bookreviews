@@ -3,7 +3,6 @@
 ## Automation script
 The automation script is located in `boto3/master.sh`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
 
-
 **NOTE:** 
 * Please make sure you have a good internet connection when you try and run the automation scripts.
 * if you see the warning `ssh connection refused`, let the script continue to run. It should eventually add the IP address of the particular server into your `~/.ssh/known_hosts` file.
@@ -17,35 +16,8 @@ The automation script is located in `boto3/master.sh`. It launches 4 EC2 instanc
 * openssh-server
 * openssh-client
 
-### Expected output
-``` 
-******** mongodb server info ********
-new instance: i-0fa186cd7f0b2cf7e
-3.17.147.142
-50043-keypair
-2019-12-01 08:41:58+00:00
+### Instructions to launch automation script
 
-******** mysql server info ********
-new instance: i-08c8538f85bc6fdd8
-13.58.110.71
-50043-keypair
-2019-12-01 08:42:31+00:00
-
-******** flask server info ********
-new instance: i-0d1bfb6d1616d1551
-3.15.160.61
-50043-keypair
-2019-12-01 08:43:04+00:00
-
-******** react server info ********
-new instance: i-0520729e7b669ed40
-3.15.154.165
-50043-keypair
-2019-12-01 08:43:37+00:00
-Server deployment done. Checking status of mysql.
-Checking server status: (NOTE: ignore warnings for connection refused)
-Warning: Permanently added '13.58.110.71' (ECDSA) to the list of known hosts.
-```
 
 ## General Instructions for Group members (How to run):
 * Download MySQL and create a database with name "50043_DB"
