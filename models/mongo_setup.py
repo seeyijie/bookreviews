@@ -9,5 +9,5 @@ mongodb_ip = f.read()
 
 # old ip address: 3.16.15.52
 def global_init():
-    mongoengine.register_connection(alias='core', name = db , host=mongodb_ip, port = 27017,username='root', password='password',db = db)
+    mongoengine.register_connection(alias='core', name = db , host=mongodb_ip, port = 27017,username='root',db = db)
     # mongoengine.register_connection(alias='core', name = db ) #commented top one out to connect to localhost

@@ -30,7 +30,7 @@ class Home extends Component {
                     Welcome to our database!
                 </Typography>
                 <Typography variant="subtitle2">
-                    Click on the button below to browse all books, or search by asin with the searchbar above.
+                    Click on the button below to browse all books, or search by asin/title/author with the searchbar above.
                 </Typography>
                 <Link to="/browse" style={{ textDecoration: 'none' }}>
                     <Button className={classes.button} variant="contained">

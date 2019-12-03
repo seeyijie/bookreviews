@@ -3,7 +3,7 @@ import string
 from random import randint
 
 
-class User(db.Model):
+class Users(db.Model):
     id = db.Column(db.VARCHAR(100), nullable=False)  # Starts with B
     name = db.Column(db.VARCHAR(100), nullable=False)
     email = db.Column(db.VARCHAR(100), primary_key=True)

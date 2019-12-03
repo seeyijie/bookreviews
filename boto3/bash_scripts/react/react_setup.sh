@@ -39,6 +39,8 @@ sudo npm run build
 sudo apt-get install nginx
 
 # sudo service nginx start
+
+
 # sudo service nginx restart # if we make any changes to the config file 
 
 

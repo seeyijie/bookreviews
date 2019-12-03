@@ -7,13 +7,6 @@ logger = LoggerObject()
 
 server_log = Blueprint('server_log', __name__)
 
-# @server_log.route('/log', methods=['GET'])
-# def get_log():
-#     # obtain log from mongoDB
-#     logger2 = LoggerObject()
-#     # logger.logrequest(request, 'displayed on this page')
-#     return render_template('log.html', loglist = logger2.getAllLogs())
-
 @server_log.route('/getlog', methods=['GET'])
 def get_log_json():
     logger_for_json = LoggerObject()

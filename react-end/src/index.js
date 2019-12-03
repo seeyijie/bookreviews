@@ -21,9 +21,6 @@ const routing = (
             <Route path='/books/:bookid' component={Book} />
             <Route path='/addbook' component={AddBook} />
             <Route path='/log' component={Log} />
-            {/* <Route path="/register" component={Register} />
-            <Route path="/scrape" component={Scrape} />
-            <Route path="/searchbyasin" component={Search} /> */}
         </div>
     </Router>
 )

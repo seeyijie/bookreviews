@@ -4,11 +4,8 @@ venv/
 .env
 env/
 *.pyc
-jiawei.py
-ken.py
-yijie.py
-jinkind.py
-dom.py
+boto3/config_files/*.sh
+boto3/ip_addresses/
 kindle_reviews.csv
 meta_Kindle_Store.json
 migrations
