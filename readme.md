@@ -17,7 +17,8 @@ The automation script is located in `boto3/master.sh`. It launches 4 EC2 instanc
 * openssh-client
 
 ### Instructions to launch automation script
-
+* from the `boto3` folder, run `python3 call_master.py --keyname=<keyname> --image_id=<image_id> --instance_type=<instance_type>`.
+* Example: `python3 call_master.py --keyname=50043-keypair --image_id=ami-0d5d9d301c853a04a --instance_type="t2.micro"`
 
 ## General Instructions for Group members (How to run):
 * Download MySQL and create a database with name "50043_DB"

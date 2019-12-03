@@ -1,8 +1,12 @@
 #!/bin/bash
 # replace with command line arguments
-keypair="50043-keypair"
-image_id="ami-0d5d9d301c853a04a"
-instance_type="t2.micro"
+# keypair="50043-keypair"
+# image_id="ami-0d5d9d301c853a04a"
+# instance_type="t2.micro"
+
+keypair=$1
+image_id=$2
+instance_type=$3
 
 # ==================== Phase 0 - launching of instances ======================
 # launch instances
@@ -57,4 +61,5 @@ scp -i ~/.ssh/$keypair config_files/config.js $react_username@$react_server_ip:/
 # setup react server to use new IP addresses
 ssh -i ~/.ssh/$keypair $react_username@$react_server_ip "cd /home/ubuntu/bookreviews/react-end ; sudo yarn build ; sudo apt-get install -y nginx ; sudo rm /etc/nginx/sites-available/default ; sudo cp /home/ubuntu/bookreviews/boto3/config_files/default /etc/nginx/sites-available ; sudo service nginx start ; sudo service nginx restart"
 
-echo "Deployment done! Thank you for your patience! Go to the following link: http://$react_server_ip:80"
+echo "*************************************************"
+echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via the following link: http://$react_server_ip:80"
