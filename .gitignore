@@ -5,7 +5,7 @@ venv/
 env/
 *.pyc
 boto3/config_files/*.sh
-boto3/ip_addresses/*
+boto3/ip_addresses/*.txt
 kindle_reviews.csv
 meta_Kindle_Store.json
 migrations

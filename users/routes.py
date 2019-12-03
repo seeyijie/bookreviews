@@ -35,7 +35,7 @@ def register():
     else:
         res = jsonify({'ok': False, 'message': 'Bad request parameters: {}'
                        .format(data['message'])})
-        res.status_code = 400
+        res[0].status_code = 400
         logger.logrequest(request, res)
         return res
 
@@ -55,16 +55,16 @@ def auth_user():
                 'refresh_token': refresh_token
             }
             res = jsonify({'ok': True, 'data': token}), 200
-            res.status_code = 200
+            res[0].status_code = 200
             logger.logrequest(request, res)
             return res
         else:
             res = jsonify({'ok': False, 'message': 'Invalid username or password'})
-            res.status_code = 401
+            res[0].status_code = 401
             logger.logrequest(request, res)
             return res
     else:
         res = jsonify({'ok': False, 'message': 'Bad request parameters: {}'
                        .format(data['message'])})
-        res.status_code = 400
+        res[0].status_code = 400
         return res
