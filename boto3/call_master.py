@@ -1,8 +1,8 @@
 import subprocess
 import fire
 
-# TODO: test entering t2.micro without quotation marks
-def cli(keypair, image_id="ami-0d5d9d301c853a04a", instance_type="t2.micro"):
+# python3 call_master.py --keypair=50043-east1-keypair --image_id=ami-04b9e92b5572fa0d1 --instance_type=t2.micro
+def cli(keypair, image_id, instance_type):
     subprocess.check_call(['./master.sh', keypair, image_id, instance_type])
 
 if __name__ == '__main__':

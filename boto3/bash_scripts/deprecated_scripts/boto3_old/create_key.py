@@ -3,7 +3,7 @@ import subprocess # to run bash scripts
 
 import boto3
 ec2 = boto3.resource('ec2')
-keyname = "50043-keypair"
+keyname = "50043-east1-keypair"
 
 # create a file to store the key locally
 outfile = open(f"{keyname}.pem",'w')
