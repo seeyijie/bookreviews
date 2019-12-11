@@ -1,8 +1,7 @@
 #!/bin/bash
 
 #overview
-#ssh into each database instance and execute export
-#scp files over to local computer
+#ssh into each database instance and pipe the outputs to a text file
 
 
 #mysql
