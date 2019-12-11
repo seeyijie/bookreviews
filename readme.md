@@ -18,7 +18,7 @@ The automation script is located in `boto3/master.sh`. It launches 4 EC2 instanc
 
 ### Other requirements
 * Please make sure that no security group named `50043_SECURITY_GROUP` exists in your aws user account.
-* Please make sure you have an SSH keypair for your location. Put the SSH keypair in ~/.ssh and ensure it has the appropriate permissions by running chmod 400 ~/.ssh/<keyname>
+* Please make sure you have an SSH keypair for your location. Put the SSH keypair in `~/.ssh` and ensure it has the appropriate permissions by running `chmod 400 ~/.ssh/<keyname>`
 
 ### Instructions to launch automation script
 * from the `boto3` folder, run `python3 call_master.py --keyname=<keyname> --image_id=<image_id> --instance_type=<instance_type>`.
