@@ -10,7 +10,7 @@ def main(spark_script):
     with open(spark_script) as f:
         content = f.read()
     content = content.replace(
-        "bucket_name = None", "bucket_name = '{}'".format(bucket_name)
+        'bucket_name = ""', 'bucket_name = "{}"'.format(bucket_name)
     )
     with open(spark_script, "w") as f:
         f.write(content)

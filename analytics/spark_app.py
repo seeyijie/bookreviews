@@ -237,7 +237,8 @@ if __name__ == "__main__":
     with Timer("My spark script"):
         spark = SparkSession.builder.master("local[*]").getOrCreate()
 
-        bucket_name = ""  # Should be overwritten by finalize_spark_script.py
+        bucket_name = ""
+        assert bucket_name != "", "Should be overwritten by finalize_spark_script.py"
         bucket = "s3a://" + bucket_name
         df_reviews = load_data(bucket, "kindle_reviews.csv")
         df_meta = load_data(bucket, "meta_Kindle_Store.json")
