@@ -18,7 +18,7 @@ mysql_username=$username # NOTE: server username, not mysql database username
 source ./status_checks/status_check.sh $mysql_server_ip $mysql_public_key $mysql_username
 
 # extract data from mysql server for analytics
-(ssh -i ~/.ssh/$mysql_public_key ubuntu@$mysql_server_ip "mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names" > mysql.txt ; sed 's/\t/,/g' mysql.txt > mysql_data.csv ; rm mysql.txt)&
+(ssh -i ~/.ssh/$mysql_public_key ubuntu@$mysql_server_ip "mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names" > mysql.txt ; sed 's/\t/","/g;s/^/"/;s/$/"/' mysql.txt > mysql_data.csv ; rm mysql.txt) &
 
 # check status of Mongodb server
 source ./config_files/config_mongodb.sh
@@ -52,8 +52,8 @@ source ./status_checks/status_check.sh $react_server_ip $react_public_key $react
 
 # ================== Phase 2 - launch nginx and gunicorn ====================
 # start flask server
-echo "Starting up gunicorn on flask server"
-ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &"
+ssh -echo "Starting up gunicorn on flask server"
+i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &"
 
 # replace react js config file
 echo "Transferring new configuration files for react server"
