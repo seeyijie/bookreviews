@@ -4,6 +4,7 @@
 The automation script is located in `bookreviews/boto3/call_master.py`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After the 4 servers are deployed, the server copies the IP addresses of all the new servers and transfers them into all the other servers. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
 
 **NOTE TO USER:**
+* Please make sure your AWS user account is in `us-east-1`
 * Please make sure you have a good internet connection when you try and run the automation scripts.
 * if you see the warning `ssh connection refused`, let the script continue to run. It should eventually add the IP address of the particular server into your `~/.ssh/known_hosts` file.
 * This script is meant to run on **UNIX based systems (linux or MacOS)**. If you use windows subsystem for linux (WSL), please run `dos2unix` on `bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. This is because windows has different file line endings than unix.
