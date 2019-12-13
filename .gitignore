@@ -15,3 +15,5 @@ data_store/
 Pipfile*
 50043_DB.dump
 tests
+mongo_data.json
+mysql_data.csv

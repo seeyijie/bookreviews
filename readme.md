@@ -6,6 +6,7 @@ The automation script is located in `bookreviews/boto3/call_master.py`. It launc
 **NOTE TO USER:**
 * Please make sure your AWS user account is in `us-east-1`
 * Please make sure you have a good internet connection when you try and run the automation scripts.
+* This script requires you to use python 3.7 and above because we use `fstrings`. If `python3` does not use python 3.7 and above by default, install python3.7 and use `python3.7` to run the scripts instead (or make an alias for python3).
 * if you see the warning `ssh connection refused`, let the script continue to run. It should eventually add the IP address of the particular server into your `~/.ssh/known_hosts` file.
 * This script is meant to run on **UNIX based systems (linux or MacOS)**. If you use windows subsystem for linux (WSL), please run `dos2unix` on `bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. This is because windows has different file line endings than unix.
 
