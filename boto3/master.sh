@@ -1,9 +1,4 @@
 #!/bin/bash
-# replace with command line arguments
-# keypair="50043-keypair"
-# image_id="ami-0d5d9d301c853a04a"
-# instance_type="t2.micro"
-
 keypair=$1
 image_id=$2
 instance_type=$3
@@ -58,7 +53,7 @@ source ./status_checks/status_check.sh $react_server_ip $react_public_key $react
 # ================== Phase 2 - launch nginx and gunicorn ====================
 # start flask server
 echo "Starting up gunicorn on flask server"
-ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &" # TODO: try --daemon
+ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &"
 
 # replace react js config file
 echo "Transferring new configuration files for react server"
@@ -77,3 +72,5 @@ do
 done
 echo 'Database files are uploaded on local drive'
 echo 'You may commence data anlytics'
+
+# TODO: run analytics script
