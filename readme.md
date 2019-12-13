@@ -1,16 +1,19 @@
 # 50.043 Database Project
 
 ## Automation script
-The automation script is located in `boto3/master.sh`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
+The automation script is located in `bookreviews/boto3/call_master.py`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After the 4 servers are deployed, the server copies the IP addresses of all the new servers and transfers them into all the other servers. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
 
-**NOTE:** 
+**NOTE TO USER:**
 * Please make sure you have a good internet connection when you try and run the automation scripts.
 * if you see the warning `ssh connection refused`, let the script continue to run. It should eventually add the IP address of the particular server into your `~/.ssh/known_hosts` file.
+* This script is meant to run on **UNIX based systems (linux or MacOS)**. If you use windows subsystem for linux (WSL), please run `dos2unix` on `bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. This is because windows has different file line endings than unix.
 
 ### Prerequisite python3 libraries
 * boto3
 * fire
     * installed by `pip3 install fire`
+* dos2unix (for WSL users only)
+    * `sudo apt-get install dos2unix`
 
 ### Other dependencies
 * openssh-server
@@ -21,8 +24,9 @@ The automation script is located in `boto3/master.sh`. It launches 4 EC2 instanc
 * Please make sure you have an SSH keypair for your location. Put the SSH keypair in `~/.ssh` and ensure it has the appropriate permissions by running `chmod 400 ~/.ssh/<keyname>`
 
 ### Instructions to launch automation script
+* the automation script takes in an empty **Ubuntu 18.04** ami image for your location as the `--image_id` argument.
 * from the `boto3` folder, run `python3 call_master.py --keyname=<keyname> --image_id=<image_id> --instance_type=<instance_type>`.
-* Example, for the location us-east-2: `python3 call_master.py --keypair=50043-east1-keypair --image_id=ami-04b9e92b5572fa0d1 --instance_type=t2.micro`
+* Example (for us-east-1): `python3 call_master.py --keypair=50043-east1-keypair --image_id=ami-04b9e92b5572fa0d1 --instance_type=t2.micro`
 
 **Expected output:**
 First, you should see that the script creates a security group.
@@ -80,7 +84,7 @@ Then the script runs the new flask and react servers. This installs sets up and 
 Deployment done! Thank you for your patience! 
 Access the webpage via the following link: http://18.189.31.214:80
 ```
-
+## TODO: remove here onwards?
 
 ## General Instructions for Group members (How to run):
 * Download MySQL and create a database with name "50043_DB"
