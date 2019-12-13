@@ -18,7 +18,7 @@ mysql_username=$username # NOTE: server username, not mysql database username
 source ./status_checks/status_check.sh $mysql_server_ip $mysql_public_key $mysql_username
 
 # extract data from mysql server for analytics
-(ssh -i ~/.ssh/$mysql_public_key ubuntu@$mysql_server_ip "mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names" > mysql.txt ; sed 's/\t/","/g;s/^/"/;s/$/"/' mysql.txt > mysql_data.csv ; rm mysql.txt) &
+(ssh -i ~/.ssh/$mysql_public_key ubuntu@$mysql_server_ip "mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names" > mysql.txt ; sed 's/\t/,/g' mysql.txt > mysql_data.csv ; rm mysql.txt) &
 
 # check status of Mongodb server
 source ./config_files/config_mongodb.sh
