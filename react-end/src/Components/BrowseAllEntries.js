@@ -36,9 +36,6 @@ function BrowseAllEntries({ booksmetadata }) {
                     <ListItem>Asin: {book.asin}</ListItem>
                     <ListItem>Title: {book.title}</ListItem>
                     <ListItem>Price: {book.price}</ListItem>
-                    {/* <ListItem>Also Bought: {book.related.also_bought.map((book) => book + " ")}</ListItem>
-                    <ListItem>Also Viewed: {book.related.also_viewed.map((book) => book + " ")}</ListItem>
-                    <ListItem>Bought Together: {book.bought_together.map((book) => book + " ")}</ListItem> */}
                 </List>
             </Grid>
         </Grid>

@@ -10,6 +10,11 @@ def get_first_10_books():
     query = BookMetaData.objects[:10]
     return list(query)
 
+def get_nPage_10_books(pageNumber):
+    query = BookMetaData.objects[(pageNumber-1)*10:(pageNumber)*10]
+    return list(query)
+
+
 def get_book_by_asin(book_asin):
         if isinstance(book_asin, str):
             query = BookMetaData.objects.filter(asin = book_asin)

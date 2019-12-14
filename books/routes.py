@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, session, url_for, request, jsonify
 from books.data_service import get_first_10_books
+from books.data_service import get_nPage_10_books
 from books.data_service import get_book_by_asin
 from books.data_service import deleteReview
 from books.data_service import addBook
@@ -44,19 +45,34 @@ def get_reviews(asin):
     logger.logrequest(request, jsonify(response))
     return response
 
-@book_app.route('/api/allbooks', methods=['GET','POST'])
-def get_all_books_endpoint():
+@book_app.route('/api/allbooks',defaults={'pgNumber': None}, methods=['GET','POST'])
+@book_app.route('/api/allbooks/<pgNumber>', methods=['GET','POST'])
+def get_all_books_endpoint(pgNumber):
     msg=''
-    if request.args:
-        msg= request.args['msg']
+    if "".__eq__(pgNumber):
+        print('went thru as empty')
+        first_10_books = get_first_10_books()
+        books = []
+        for book in first_10_books:
+            books.append(book.serialize())
+        retjson = jsonify(books)
+        logger.logrequest(request, retjson)
+        return retjson
+    else:
 
-    first_10_books = get_first_10_books()
-    books =[]
-    for book in first_10_books:
-        books.append(book.serialize())
-    retjson = jsonify(books)
-    logger.logrequest(request, retjson)
-    return retjson
+        print(f'pgNumber is {pgNumber}')
+        nPage_10_books = get_nPage_10_books(int(pgNumber))
+        books = []
+        print(len(nPage_10_books))
+        for book in nPage_10_books:
+            books.append(book.serialize())
+        retjson = jsonify(books)
+        logger.logrequest(request, retjson)
+        return retjson
+
+
+
+
 
 #add a book review
 @book_app.route('/api/addreview', methods=['POST'])

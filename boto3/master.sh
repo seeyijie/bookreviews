@@ -1,9 +1,4 @@
 #!/bin/bash
-# replace with command line arguments
-# keypair="50043-keypair"
-# image_id="ami-0d5d9d301c853a04a"
-# instance_type="t2.micro"
-
 keypair=$1
 image_id=$2
 instance_type=$3
@@ -22,6 +17,9 @@ mysql_username=$username # NOTE: server username, not mysql database username
 # check status and transfer new ip addresses
 source ./status_checks/status_check.sh $mysql_server_ip $mysql_public_key $mysql_username
 
+# extract data from mysql server for analytics
+(ssh -i ~/.ssh/$mysql_public_key ubuntu@$mysql_server_ip "mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names" > mysql.txt ; sed 's/\t/,/g' mysql.txt > mysql_data.csv ; rm mysql.txt) &
+
 # check status of Mongodb server
 source ./config_files/config_mongodb.sh
 echo "Checking status of mongodb"
@@ -30,6 +28,9 @@ mongo_public_key=$public_key
 mongo_username=$username
 # check status and transfer new ip addresses
 source ./status_checks/status_check.sh $mongo_server_ip $mongo_public_key $mongo_username
+
+# extract data from mongodb server for analytics
+(ssh -i ~/.ssh/$mongo_public_key ubuntu@$mongo_server_ip "mongo 50043_db --eval 'db.books_metadata.find({},{asin:1,price:1,_id:0}).forEach(printjson)'" > mongo.txt ; sed '1,4d' mongo.txt > mongo_data.json ; rm mongo.txt) &
 
 # check status of flask
 source ./config_files/config_flask.sh
@@ -51,9 +52,8 @@ source ./status_checks/status_check.sh $react_server_ip $react_public_key $react
 
 # ================== Phase 2 - launch nginx and gunicorn ====================
 # start flask server
-# TODO: run further tests to check if shutting down local machine still leaves servers running
-echo "Starting up gunicorn on flask server"
-ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &" # TODO: try --daemon
+ssh -echo "Starting up gunicorn on flask server"
+i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &"
 
 # replace react js config file
 echo "Transferring new configuration files for react server"
@@ -61,5 +61,17 @@ scp -i ~/.ssh/$keypair config_files/config.js $react_username@$react_server_ip:/
 # setup react server to use new IP addresses
 ssh -i ~/.ssh/$keypair $react_username@$react_server_ip "cd /home/ubuntu/bookreviews/react-end ; sudo yarn build ; sudo apt-get install -y nginx ; sudo rm /etc/nginx/sites-available/default ; sudo cp /home/ubuntu/bookreviews/boto3/config_files/default /etc/nginx/sites-available ; sudo service nginx start ; sudo service nginx restart"
 
+
+
 echo "*************************************************"
 echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via the following link: http://$react_server_ip:80"
+
+# ================== Phase 3 - check if data analytics can be run ==================
+while  !(test -f mysql_data.csv) && !(test -f mongo_data.json);
+do
+    sleep 2
+done
+echo 'Database files are uploaded on local drive'
+echo 'You may commence data anlytics'
+
+# TODO: run analytics script
