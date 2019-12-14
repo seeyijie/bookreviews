@@ -53,7 +53,7 @@ source ./status_checks/status_check.sh $react_server_ip $react_public_key $react
 # ================== Phase 2 - launch nginx and gunicorn ====================
 # start flask server
 ssh -echo "Starting up gunicorn on flask server"
-i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &"
+ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &"
 
 # replace react js config file
 echo "Transferring new configuration files for react server"
