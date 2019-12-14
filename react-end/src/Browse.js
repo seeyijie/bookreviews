@@ -46,9 +46,14 @@ class Browse extends Component {
 
     async previousPage() {
         await this.setState(prevState => {
-            return {
-                pageNum: prevState.pageNum - 1,
-                isLoading: true
+            if (prevState.pageNum === 1) {
+                return { isLoading: true }
+            }
+            else {
+                return {
+                    pageNum: prevState.pageNum - 1,
+                    isLoading: true
+                }
             }
         })
         this.componentDidMount();
