@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt-get -y update
-sudo apt-get -y upgrade
+#sudo apt-get -y upgrade
 # download repository
 dropbox_url=https://50043-bucket.s3.us-east-2.amazonaws.com/bookreviews.zip
 wget -c $dropbox_url -O bookreviews.zip
