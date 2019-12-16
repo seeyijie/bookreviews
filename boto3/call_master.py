@@ -6,7 +6,7 @@ import time
 def cli(keypair, image_id, instance_type):
     start = time.time()
     subprocess.check_call(['./master.sh', keypair, image_id, instance_type])
-    duration = time.time() - start
+    duration = (time.time() - start) / 60 #convert seconds to minutes
     print(f'time taken is {duration}')
 if __name__ == '__main__':
   fire.Fire(cli)
