@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt-get -y update
-#sudo apt-get -y upgrade
+# sudo apt-get -y upgrade
 # download repository
 dropbox_url=https://50043-bucket.s3.us-east-2.amazonaws.com/bookreviews.zip
 wget -c $dropbox_url -O bookreviews.zip
@@ -53,15 +53,19 @@ mkdir /home/ubuntu/.aws
 cp /home/ubuntu/bookreviews/credentials/* /home/ubuntu/.aws
 sudo chown -R ubuntu:ubuntu /home/ubuntu/.aws
 
-# install virtualenv to run script
-cd "/home/ubuntu/bookreviews" || exit
-sudo python3 -m venv env
-source env/bin/activate
-sudo python3 -m pip install -r requirements.txt
+# # TODO: run this part via ssh
+# # install virtualenv to run script
+# cd "/home/ubuntu/bookreviews" || exit
+# python3 -m venv env
 
-# extract data from mysql database and send to s3 bucket
-mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names > mysql.txt
-sed 's/\t/,/g' mysql.txt > mysql_data.csv  
-rm mysql.txt
+# # need to change permissions before running this....
+# source env/bin/activate
+# pip3 install -r requirements.txt
 
-python3 boto3/upload_data.py --data_file="mysql_data.csv"
+# # extract data from mysql database and send to s3 bucket
+# mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names > mysql.txt
+# sed 's/\t/,/g' mysql.txt > mysql_data.csv  
+# rm mysql.txt
+
+# cd "/home/ubuntu/bookreviews/boto3"
+# python3 boto3/upload_data.py --data_file="mysql_data.csv"
