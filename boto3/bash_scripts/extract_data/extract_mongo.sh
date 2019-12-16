@@ -13,4 +13,4 @@ sed '1,4d' mongo.txt > mongo_data.json
 rm mongo.txt
 
 # transfer to s3 bucket
-python3 boto3/upload_data.py --data_file="mongo_data.json"
+python3 /home/ubuntu/bookreviews/boto3/upload_data.py --data_file="mongo_data.json"
