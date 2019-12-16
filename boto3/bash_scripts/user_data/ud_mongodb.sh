@@ -52,6 +52,11 @@ sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
 sudo apt-get install -y python3-venv
 sudo python3 -m venv env
 
+# transfer credentials
+mkdir /home/ubuntu/.aws
+cp credentials/* /home/ubuntu/.aws
+sudo chown -R ubuntu:ubuntu /home/ubuntu/.aws
+
 cd "/home/ubuntu/bookreviews" || exit
 source env/bin/activate
 sudo python3 -m pip install -r requirements.txt
@@ -60,4 +65,6 @@ sudo python3 -m pip install -r requirements.txt
 "mongo 50043_db --eval 'db.books_metadata.find({},{asin:1,price:1,_id:0}).forEach(printjson)'" > mongo.txt
 sed '1,4d' mongo.txt > mongo_data.json
 rm mongo.txt
+
+# transfer to s3 bucket
 python3 boto3/upload_data.py --data_file="mongo_data.json"

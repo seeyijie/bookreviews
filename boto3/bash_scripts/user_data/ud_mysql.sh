@@ -48,6 +48,12 @@ sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
 sudo apt-get install -y python3-venv
 sudo python3 -m venv env
 
+# transfer credentials
+mkdir /home/ubuntu/.aws
+cp credentials/* /home/ubuntu/.aws
+sudo chown -R ubuntu:ubuntu /home/ubuntu/.aws
+
+# install virtualenv to run script
 cd "/home/ubuntu/bookreviews" || exit
 source env/bin/activate
 sudo python3 -m pip install -r requirements.txt
@@ -56,4 +62,5 @@ sudo python3 -m pip install -r requirements.txt
 "mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names" > mysql.txt
 sed 's/\t/,/g' mysql.txt > mysql_data.csv  
 rm mysql.txt
+
 python3 boto3/upload_data.py --data_file="mysql_data.csv"
