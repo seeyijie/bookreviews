@@ -9,9 +9,6 @@ sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
 sudo apt-get install -y python3-venv
 
 # download the bookreviews repository
-# yijie dropbox test
-# wget -c https://www.dropbox.com/s/oq77ssvj8d4cdfn/bookreviews.zip?dl=0 -O bookreviews.zip
-# dominic dropbox
 wget -c https://50043-bucket.s3.us-east-2.amazonaws.com/bookreviews.zip -O bookreviews.zip
 apt-get install -y unzip
 unzip bookreviews.zip -d "/home/ubuntu/bookreviews"
