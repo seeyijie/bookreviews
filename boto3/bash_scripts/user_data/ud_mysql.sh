@@ -41,3 +41,15 @@ rm /etc/mysql/mysql.conf.d/mysqld.cnf
 mv $home/bookreviews/boto3/config_files/mysqld.cnf /etc/mysql/mysql.conf.d/
 
 sudo service mysql restart
+
+# install virtualenv
+sudo apt-get install -y python3-pip
+sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
+sudo apt-get install -y python3-venv
+sudo python3 -m venv env
+
+cd "/home/ubuntu/bookreviews" || exit
+source env/bin/activate
+sudo python3 -m pip install -r requirements.txt
+
+# extract data from mysql database and send to s3 bucket
