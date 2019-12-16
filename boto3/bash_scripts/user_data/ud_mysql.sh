@@ -50,16 +50,17 @@ sudo python3 -m venv env
 
 # transfer credentials
 mkdir /home/ubuntu/.aws
-cp credentials/* /home/ubuntu/.aws
+cp /home/ubuntu/bookreviews/credentials/* /home/ubuntu/.aws
 sudo chown -R ubuntu:ubuntu /home/ubuntu/.aws
 
 # install virtualenv to run script
 cd "/home/ubuntu/bookreviews" || exit
+sudo python3 -m venv env
 source env/bin/activate
 sudo python3 -m pip install -r requirements.txt
 
 # extract data from mysql database and send to s3 bucket
-"mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names" > mysql.txt
+mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names > mysql.txt
 sed 's/\t/,/g' mysql.txt > mysql_data.csv  
 rm mysql.txt
 

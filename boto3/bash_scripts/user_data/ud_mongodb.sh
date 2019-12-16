@@ -50,19 +50,19 @@ sudo service mongod restart
 sudo apt-get install -y python3-pip
 sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
 sudo apt-get install -y python3-venv
-sudo python3 -m venv env
 
 # transfer credentials
 mkdir /home/ubuntu/.aws
-cp credentials/* /home/ubuntu/.aws
+cp /home/ubuntu/bookreviews/credentials/* /home/ubuntu/.aws
 sudo chown -R ubuntu:ubuntu /home/ubuntu/.aws
 
 cd "/home/ubuntu/bookreviews" || exit
+sudo python3 -m venv env
 source env/bin/activate
 sudo python3 -m pip install -r requirements.txt
 
 # extract data from mysql database and send to s3 bucket
-"mongo 50043_db --eval 'db.books_metadata.find({},{asin:1,price:1,_id:0}).forEach(printjson)'" > mongo.txt
+mongo 50043_db --eval 'db.books_metadata.find({},{asin:1,price:1,_id:0}).forEach(printjson)' > mongo.txt
 sed '1,4d' mongo.txt > mongo_data.json
 rm mongo.txt
 

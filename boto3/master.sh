@@ -9,16 +9,14 @@ python3 launch_all.py --image=$image_id --keyname=$keypair --instancetype=$insta
 
 # ===================== Phase 1 - status checks (check if server has finished running user data) =====================
 # check status of MySQL server
+echo "***Servers running user data scripts. This will take awhile!***"
 source ./config_files/config_mysql.sh
-echo "Server deployment done. Checking status of mysql."
+echo "Checking status of mysql"
 mysql_server_ip=$server_ip
 mysql_public_key=$public_key
 mysql_username=$username # NOTE: server username, not mysql database username
 # check status and transfer new ip addresses
 source ./status_checks/status_check.sh $mysql_server_ip $mysql_public_key $mysql_username
-
-# extract data from mysql server for analytics
-# (ssh -i ~/.ssh/$mysql_public_key ubuntu@$mysql_server_ip "mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names" > mysql.txt ; sed 's/\t/,/g' mysql.txt > mysql_data.csv ; rm mysql.txt) &
 
 # check status of Mongodb server
 source ./config_files/config_mongodb.sh
@@ -28,9 +26,6 @@ mongo_public_key=$public_key
 mongo_username=$username
 # check status and transfer new ip addresses
 source ./status_checks/status_check.sh $mongo_server_ip $mongo_public_key $mongo_username
-
-# extract data from mongodb server for analytics
-# (ssh -i ~/.ssh/$mongo_public_key ubuntu@$mongo_server_ip "mongo 50043_db --eval 'db.books_metadata.find({},{asin:1,price:1,_id:0}).forEach(printjson)'" > mongo.txt ; sed '1,4d' mongo.txt > mongo_data.json ; rm mongo.txt) &
 
 # check status of flask
 source ./config_files/config_flask.sh
@@ -60,12 +55,6 @@ echo "Transferring new configuration files for react server"
 scp -i ~/.ssh/$keypair config_files/config.js $react_username@$react_server_ip:/home/$react_username/bookreviews/react-end/src/Data
 # setup react server to use new IP addresses
 ssh -i ~/.ssh/$keypair $react_username@$react_server_ip "cd /home/ubuntu/bookreviews/react-end ; sudo yarn build ; sudo apt-get install -y nginx ; sudo rm /etc/nginx/sites-available/default ; sudo cp /home/ubuntu/bookreviews/boto3/config_files/default /etc/nginx/sites-available ; sudo service nginx start ; sudo service nginx restart"
-
-# ================== Phase 3 - check if data analytics can be run ==================
-# while  !(test -f mysql_data.csv) && !(test -f mongo_data.json);
-# do
-#     sleep 2
-# done
 
 echo "*************************************************"
 echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via the following link: http://$react_server_ip:80"
