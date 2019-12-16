@@ -45,3 +45,19 @@ sudo service mongod restart
 mongo < /home/ubuntu/bookreviews/boto3/bash_scripts/mongodb/create_user.js
 
 sudo service mongod restart
+
+# install virtualenv
+sudo apt-get install -y python3-pip
+sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
+sudo apt-get install -y python3-venv
+sudo python3 -m venv env
+
+cd "/home/ubuntu/bookreviews" || exit
+source env/bin/activate
+sudo python3 -m pip install -r requirements.txt
+
+# extract data from mysql database and send to s3 bucket
+"mongo 50043_db --eval 'db.books_metadata.find({},{asin:1,price:1,_id:0}).forEach(printjson)'" > mongo.txt
+sed '1,4d' mongo.txt > mongo_data.json
+rm mongo.txt
+python3 boto3/upload_data.py --data_file="mongo_data.json"

@@ -53,3 +53,7 @@ source env/bin/activate
 sudo python3 -m pip install -r requirements.txt
 
 # extract data from mysql database and send to s3 bucket
+"mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names" > mysql.txt
+sed 's/\t/,/g' mysql.txt > mysql_data.csv  
+rm mysql.txt
+python3 boto3/upload_data.py --data_file="mysql_data.csv"
