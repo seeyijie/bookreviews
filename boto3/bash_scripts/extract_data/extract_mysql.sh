@@ -14,4 +14,4 @@ cd "/home/ubuntu/bookreviews/boto3"
 mysql -u root 50043_DB -e 'select asin, reviewText from reviews' --column-names > mysql.txt
 sed 's/\t/,/g' mysql.txt > mysql_data.csv  
 rm mysql.txt
-python3 boto3/upload_data.py --data_file="mysql_data.csv"
+python3 /home/ubuntu/bookreviews/boto3/upload_data.py --data_file="mysql_data.csv"
