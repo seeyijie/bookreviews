@@ -113,6 +113,7 @@ def main(csv_aws_credentials, region="us-east-1"):
     bucket_name = "{}-bucket-50043-group-datahoarders".format(user)
     bucket_name = bucket_name.lower()  # AWS only accepts lowercase
     bucket = create_bucket(s3, bucket_name, region)
+    write_bucket_info(bucket_name)
     print("Bucket objects:", list(bucket.objects.all()))
 
     ec2 = boto3.resource("ec2")
