@@ -6,8 +6,8 @@ python3 -m venv env
 
 # need to change permissions before running this....
 source env/bin/activate
-pip3 install -r requirements.txt
-
+#pip3 install -r requirements.txt
+pip3 install boto3 fire
 
 cd "/home/ubuntu/bookreviews/boto3"
 # extract data from mysql database and send to s3 bucket
