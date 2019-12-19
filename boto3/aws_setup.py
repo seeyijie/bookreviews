@@ -108,7 +108,7 @@ def main(csv_aws_credentials, region="us-east-1"):
     # Upload book reviews and metadata to S3 bucket
     # This is temporary and should be replaced by ETL from databases (MySQL & MongoDB)
     s3 = boto3.resource("s3")
-    print("All buckets:", list(s3.buckets.all()))
+    # print("All buckets:", list(s3.buckets.all()))
     user = creds["User name"]
     bucket_name = "{}-bucket-50043-group-datahoarders".format(user)
     bucket_name = bucket_name.lower()  # AWS only accepts lowercase
