@@ -96,7 +96,9 @@ def put_keyfile_in_ssh(keyfile):
     folder = os.path.expanduser("~/.ssh")
     if not os.path.exists(folder):
         os.mkdir(folder)
-    shutil.copyfile(keyfile, os.path.join(folder, keyfile))
+    path_out = os.path.join(folder, keyfile)
+    print(run_shell("chmod 400 {}".format(path_out)))
+    shutil.copyfile(keyfile, path_out)
 
 
 def main(csv_aws_credentials, region="us-east-1"):
