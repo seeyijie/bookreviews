@@ -49,10 +49,14 @@ source ./status_checks/status_check.sh $react_server_ip $react_public_key $react
 echo "extracting data from databases for analytics"
 # scp script over then run
 scp -i ~/.ssh/$keypair bash_scripts/extract_data/extract_mysql.sh $mysql_username@$mysql_server_ip:/home/$mysql_username
+# scp -i ~/.ssh/$keypair upload_data.py $mysql_username@$mysql_server_ip:/home/$mysql_username/bookreviews/boto3/
+scp -i ~/.ssh/$keypair -r ~/.aws/ $mysql_username@$mysql_server_ip:/home/$mysql_username/
 ssh -i ~/.ssh/$keypair $mysql_username@$mysql_server_ip "cd /home/ubuntu ; chmod +x extract_mysql.sh; bash extract_mysql.sh" # TODO: send to background and wait for completion
 
 # scp script over then run
 scp -i ~/.ssh/$keypair bash_scripts/extract_data/extract_mongo.sh $mongo_username@$mongo_server_ip:/home/$mongo_username
+# scp -i ~/.ssh/$keypair upload_data.py $mongo_username@$mongo_server_ip:/home/$mongo_username/bookreviews/boto3/
+scp -i ~/.ssh/$keypair -r ~/.aws/ $mongo_username@$mongo_server_ip:/home/$mongo_username/
 ssh -i ~/.ssh/$keypair $mongo_username@$mongo_server_ip "cd /home/ubuntu ; chmod +x extract_mongo.sh; bash extract_mongo.sh" # TODO: send to background and wait for completion
 
 # ================== Phase 2 - launch nginx and gunicorn ====================

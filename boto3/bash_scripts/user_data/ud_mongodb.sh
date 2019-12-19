@@ -51,10 +51,10 @@ sudo apt-get install -y python3-pip
 sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
 sudo apt-get install -y python3-venv
 
-# transfer credentials
-mkdir /home/ubuntu/.aws
-cp /home/ubuntu/bookreviews/credentials/* /home/ubuntu/.aws
-sudo chown -R ubuntu:ubuntu /home/ubuntu/.aws
+# # transfer credentials
+# mkdir /home/ubuntu/.aws
+# cp /home/ubuntu/bookreviews/credentials/* /home/ubuntu/.aws
+# sudo chown -R ubuntu:ubuntu /home/ubuntu/.aws
 
 # cd "/home/ubuntu/bookreviews" || exit
 # python3 -m venv env

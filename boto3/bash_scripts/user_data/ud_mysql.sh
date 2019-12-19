@@ -49,9 +49,9 @@ sudo apt-get install -y python3-venv
 sudo python3 -m venv env
 
 # transfer credentials
-mkdir /home/ubuntu/.aws
-cp /home/ubuntu/bookreviews/credentials/* /home/ubuntu/.aws
-sudo chown -R ubuntu:ubuntu /home/ubuntu/.aws
+# mkdir /home/ubuntu/.aws
+# cp /home/ubuntu/bookreviews/credentials/* /home/ubuntu/.aws
+# sudo chown -R ubuntu:ubuntu /home/ubuntu/.aws
 
 # # TODO: run this part via ssh
 # # install virtualenv to run script
