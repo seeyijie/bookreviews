@@ -17,7 +17,7 @@
 ## Instructions to launch automation script
 * **Caveats (There's no free lunch)**: 
     * The data extraction was tested to use **t3.large** and above. Lower tier instances hang on our data extraction step from the database.
-    * the automation script takes in the **path to your csv file** downloaded from AWS containing your aws IAM user, and the image_id for **us-east-1** in the `--image_id` argument.
+    * the automation script takes in the **path to your IAM credentials csv file** in the `--csv_aws_credentials`, and the image_id for **us-east-1** in the `--image_id` argument.
 * from the `boto3` folder, run `python3 call_master.py --csv_aws_credentials=<path/to/csv/> --image_id=<ami_image_id> --instance_type=<instance_type>`.
 * Example: `python3 call_master.py --csv_aws_credentials=/home/ubuntu/Downloads/.aws/ --image_id=ami-04b9e92b5572fa0d1 --instance_type=t3.large`
 
