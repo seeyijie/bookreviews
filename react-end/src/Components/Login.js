@@ -18,6 +18,8 @@ import axios from "axios";
 import {Redirect} from "react-router-dom";
 import setAuthToken from "../util/setAuthToken";
 import * as config from '../Data/config';
+import {emails, passwords} from "../util/credentialsEnum";
+
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -44,6 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -51,17 +54,39 @@ class Login extends Component {
       email: '',
       password: '',
       doRedirect: false,
-      isLoading: false
-    }
+      isLoading: false,
+      passwordValidation: passwords.INIT,
+      emailValidation: emails.INIT
+    };
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this)
   }
 
   handleClick(e){
+    if (this.state.password.length >= 5) {
+      this.setState({
+        passwordValidation: passwords.VALID
+      });
+    } else if (0 < this.state.password.length < 5) {
+      this.setState({
+        passwordValidation: passwords.INVALID
+      });
+    }
+
+    if (this.state.email.match('(\\w+\\.)*\\w+@(\\w+\\.)+[A-Za-z]+')) {
+      this.setState({
+        emailValidation: emails.VALID
+      });
+    } else {
+      this.setState({
+        emailValidation: emails.INVALID
+      })
+    }
     const user = {
       email: this.state.email,
       password: this.state.password
     };
+
     this.setState({isLoading: true});
     axios.post(`${config.flaskip}/login`, user)
     // axios.post('http://127.0.0.1:5000/login', user)
@@ -73,17 +98,19 @@ class Login extends Component {
         setAuthToken(data.access_token);
         this.setState({ doRedirect: true})
       })
-      .catch(err => this.setState({
-        errors: err.response.data,
-        isLoading: false
-      }));
+      .catch(err => {
+        this.setState({
+          errors: err.response.data,
+          isLoading: false
+        });
+      });
   };
 
   onChange = e => this.setState({ [e.target.id]: e.target.value });
 
   render() {
     const {classes} = this.props;
-    const {email, password, isLoading} = this.state;
+    const {email, password, isLoading, emailValidation, passwordValidation} = this.state;
 
     return (
       <Container component="main" maxWidth="xs">
@@ -109,12 +136,14 @@ class Login extends Component {
               autoComplete="email"
               autoFocus
               value={email}
+              error={emailValidation===emails.INVALID ? "Input a valid email" : null}
               onChange={e => this.setState(this.onChange(e))}
             />
             <TextField
               variant="outlined"
               margin="normal"
               disabled={isLoading}
+              error={passwordValidation===passwords.INVALID ? "Password length is incorrect" : null}
               required
               fullWidth
               name="password"
