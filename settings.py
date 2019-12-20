@@ -7,8 +7,7 @@ FLASK_ENV = "development"
 
 f = open("/home/ubuntu/config_mysql_ip.txt","r")
 MYSQL_HOST = f.read()
-# MYSQL_HOST = "3.14.6.201"  # use getIP to get Dominic's script generation name
-# MYSQL_HOST = getIP('localhost')
+# MYSQL_HOST = '127.0.0.1'
 MYSQL_PORT = 3306
 DBNAME = "50043_DB"
 SECRET_KEY = os.environ.get("SECRET_KEY", default="secret")

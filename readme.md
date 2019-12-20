@@ -1,34 +1,35 @@
 # 50.043 Database Project
 
-## Automation script
-The automation script is located in `bookreviews/boto3/call_master.py`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After the 4 servers are deployed, the server copies the IP addresses of all the new servers and transfers them into all the other servers. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
-
-**NOTE TO USER:**
-* Please make sure your AWS user account is in `us-east-1`
-* Please make sure you have a good internet connection when you try and run the automation scripts.
-* This script requires you to use python 3.7 and above because we use `fstrings`. If `python3` does not use python 3.7 and above by default, install python3.7 and use `python3.7` to run the scripts instead (or make an alias for python3).
-* if you see the warning `ssh connection refused`, let the script continue to run. It should eventually add the IP address of the particular server into your `~/.ssh/known_hosts` file.
-* This script is meant to run on **UNIX based systems (linux or MacOS)**. If you use windows subsystem for linux (WSL), please run `dos2unix` on `bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. This is because windows has different file line endings than unix.
-
-### Prerequisite python3 libraries
+## Prerequisite python3 libraries
 * boto3
 * fire
     * installed by `pip3 install fire`
 * dos2unix (for WSL users only)
     * `sudo apt-get install dos2unix`
 
-### Other dependencies
+## Other dependencies
 * openssh-server
 * openssh-client
 
-### Other requirements
+## Other requirements
 * Please make sure that no security group named `50043_SECURITY_GROUP` exists in your aws user account.
-* Please make sure you have an SSH keypair for your location. Put the SSH keypair in `~/.ssh` and ensure it has the appropriate permissions by running `chmod 400 ~/.ssh/<keyname>`
 
-### Instructions to launch automation script
-* the automation script takes in an empty **Ubuntu 18.04** ami image for your location as the `--image_id` argument.
-* from the `boto3` folder, run `python3 call_master.py --keyname=<keyname> --image_id=<image_id> --instance_type=<instance_type>`.
-* Example (for us-east-1): `python3 call_master.py --keypair=50043-east1-keypair --image_id=ami-04b9e92b5572fa0d1 --instance_type=t2.micro`
+## Instructions to launch automation script
+* **Caveats (There's no free lunch)**: 
+    * The data extraction was tested to use **t3.large** and above. Lower tier instances hang on our data extraction step from the database.
+    * the automation script takes in the **path to your IAM credentials csv file** in the `--csv_aws_credentials`, and the image_id for **us-east-1** in the `--image_id` argument.
+* from the `boto3` folder, run `python3 call_master.py --csv_aws_credentials=<path/to/csv/> --image_id=<ami_image_id> --instance_type=<instance_type>`.
+* Example: `python3 call_master.py --csv_aws_credentials=/home/ubuntu/Downloads/.aws/ --image_id=ami-04b9e92b5572fa0d1 --instance_type=t3.large`
+
+## Automation script
+The automation script is located in `bookreviews/boto3/call_master.py`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After the 4 servers are deployed, the server copies the IP addresses of all the new servers and transfers them into all the other servers. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
+
+**NOTES TO USER:**
+* Please make sure your AWS user account is in `us-east-1`
+* Please make sure you have a good internet connection when you try and run the automation scripts.
+* This script requires you to use python 3.7 and above because we use `fstrings`. If `python3` does not use python 3.7 and above by default, install python3.7 and use `python3.7` to run the scripts instead (or make an alias for python3).
+* if you see the warning `ssh connection refused`, let the script continue to run. It should eventually add the IP address of the particular server into your `~/.ssh/known_hosts` file.
+* This script is meant to run on **UNIX based systems (linux or MacOS)**. If you use windows subsystem for linux (WSL), please run `dos2unix` on `bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. This is because windows has different file line endings than unix.
 
 **Expected output:**
 First, you should see that the script creates a security group.

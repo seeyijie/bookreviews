@@ -6,6 +6,7 @@ db = '50043_db'
 # this IP is transferred over to the server after status check
 f = open("/home/ubuntu/config_mongodb_ip.txt","r")
 mongodb_ip = f.read()
+# mongodb_ip = "127.0.0.1"
 
 # old ip address: 3.16.15.52
 def global_init():
