@@ -1,7 +1,8 @@
-import os
 import subprocess
-import fire
 import time
+
+import fire
+
 import aws_setup
 import make_cluster_scripts
 
@@ -12,7 +13,10 @@ def cli(
     instance_type="t3.large",
     n_nodes_analytics=4,
 ):
-    # eg python3 call_master.py --csv_aws_credentials=path/to/csv
+    # Example: python3 call_master.py --csv_aws_credentials=path/to/csv
+    # Default image_id refers to "Ubuntu Server 18.04 LTS (HVM), SSD Volume Type"
+    # This is the ami for production backend, analytics backend uses Amazon Linux 2
+
     start = time.time()
     aws_setup.main(csv_aws_credentials)
     with open("info.txt") as f:

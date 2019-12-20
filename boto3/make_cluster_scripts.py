@@ -19,7 +19,6 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         with open(path, "w") as f:
             f.write("\n".join(lines))
 
-    install_numpy = "curl -O https://bootstrap.pypa.io/get-pip.py && sudo python get-pip.py && sudo pip install numpy"
     lines = [
         "#!/bin/bash",
         "flintrock launch my-cluster \\",
@@ -35,8 +34,6 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         "--ec2-instance-type {} \\".format(instance_type),
         "--ec2-ami {} \\".format(ami),
         "--num-slaves {} \\".format(num_nodes - 1),
-        "",
-        "bash cluster_run_command.sh {}".format(install_numpy),
     ]
     write_script(lines, "cluster_launch.sh")
 
@@ -78,9 +75,11 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
     ]
     write_script(lines, "cluster_run_command.sh")
 
+    install_numpy = "curl -O https://bootstrap.pypa.io/get-pip.py && sudo python get-pip.py && sudo pip install numpy"
     spark_submit = "spark-submit --packages org.apache.hadoop:hadoop-aws:2.7.6"
     lines = [
         "#!/bin/bash",
+        "bash cluster_run_command.sh {}".format(install_numpy),
         "bash cluster_copy_file.sh $1",
         "flintrock run-command my-cluster '{}' $1 \\".format(spark_submit),
         "--ec2-user ec2-user \\",
