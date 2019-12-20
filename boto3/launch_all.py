@@ -1,8 +1,9 @@
-import time
+import os
+
 import fire
-import subprocess
-import boto3
 from botocore.exceptions import ClientError
+
+import boto3
 
 ec2 = boto3.resource('ec2')
 def launch_ec2(image, keyname, count, userdata, instancetype): # key = 50043-keypair , no .pem
@@ -37,10 +38,12 @@ def write_config_files(instance, instance_type):
         f.write(f'#!/bin/bash\nserver_ip="{instance.public_ip_address}"\npublic_key="{instance.key_name}.pem"\nusername="ubuntu"')
     return None
 
-def write_metadata(instance, instance_type):
-    with open (f"metadata/metadata_{instance_type}.txt", 'w') as f:
-        f.write(f"{instance.instance_id}")
-    return None
+def write_metadata(instance, instance_type, folder="metadata"):
+    if not os.path.isdir(folder):
+        os.mkdir(folder)
+    fname = "meta_data_{}.txt".format(instance_type)
+    with open(os.path.join(folder, fname), 'w') as f:
+        f.write(str(instance.instance_id))
 
 # calls all the necessary functions to generate ip files
 def write_instances(instances, server_types):
