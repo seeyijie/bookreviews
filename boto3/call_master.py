@@ -1,3 +1,4 @@
+import os
 import subprocess
 import fire
 import time
@@ -10,7 +11,7 @@ def cli(csv_aws_credentials, image_id, instance_type):
     with open("info.txt") as f:
         info_dict = eval(f.read())
         keyfile = info_dict["keyfile"]
-        keypair = keyfile.split(".")[0]
+        keypair = os.path.basename(keyfile).split(".")[0]  # eg "/root/.ssh/key.pem"
 
     subprocess.check_call(["./master.sh", keypair, image_id, instance_type])
     duration = (time.time() - start) / 60  # convert seconds to minutes
