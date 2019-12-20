@@ -58,13 +58,11 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
 
     lines = [
         "#!/bin/bash",
-        "bash cluster_copy_file.sh $1",
-        "flintrock run-command my-cluster \\",
-        "--ec2-user ec2-user \\",
-        "--ec2-identity-file {} \\".format(keyfile),
-        "'sleep 1 && hadoop fs -put' $1 / && sleep 1",
+        "curl -O https://bootstrap.pypa.io/get-pip.py",
+        "bash cluster_copy_file.sh get-pip.py",
+        "bash cluster_run_command.sh 'sudo python get-pip.py && sudo pip install numpy'",
     ]
-    write_script(lines, "cluster_copy_to_hdfs.sh")
+    write_script(lines, "cluster_install_numpy.sh")
 
     lines = [
         "#!/bin/bash",
@@ -75,11 +73,10 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
     ]
     write_script(lines, "cluster_run_command.sh")
 
-    install_numpy = "curl -O https://bootstrap.pypa.io/get-pip.py && sudo python get-pip.py && sudo pip install numpy"
+    # spark_submit prefix with --packages argument to enable access to S3
     spark_submit = "spark-submit --packages org.apache.hadoop:hadoop-aws:2.7.6"
     lines = [
         "#!/bin/bash",
-        "bash cluster_run_command.sh {}".format(install_numpy),
         "bash cluster_copy_file.sh $1",
         "flintrock run-command my-cluster '{}' $1 \\".format(spark_submit),
         "--ec2-user ec2-user \\",
