@@ -10,3 +10,8 @@ export const emails = {
   INIT: 'undefined'
 };
 
+export const authentication = {
+  VALID: 'valid',
+  INVALID: 'invalid',
+  INIT: 'undefined'
+};
