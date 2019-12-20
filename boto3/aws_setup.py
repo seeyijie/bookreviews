@@ -102,6 +102,14 @@ def put_keyfile_in_ssh(keyfile):
     return path_out
 
 
+def make_valid_bucket_name(bucket_name):
+    # https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-s3-bucket-naming-requirements.html
+    whitelist = string.ascii_lowercase + string.digits + "." + "-"
+    bucket_name = "".join([c for c in bucket_name if c in whitelist])
+    bucket_name = bucket_name.lower()
+    return bucket_name
+
+
 def main(csv_aws_credentials, region="us-east-1"):
     creds = read_credentials(csv_aws_credentials)
     write_credentials(creds, region)
@@ -112,7 +120,7 @@ def main(csv_aws_credentials, region="us-east-1"):
     # print("All buckets:", list(s3.buckets.all()))
     user = creds["User name"]
     bucket_name = "{}-bucket-50043-group-datahoarders".format(user)
-    bucket_name = bucket_name.lower()  # AWS only accepts lowercase
+    bucket_name = make_valid_bucket_name(bucket_name)
     bucket = create_bucket(s3, bucket_name, region)
     write_bucket_info(bucket_name)
     print("Bucket objects:", list(bucket.objects.all()))
