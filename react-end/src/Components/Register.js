@@ -147,6 +147,7 @@ class Register extends Component {
             <Button
               fullWidth
               variant="contained"
+              disabled={isLoading}
               color="primary"
               className={classes.submit}
               onClick={e => this.handleClick()}

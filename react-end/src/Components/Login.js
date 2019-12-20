@@ -131,6 +131,7 @@ class Login extends Component {
             />
             <Button
               fullWidth
+              disabled={isLoading}
               variant="contained"
               color="primary"
               className={classes.submit}
