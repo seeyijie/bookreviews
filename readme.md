@@ -26,9 +26,11 @@ The automation script is located in `bookreviews/boto3/call_master.py`. It launc
 * Please make sure you have an SSH keypair for your location. Put the SSH keypair in `~/.ssh` and ensure it has the appropriate permissions by running `chmod 400 ~/.ssh/<keyname>`
 
 ### Instructions to launch automation script
-* the automation script takes in an empty **Ubuntu 18.04** ami image for your location as the `--image_id` argument.
-* from the `boto3` folder, run `python3 call_master.py --keyname=<keyname> --image_id=<image_id> --instance_type=<instance_type>`.
-* Example (for us-east-1): `python3 call_master.py --keypair=50043-east1-keypair --image_id=ami-04b9e92b5572fa0d1 --instance_type=t2.micro`
+* **Caveats (There's no free lunch)**: 
+    * The data extraction was tested to use t3.large and above. Lower tier instances hang on our data extraction step from the database.
+    * the automation script takes in an empty **Ubuntu 18.04** ami image for your location as the `--image_id` argument.
+* from the `boto3` folder, run `python3 call_master.py --csv_aws_credentials=<path/to/csv/> --image_id=<ami_image_id> --instance_type=<instance_type>`.
+* Example (for us-east-1): `python3 call_master.py --csv_aws_credentials=/home/ubuntu/Downloads/.aws/ --image_id=ami-04b9e92b5572fa0d1 --instance_type=t3.large`
 
 **Expected output:**
 First, you should see that the script creates a security group.

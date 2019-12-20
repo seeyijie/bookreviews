@@ -1,7 +1,6 @@
 #!/bin/bash
 
 sudo apt-get -y update
-# sudo apt-get -y upgrade
 
 # install dependencies and updates
 sudo apt-get install -y python3-pip
@@ -22,7 +21,3 @@ cd "/home/ubuntu/bookreviews" || exit
 sudo python3 -m venv env
 source env/bin/activate
 sudo python3 -m pip install -r requirements.txt
-# sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app &
-
-# Resource
-# https://www.digitalocean.com/community/tutorials/how-to-serve-flask-applications-with-gunicorn-and-nginx-on-ubuntu-18-04#step-5-%E2%80%94-configuring-nginx-to-proxy-requests
