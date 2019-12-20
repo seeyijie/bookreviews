@@ -3,7 +3,9 @@
 venv/
 .env
 env/
+*.pem
 *.pyc
+info.txt
 boto3/config_files/*.sh
 boto3/ip_addresses/*.txt
 kindle_reviews.csv
