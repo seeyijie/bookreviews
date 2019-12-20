@@ -19,7 +19,8 @@
     * The data extraction was tested to use **t3.large** and above. Lower tier instances hang on our data extraction step from the database.
     * the automation script takes in the **path to your IAM credentials csv file** in the `--csv_aws_credentials`, and the image_id for **us-east-1** in the `--image_id` argument.
 * from the `boto3` folder, run `python3 call_master.py --csv_aws_credentials=<path/to/csv/> --image_id=<ami_image_id> --instance_type=<instance_type>`.
-* Example: `python3 call_master.py --csv_aws_credentials=/home/ubuntu/Downloads/.aws/ --image_id=ami-04b9e92b5572fa0d1 --instance_type=t3.large`
+* Example: `python3 call_master.py --csv_aws_credentials=/home/ubuntu/Downloads/.aws/credentials.csv --image_id=ami-04b9e92b5572fa0d1 --instance_type=t3.large`
+* We have included a termination script to terminate the instances launched by `call_master.py`. To run the script, go to `boto3` and run `python3 terminate_backend.py`.
 
 ## Automation script
 The automation script is located in `bookreviews/boto3/call_master.py`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After the 4 servers are deployed, the server copies the IP addresses of all the new servers and transfers them into all the other servers. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
