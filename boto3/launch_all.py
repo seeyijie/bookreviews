@@ -37,9 +37,10 @@ def write_config_files(instance, instance_type):
         f.write(f'#!/bin/bash\nserver_ip="{instance.public_ip_address}"\npublic_key="{instance.key_name}.pem"\nusername="ubuntu"')
     return None
 
-# def write_fingerprint_config(instance, instance_type):
-#     with open(f"config_files/fingerprint_{instance_type}.sh", 'w') as f:
-#         f.write(f'#!/bin/bash\nssh-keygen -R {instance.public_ip_address}\nssh-keyscan -t ecdsa -H {instance.public_ip_address} >> ~/.ssh/known_hosts')
+def write_metadata(instance, instance_type):
+    with open (f"metadata/metadata_{instance_type}.txt", 'w') as f:
+        f.write(f"{instance.instance_id}")
+    return None
 
 # calls all the necessary functions to generate ip files
 def write_instances(instances, server_types):
@@ -56,6 +57,7 @@ def write_instances(instances, server_types):
         # write IP addresses and config files for respective images
         write_config_files(instance, server_types[i])
         write_ip_addresses(instance, server_types[i])
+        write_metadata(instance, server_types[i])
         if server_types[i] == "flask":
             write_ip_to_js(instance)
         i += 1
@@ -110,14 +112,14 @@ def create_security_group(group_name, description):
         print(e)
     return None
 
-def edit_script(filename, ipList):
-    with open(filename, "r") as file:
-        lines = file.readlines()
-    for ip in range(len(ipList)):
-        lines[ip+1] = "ip_{ip}={ipList[ip]}" + "\n"
-    with open(filename, "w") as file:
-        for line in lines:
-            file.write(line)
+# def edit_script(filename, ipList):
+#     with open(filename, "r") as file:
+#         lines = file.readlines()
+#     for ip in range(len(ipList)):
+#         lines[ip+1] = "ip_{ip}={ipList[ip]}" + "\n"
+#     with open(filename, "w") as file:
+#         for line in lines:
+#             file.write(line)
     
 # function needs to take in image id and keyname
 # "Main function"
