@@ -198,26 +198,26 @@ def tfidf_review_text(_df_reviews):
 def load_data(bucket, fname, sep_csv="\t"):
     name, ftype = fname.split(".")
     read_fn = {
-        "csv": partial(spark.read.csv, header=True, inferSchema=True, sep=sep_csv),
-        "json": spark.read.json,
+        "csv": partial(spark.read.csv, schema="asin STRING, reviewText STRING", sep=sep_csv),
+        "json": partial(spark.read.json, schema="asin STRING, price DOUBLE"),
     }[ftype]
     path_hdfs = os.path.join("hdfs:", fname)
     path_s3 = os.path.join(bucket, fname)
+
     with Timer("Read S3 Bucket"):
         df = read_fn(path_s3)
-    if ftype == "csv":
-        read_fn = partial(spark.read.csv, header=True, schema=df.schema, sep=sep_csv)
+
+    # return df
 
     try:
         return read_fn(path_hdfs)
-
     except utils.AnalysisException as e:
-        print("HDFS file not found:", e)
+        print("HDFS read error:", e)
 
         with Timer("Write HDFS"):
             try:
                 if ftype == "csv":
-                    df.write.csv(path_hdfs, header=True, sep=sep_csv)
+                    df.write.csv(path_hdfs, sep=sep_csv)
                 elif ftype == "json":
                     df.write.json(path_hdfs)
             except utils.AnalysisException as e:
@@ -240,8 +240,8 @@ if __name__ == "__main__":
         bucket_name = ""
         assert bucket_name != "", "Should be overwritten by finalize_spark_script.py"
         bucket = "s3a://" + bucket_name
-        df_reviews = load_data(bucket, "kindle_reviews.csv")
-        df_meta = load_data(bucket, "meta_Kindle_Store.json")
+        df_reviews = load_data(bucket, "mysql_data.csv")
+        df_meta = load_data(bucket, "mongo_data.json")
 
         print("Meta:", show_df(df_meta, 10))
         print("Review:", show_df(df_reviews, 10))
