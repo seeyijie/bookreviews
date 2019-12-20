@@ -99,6 +99,7 @@ def put_keyfile_in_ssh(keyfile):
     path_out = os.path.join(folder, keyfile)
     shutil.copyfile(keyfile, path_out)
     print(run_shell("chmod 400 {}".format(path_out)))
+    return path_out
 
 
 def main(csv_aws_credentials, region="us-east-1"):
@@ -119,7 +120,7 @@ def main(csv_aws_credentials, region="us-east-1"):
     ec2 = boto3.resource("ec2")
     keypair = create_key_pair(ec2)
     keyfile = write_key(keypair)
-    put_keyfile_in_ssh(keyfile)
+    keyfile = put_keyfile_in_ssh(keyfile)
 
     # Important: for a new user, the default IAM roles must be created
     # in order to launch a cluster

@@ -1,3 +1,5 @@
+import os
+
 import fire
 
 
@@ -9,7 +11,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
     with open("info.txt") as f:
         dict_info = eval(f.read())
     keyfile, region = dict_info["keyfile"], dict_info["region"]
-    keyname = keyfile.split(".")[0]
+    keyname = os.path.basename(keyfile).split(".")[0]  # eg "/root/.ssh/key.pem"
 
     def write_script(lines, path):
         print("Writing script to:", path)
@@ -27,7 +29,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         "--ec2-instance-profile-name EMR_EC2_DefaultRole \\",
         "--ec2-key-name {} \\".format(keyname),
         "--ec2-region {} \\".format(region),
-        "--ec2-identity-file {}.pem \\".format(keyname),
+        "--ec2-identity-file {} \\".format(keyfile),
         "--ec2-instance-type {} \\".format(instance_type),
         "--ec2-ami {} \\".format(ami),
         "--num-slaves {} \\".format(num_nodes - 1),
@@ -38,7 +40,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         "#!/bin/bash",
         "flintrock login my-cluster \\",
         "--ec2-user ec2-user \\",
-        "--ec2-identity-file {}.pem \\".format(keyname),
+        "--ec2-identity-file {} \\".format(keyfile),
     ]
     write_script(lines, "cluster_login.sh")
 
@@ -49,7 +51,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         "#!/bin/bash",
         "flintrock copy-file --assume-yes my-cluster $1 /home/ec2-user/$1 \\",
         "--ec2-user ec2-user \\",
-        "--ec2-identity-file {}.pem \\".format(keyname),
+        "--ec2-identity-file {} \\".format(keyfile),
     ]
     write_script(lines, "cluster_copy_file.sh")
 
@@ -58,7 +60,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         "bash cluster_copy_file.sh $1",
         "flintrock run-command my-cluster \\",
         "--ec2-user ec2-user \\",
-        "--ec2-identity-file {}.pem \\".format(keyname),
+        "--ec2-identity-file {} \\".format(keyfile),
         "'sleep 1 && hadoop fs -put' $1 / && sleep 1",
     ]
     write_script(lines, "cluster_copy_to_hdfs.sh")
@@ -67,7 +69,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         "#!/bin/bash",
         "flintrock run-command my-cluster \\",
         "--ec2-user ec2-user \\",
-        "--ec2-identity-file {}.pem \\".format(keyname),
+        "--ec2-identity-file {} \\".format(keyfile),
         "-- $1",  # "--" prevents flintrock from parsing anymore flags
     ]
     write_script(lines, "cluster_run_command.sh")
@@ -78,7 +80,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         "bash cluster_copy_file.sh $1",
         "flintrock run-command my-cluster '{}' $1 \\".format(spark_submit),
         "--ec2-user ec2-user \\",
-        "--ec2-identity-file {}.pem \\".format(keyname),
+        "--ec2-identity-file {} \\".format(keyfile),
     ]
     write_script(lines, "cluster_run_app.sh")
 
