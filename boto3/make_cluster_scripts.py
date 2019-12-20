@@ -10,14 +10,16 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
 
     with open("info.txt") as f:
         dict_info = eval(f.read())
-    keyfile, region = dict_info["keyfile"], dict_info["region"]
-    keyname = os.path.basename(keyfile).split(".")[0]  # eg "/root/.ssh/key.pem"
+    keyfile = dict_info["keyfile"]
+    keyname = dict_info["keyname"]
+    region = dict_info["region"]
 
     def write_script(lines, path):
         print("Writing script to:", path)
         with open(path, "w") as f:
             f.write("\n".join(lines))
 
+    install_numpy = "curl -O https://bootstrap.pypa.io/get-pip.py && sudo python get-pip.py && sudo pip install numpy"
     lines = [
         "#!/bin/bash",
         "flintrock launch my-cluster \\",
@@ -33,6 +35,8 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         "--ec2-instance-type {} \\".format(instance_type),
         "--ec2-ami {} \\".format(ami),
         "--num-slaves {} \\".format(num_nodes - 1),
+        "",
+        "bash cluster_run_command.sh {}".format(install_numpy),
     ]
     write_script(lines, "cluster_launch.sh")
 
@@ -81,6 +85,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         "flintrock run-command my-cluster '{}' $1 \\".format(spark_submit),
         "--ec2-user ec2-user \\",
         "--ec2-identity-file {} \\".format(keyfile),
+        "--master-only \\",
     ]
     write_script(lines, "cluster_run_app.sh")
 

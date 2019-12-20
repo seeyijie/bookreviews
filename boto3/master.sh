@@ -4,7 +4,9 @@ image_id=$2
 instance_type=$3
 
 # ==================== Phase 0 - launching of instances ======================
-# launch instances
+echo "Launch Spark cluster in parallel, in background to save time. It should finish before Phase 2"
+bash cluster_launch.sh &
+echo "Launch production backend instances"
 python3 launch_all.py --image=$image_id --keyname=$keypair --instancetype=$instance_type # runs instance and loads
 
 # ===================== Phase 1 - status checks (check if server has finished running user data) =====================

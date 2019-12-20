@@ -105,8 +105,8 @@ def put_keyfile_in_ssh(keyfile):
 def make_valid_bucket_name(bucket_name):
     # https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-s3-bucket-naming-requirements.html
     whitelist = string.ascii_lowercase + string.digits + "." + "-"
-    bucket_name = "".join([c for c in bucket_name if c in whitelist])
     bucket_name = bucket_name.lower()
+    bucket_name = "".join([c for c in bucket_name if c in whitelist])
     return bucket_name
 
 
@@ -134,8 +134,11 @@ def main(csv_aws_credentials, region="us-east-1"):
     # in order to launch a cluster
     run_shell("aws emr create-default-roles")
 
+    dict_info = dict(
+        region=region, keyfile=keyfile, keyname=keypair.name, bucket_name=bucket_name
+    )
     with open("info.txt", "w") as f:
-        f.write(str(dict(region=region, keyfile=keyfile, bucket_name=bucket_name)))
+        f.write(str(dict_info))
 
 
 if __name__ == "__main__":
