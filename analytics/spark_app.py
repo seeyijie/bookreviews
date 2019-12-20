@@ -195,10 +195,10 @@ def tfidf_review_text(_df_reviews):
         #   df.write.csv("results_tfidf.csv", header=True)
 
 
-def load_data(bucket, fname):
+def load_data(bucket, fname, sep_csv="\t"):
     name, ftype = fname.split(".")
     read_fn = {
-        "csv": partial(spark.read.csv, header=True, inferSchema=True),
+        "csv": partial(spark.read.csv, header=True, inferSchema=True, sep=sep_csv),
         "json": spark.read.json,
     }[ftype]
     path_hdfs = os.path.join("hdfs:", fname)
@@ -206,7 +206,7 @@ def load_data(bucket, fname):
     with Timer("Read S3 Bucket"):
         df = read_fn(path_s3)
     if ftype == "csv":
-        read_fn = partial(spark.read.csv, header=True, schema=df.schema)
+        read_fn = partial(spark.read.csv, header=True, schema=df.schema, sep=sep_csv)
 
     try:
         return read_fn(path_hdfs)
@@ -217,7 +217,7 @@ def load_data(bucket, fname):
         with Timer("Write HDFS"):
             try:
                 if ftype == "csv":
-                    df.write.csv(path_hdfs, header=True)
+                    df.write.csv(path_hdfs, header=True, sep=sep_csv)
                 elif ftype == "json":
                     df.write.json(path_hdfs)
             except utils.AnalysisException as e:
