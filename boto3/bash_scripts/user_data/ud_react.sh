@@ -18,8 +18,6 @@ sudo apt install -y yarn
 
 home="/home/ubuntu"
 sudo chown -R ubuntu:ubuntu $home/bookreviews
-
 cd /home/ubuntu/bookreviews/react-end
-
 # install react dependencies with yarn
 yarn install
