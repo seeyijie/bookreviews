@@ -47,7 +47,8 @@ class Register extends Component {
       name:'',
       email:'',
       password:'',
-      doRedirect: false
+      doRedirect: false,
+      isLoading: false
     };
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this)
@@ -59,18 +60,22 @@ class Register extends Component {
       name: this.state.name,
       password: this.state.password
     };
+    this.setState({isLoading: true});
     console.log(newUser);
     axios.post(`${config.flaskip}/register`, newUser)
     // axios.post('http://127.0.0.1:5000/register', newUser)
       .then(res => this.setState({ doRedirect: true}))
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({isLoading: false});
+        console.log(err)
+      });
   };
 
   onChange = e => this.setState({ [e.target.id]: e.target.value });
 
   render() {
     const {classes} = this.props;
-    const {name, email, password} = this.state;
+    const {name, email, password, isLoading} = this.state;
 
     return (
       <Container component="main" maxWidth="xs" >
@@ -90,6 +95,7 @@ class Register extends Component {
                 <TextField
                   autoComplete="name"
                   name="name"
+                  disabled={isLoading}
                   variant="outlined"
                   required
                   fullWidth
@@ -108,6 +114,7 @@ class Register extends Component {
                   required
                   fullWidth
                   id="email"
+                  disabled={isLoading}
                   label="Email Address"
                   name="email"
                   autoComplete="email"
@@ -122,6 +129,7 @@ class Register extends Component {
                   variant="outlined"
                   required
                   fullWidth
+                  disabled={isLoading}
                   name="password"
                   label="Password"
                   type="password"
@@ -139,6 +147,7 @@ class Register extends Component {
             <Button
               fullWidth
               variant="contained"
+              disabled={isLoading}
               color="primary"
               className={classes.submit}
               onClick={e => this.handleClick()}

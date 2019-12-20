@@ -50,7 +50,8 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      doRedirect: false
+      doRedirect: false,
+      isLoading: false
     }
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this)
@@ -61,6 +62,7 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password
     };
+    this.setState({isLoading: true});
     axios.post(`${config.flaskip}/login`, user)
     // axios.post('http://127.0.0.1:5000/login', user)
       .then(res => res.data.data)
@@ -71,14 +73,17 @@ class Login extends Component {
         setAuthToken(data.access_token);
         this.setState({ doRedirect: true})
       })
-      .catch(err => this.setState({errors: err.response.data}));
+      .catch(err => this.setState({
+        errors: err.response.data,
+        isLoading: false
+      }));
   };
 
   onChange = e => this.setState({ [e.target.id]: e.target.value });
 
   render() {
     const {classes} = this.props;
-    const {email, password} = this.state;
+    const {email, password, isLoading} = this.state;
 
     return (
       <Container component="main" maxWidth="xs">
@@ -95,6 +100,7 @@ class Login extends Component {
             <TextField
               variant="outlined"
               margin="normal"
+              disabled={isLoading}
               required
               fullWidth
               id="email"
@@ -108,6 +114,7 @@ class Login extends Component {
             <TextField
               variant="outlined"
               margin="normal"
+              disabled={isLoading}
               required
               fullWidth
               name="password"
@@ -124,6 +131,7 @@ class Login extends Component {
             />
             <Button
               fullWidth
+              disabled={isLoading}
               variant="contained"
               color="primary"
               className={classes.submit}
