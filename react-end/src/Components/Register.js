@@ -13,6 +13,7 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import PropTypes from 'prop-types';
 import Link from "@material-ui/core/Link";
 import * as config from '../Data/config';
+import {emails, passwords} from "../util/credentialsEnum";
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -48,13 +49,35 @@ class Register extends Component {
       email:'',
       password:'',
       doRedirect: false,
-      isLoading: false
+      isLoading: false,
+      passwordValidation: passwords.INIT,
+      emailValidation: emails.INIT
     };
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this)
   }
 
   handleClick(e){
+    if (this.state.password.length >= 5) {
+      this.setState({
+        passwordValidation: passwords.VALID
+      });
+    } else if (0 < this.state.password.length < 5) {
+      this.setState({
+        passwordValidation: passwords.INVALID
+      });
+    }
+
+    if (this.state.email.match('(\\w+\\.)*\\w+@(\\w+\\.)+[A-Za-z]+')) {
+      this.setState({
+        emailValidation: emails.VALID
+      });
+    } else {
+      this.setState({
+        emailValidation: emails.INVALID
+      })
+    }
+
     const newUser = {
       email: this.state.email,
       name: this.state.name,
@@ -75,7 +98,7 @@ class Register extends Component {
 
   render() {
     const {classes} = this.props;
-    const {name, email, password, isLoading} = this.state;
+    const {name, email, password, isLoading, passwordValidation, emailValidation} = this.state;
 
     return (
       <Container component="main" maxWidth="xs" >
@@ -117,6 +140,7 @@ class Register extends Component {
                   disabled={isLoading}
                   label="Email Address"
                   name="email"
+                  error={emailValidation===emails.INVALID ? "Input a valid email" : null}
                   autoComplete="email"
                   value={email}
                   onChange={(e) => {
@@ -130,11 +154,13 @@ class Register extends Component {
                   required
                   fullWidth
                   disabled={isLoading}
+                  helperText="Password must be 5 characters or longer"
                   name="password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  error={passwordValidation===passwords.INVALID ? "Password length is incorrect" : null}
                   value={password}
                   onChange={e => {
                     this.setState(this.onChange(e))
