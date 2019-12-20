@@ -86,3 +86,6 @@ Then the script runs the new flask and react servers. This installs sets up and 
 Deployment done! Thank you for your patience! 
 Access the webpage via the following link: http://18.189.31.214:80
 ```
+
+## Schematic Diagram
+<img src="https://live.staticflickr.com/65535/49246127762_7b94aaec66_b.jpg" alt="alt text" width="900" > 
