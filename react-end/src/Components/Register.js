@@ -62,7 +62,7 @@ class Register extends Component {
       this.setState({
         passwordValidation: passwords.VALID
       });
-    } else if (0 < this.state.password.length < 5) {
+    } else {
       this.setState({
         passwordValidation: passwords.INVALID
       });
@@ -75,7 +75,8 @@ class Register extends Component {
     } else {
       this.setState({
         emailValidation: emails.INVALID
-      })
+      });
+      return;
     }
 
     const newUser = {
@@ -90,7 +91,6 @@ class Register extends Component {
       .then(res => this.setState({ doRedirect: true}))
       .catch(err => {
         this.setState({isLoading: false});
-        console.log(err)
       });
   };
 
@@ -138,9 +138,10 @@ class Register extends Component {
                   fullWidth
                   id="email"
                   disabled={isLoading}
+                  helperText={emailValidation===emails.INVALID ? "Input a valid email" : null}
                   label="Email Address"
                   name="email"
-                  error={emailValidation===emails.INVALID ? "Input a valid email" : null}
+                  error={emailValidation===emails.INVALID}
                   autoComplete="email"
                   value={email}
                   onChange={(e) => {
@@ -154,13 +155,13 @@ class Register extends Component {
                   required
                   fullWidth
                   disabled={isLoading}
-                  helperText="Password must be 5 characters or longer"
+                  helperText="Password must be 5 characters and above"
                   name="password"
                   label="Password"
                   type="password"
                   id="password"
                   autoComplete="current-password"
-                  error={passwordValidation===passwords.INVALID ? "Password length is incorrect" : null}
+                  error={passwordValidation===passwords.INVALID}
                   value={password}
                   onChange={e => {
                     this.setState(this.onChange(e))

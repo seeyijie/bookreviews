@@ -6,6 +6,7 @@ env/
 *.pem
 *.pyc
 info.txt
+boto3/cluster_*.sh
 boto3/config_files/*.sh
 boto3/config_files/config.js
 boto3/ip_addresses/*.txt
