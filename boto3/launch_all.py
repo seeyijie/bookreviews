@@ -21,22 +21,35 @@ def launch_ec2(image, keyname, count, userdata, instancetype): # key = 50043-key
     return new_instances
 
 # write the IP address for one instance into a text file
-def write_ip_addresses(instance, instance_type):
-    with open(f"ip_addresses/config_{instance_type}_ip.txt", "w") as f:
-        f.write(f"{instance.public_ip_address}")
-    return None
+def write_ip_addresses(instance, instance_type, folder="ip_addresses"):
+    if not os.path.isdir(folder):
+        os.mkdir(folder)
+    fname = "config_{}_ip.txt".format(instance_type)
+    with open(os.path.join(folder, fname), 'w') as f:
+        f.write(str(instance.public_ip_address))
 
 # write the IP address for flask server into one js file
-def write_ip_to_js(instance):
-    with open(f"config_files/config.js", "w") as f:
-        f.write(f'export const flaskip = "http://{instance.public_ip_address}:5000"')
-    return None
+def write_ip_to_js(instance, folder="config_files"):
+    if not os.path.isdir(folder):
+        os.mkdir(folder)
+    fname = "config.js"
+    content = 'export const flaskip = "http://{}:5000"'.format(instance.public_ip_address)
+    with open(os.path.join(folder, fname), 'w') as f:
+        f.write(str(content))
 
 # writes instance information (mongodb, flask, react, mysql) into bash files
-def write_config_files(instance, instance_type):
-    with open (f"config_files/config_{instance_type}.sh", 'w') as f:
-        f.write(f'#!/bin/bash\nserver_ip="{instance.public_ip_address}"\npublic_key="{instance.key_name}.pem"\nusername="ubuntu"')
-    return None
+def write_config_files(instance, instance_type, folder="config_files"):
+    if not os.path.isdir(folder):
+        os.mkdir(folder)
+    fname = "config_{}.sh".format(instance_type)
+    content = "\n".join([
+        "#!/bin/bash",
+        'server_ip = "{}"'.format(instance.public_ip_address),
+        'public_key = "{}.pem"'.format(instance.key_name),
+        'username="ubuntu"',
+    ])
+    with open(os.path.join(folder, fname), 'w') as f:
+        f.write(str(content))
 
 def write_metadata(instance, instance_type, folder="metadata"):
     if not os.path.isdir(folder):
