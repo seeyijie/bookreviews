@@ -6,7 +6,8 @@ instance_type=$3
 # ==================== Phase 0 - launching of instances ======================
 # Ideally launch spark code should be run here but for testing we put in run_analytics.sh
 #echo "Launch Spark cluster in parallel, in background to save time. It should finish before Phase 2"
-#bash cluster_launch.sh &  # Running in background, doesn't terminate
+nohup bash cluster_launch.sh &  # Running in background, doesn't terminate
+cluster_pid=$!
 #bash cluster_launch.sh
 echo "Launch production backend instances"
 python3 launch_all.py --image=$image_id --keyname=$keypair --instancetype=$instance_type # runs instance and loads
@@ -71,5 +72,6 @@ scp -i ~/.ssh/$keypair config_files/config.js $react_username@$react_server_ip:/
 # setup react server to use new IP addresses
 ssh -i ~/.ssh/$keypair $react_username@$react_server_ip "cd /home/ubuntu/bookreviews/react-end ; sudo yarn build ; sudo apt-get install -y nginx ; sudo rm /etc/nginx/sites-available/default ; sudo cp /home/ubuntu/bookreviews/boto3/config_files/default /etc/nginx/sites-available ; sudo service nginx start ; sudo service nginx restart"
 
+wait $cluster_pid
 echo "*************************************************"
 echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via the following link: http://$react_server_ip:80"
