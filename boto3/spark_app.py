@@ -290,15 +290,17 @@ if __name__ == "__main__":
     with Timer("My spark script"):
         spark = SparkSession.builder.master("local[*]").getOrCreate()
 
-        bucket_name = "dominic50043-bucket-50043-group-datahoarders"
-        assert bucket_name != "", "Should be overwritten by finalize_spark_script.py"
-        bucket = "s3a://" + bucket_name
+        with open("info.txt") as f:
+            dict_info = eval(f.read())
+        bucket = "s3a://" + dict_info["bucket_name"]
+
         df_reviews = load_data(bucket, "mysql_data.csv")
         df_meta = load_data(bucket, "mongo_data.json")
 
         ##########################################################################
-        # df_reviews = df_reviews.sample(0.1)
-        # df_meta = df_meta.sample(0.1)
+        # Use 10% of data for testing to save time
+        df_reviews = df_reviews.sample(0.1)
+        df_meta = df_meta.sample(0.1)
         ##########################################################################
 
         print("Meta:", show_df(df_meta, 10))

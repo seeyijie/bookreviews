@@ -5,7 +5,7 @@ instance_type=$3
 
 # ==================== Phase 0 - launching of instances ======================
 # Ideally launch spark code should be run here but for testing we put in run_analytics.sh
-#echo "Launch Spark cluster in parallel, in background to save time. It should finish before Phase 2"
+echo "Launch Spark cluster in parallel, in background to save time. It should finish before Phase 2"
 nohup bash cluster_launch.sh &  # Running in background, doesn't terminate
 cluster_pid=$!
 #bash cluster_launch.sh
