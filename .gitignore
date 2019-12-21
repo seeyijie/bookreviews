@@ -22,4 +22,5 @@ Pipfile*
 tests
 mongo_data.json
 mysql_data.csv
-metadata
+boto3/metadata/*
+boto3/get-pip.py
