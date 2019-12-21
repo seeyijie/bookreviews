@@ -1,9 +1,4 @@
 #!/bin/bash
-
-## to be run from within the server
-#cd "/home/ubuntu/bookreviews" || exit
-#python3 -m venv env
-#source env/bin/activate
 pip3 install -q boto3 fire
 
 # extract data from mysql database and send to s3 bucket

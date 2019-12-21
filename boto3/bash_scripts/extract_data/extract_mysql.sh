@@ -1,11 +1,4 @@
-#!/bin/bash 
-
-## install virtualenv to run script
-#cd "/home/ubuntu/bookreviews" || exit
-#python3 -m venv env
-#
-## need to change permissions before running this....
-#source env/bin/activate
+#!/bin/bash
 pip3 install -q boto3 fire
 
 cd "/home/ubuntu/bookreviews/boto3"
