@@ -15,3 +15,4 @@ if __name__ == "__main__":
                 os.mkdir(name)
             if obj.key.startswith(name):
                 bucket.download_file(Key=obj.key, Filename=obj.key)
+                print("Downloaded:", obj.key)
