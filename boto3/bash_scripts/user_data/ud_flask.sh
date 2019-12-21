@@ -20,4 +20,4 @@ cd "/home/ubuntu/bookreviews" || exit
 # create and update virtual environment requirements
 sudo python3 -m venv env
 source env/bin/activate
-sudo python3 -m pip install -r requirements.txt
+sudo python3 -m pip install -r requirements_production.txt

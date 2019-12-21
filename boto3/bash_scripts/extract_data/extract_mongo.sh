@@ -4,7 +4,6 @@
 cd "/home/ubuntu/bookreviews" || exit
 python3 -m venv env
 source env/bin/activate
-#pip3 install -r requirements.txt
 pip3 install boto3 fire
 
 # extract data from mysql database and send to s3 bucket

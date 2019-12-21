@@ -7,7 +7,9 @@ env/
 *.pyc
 info.txt
 boto3/config_files/*.sh
+boto3/config_files/config.js
 boto3/ip_addresses/*.txt
+boto3/cluster_*
 kindle_reviews.csv
 meta_Kindle_Store.json
 migrations
@@ -19,3 +21,4 @@ Pipfile*
 tests
 mongo_data.json
 mysql_data.csv
+metadata
