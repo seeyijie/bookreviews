@@ -237,7 +237,7 @@ if __name__ == "__main__":
     with Timer("My spark script"):
         spark = SparkSession.builder.master("local[*]").getOrCreate()
 
-        bucket_name = ""
+        bucket_name = "dominic50043-bucket-50043-group-datahoarders"
         assert bucket_name != "", "Should be overwritten by finalize_spark_script.py"
         bucket = "s3a://" + bucket_name
         df_reviews = load_data(bucket, "mysql_data.csv")

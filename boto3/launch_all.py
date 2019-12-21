@@ -54,7 +54,7 @@ def write_config_files(instance, instance_type, folder="config_files"):
 def write_metadata(instance, instance_type, folder="metadata"):
     if not os.path.isdir(folder):
         os.mkdir(folder)
-    fname = "meta_data_{}.txt".format(instance_type)
+    fname = "metadata_{}.txt".format(instance_type)
     with open(os.path.join(folder, fname), 'w') as f:
         f.write(str(instance.instance_id))
 

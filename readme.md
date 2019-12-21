@@ -1,9 +1,7 @@
 # 50.043 Database Project
 
 ## Prerequisite python3 libraries
-* boto3
-* fire
-    * installed by `pip3 install fire`
+* Install the requirements by running `pip3 install -r requirements.txt`
 * dos2unix (for WSL users only)
     * `sudo apt-get install dos2unix`
 
@@ -14,14 +12,20 @@
 ## Other requirements
 * Please make sure that no security group named `50043_SECURITY_GROUP` exists in your aws user account.
 
-## Instructions to launch automation script
-* **Caveats (There's no free lunch)**: 
-    * The data extraction was tested to use **t3.large** and above. Lower tier instances hang on our data extraction step from the database.
-    * the automation script takes in the **path to your IAM credentials csv file** in the `--csv_aws_credentials`, and the image_id for **us-east-1** in the `--image_id` argument.
-* from the `boto3` folder, run `python3 call_master.py --csv_aws_credentials=<path/to/csv/> --image_id=<ami_image_id> --instance_type=<instance_type>`.
-* Example: `python3 call_master.py --csv_aws_credentials=/home/ubuntu/Downloads/.aws/credentials.csv --image_id=ami-04b9e92b5572fa0d1 --instance_type=t3.large`
-* We have included a termination script to terminate the instances launched by `call_master.py`. To run the script, go to `boto3` and run `python3 terminate_backend.py`.
+# Running the scripts
+**NOTE TO WINDOWS USERS**: This script is meant to run on **UNIX based systems (linux or MacOS)**. If you use windows subsystem for linux (WSL), please run `dos2unix` on `bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. This is because windows has different file line endings than unix.
 
+## Launching the production backend and analytics cluster
+* From the `boto3` folder, run `python3 call_master.py --csv_aws_credentials=<path/to/csv/> --image_id=<ami_image_id> --instance_type=<instance_type>`.
+    * Example: `python3 call_master.py --csv_aws_credentials=/home/ubuntu/Downloads/.aws/credentials.csv --image_id=ami-04b9e92b5572fa0d1 --instance_type=t3.large`
+    * **Caveats (There's no free lunch):** The data extraction was tested to use **t3.large** and above. Lower tier instances hang on our data extraction step from the database.
+* We have included a termination script to terminate the instances launched by `call_master.py` for your convenience. To run the script, go to `boto3` and run `python3 terminate_backend.py`.
+
+## Running the analytics task
+* From the `boto3` folder, run `./run_analytics.sh`
+---
+
+# Description and architecture
 ## Automation script
 The automation script is located in `bookreviews/boto3/call_master.py`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After the 4 servers are deployed, the server copies the IP addresses of all the new servers and transfers them into all the other servers. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
 
@@ -30,7 +34,6 @@ The automation script is located in `bookreviews/boto3/call_master.py`. It launc
 * Please make sure you have a good internet connection when you try and run the automation scripts.
 * This script requires you to use python 3.7 and above because we use `fstrings`. If `python3` does not use python 3.7 and above by default, install python3.7 and use `python3.7` to run the scripts instead (or make an alias for python3).
 * if you see the warning `ssh connection refused`, let the script continue to run. It should eventually add the IP address of the particular server into your `~/.ssh/known_hosts` file.
-* This script is meant to run on **UNIX based systems (linux or MacOS)**. If you use windows subsystem for linux (WSL), please run `dos2unix` on `bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. This is because windows has different file line endings than unix.
 
 **Expected output:**
 First, you should see that the script creates a security group.
