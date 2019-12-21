@@ -19,6 +19,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
         with open(path, "w") as f:
             f.write("\n".join(lines))
 
+    # Use role="EMR_EC2_DefaultRole" so we don't have to set up ourselves
     lines = [
         "#!/bin/bash",
         "flintrock launch my-cluster \\",
