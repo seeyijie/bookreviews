@@ -11,6 +11,9 @@ from operator import add
 
 from pyspark import ml
 from pyspark.sql import SparkSession, utils
+from pyspark.sql.functions import udf
+from pyspark.sql import types
+
 
 # __future__ imports necessary in case EC2 Linux AMI does not have python3
 
@@ -81,10 +84,11 @@ def pearson_price_vs_review_length(_df_meta, _df_reviews):
     rdd = df.rdd  # (price, reviewText)
     rdd = rdd.mapValues(get_length)  # (price, reviewLength)
     with Timer("Map reduce pearson correlation"):
-        val_pearson = map_reduce_pearsonr(rdd)
-    print("Correlation value:", val_pearson)
+        value_pearsonr = map_reduce_pearsonr(rdd)
+    print("Correlation value:", value_pearsonr)
     with open("results_pearson.txt", "w") as f:
-        f.write(str(val_pearson))
+        f.write(str(value_pearsonr))
+    return value_pearsonr
 
 
 def map_fn_tf(pair):
@@ -128,10 +132,10 @@ def get_rdd_text(df, col_text):
     return rdd
 
 
-def tuples2dict(tuples):
-    keys = [k for k, v in tuples]
-    assert len(keys) == len(set(keys))
-    return {k: v for k, v in tuples}
+# def tuples2dict(tuples):
+#   keys = [k for k, v in tuples]
+#   assert len(keys) == len(set(keys))
+#   return {k: v for k, v in tuples}
 
 
 # def get_tfidf(tf, df):
@@ -151,54 +155,57 @@ def tuples2dict(tuples):
 #     return tfidf
 
 
-def get_tfidf_multi(dfs, inputCol, outputCol="tfidf"):
-    assert type(dfs) == list
-    tokenizer = ml.feature.Tokenizer(inputCol=inputCol, outputCol="token")
-    hasher = ml.feature.HashingTF(inputCol="token", outputCol="hash_tf")
-    idf = ml.feature.IDF(inputCol="hash_tf", outputCol=outputCol)
-    pipeline = ml.Pipeline(stages=[tokenizer, hasher, idf])
-    pipeline = pipeline.fit(dfs[0])  # Assume first is df_trn
-    return [pipeline.transform(df) for df in dfs]
-
-
-def get_tfidf(df, inputCol):
-    df = df.select([inputCol]).dropna()
-    df = get_tfidf_multi([df], inputCol)[0]
-    return df
-
-
-def show_tfidf(tfidf, n_show=10, decimals=4):
-    print("Showing first {} TF-IDF results:".format(n_show))
-    for doc_id in list(tfidf.keys())[:n_show]:
-        print({k: round(v, decimals) for k, v in tfidf[doc_id].items()})
-
-
-def tfidf_review_text(_df_reviews):
-    with Timer("TFIDF for reviewText"):
-        # _df_reviews = _df_reviews.sample(withReplacement=False, fraction=0.1, seed=42)
-        # rdd = get_rdd_text(_df_reviews, col_text="reviewText")
-        # tf, df = map_reduce_tfidf(rdd)
-        # tfidf = get_tfidf(tf, df)
-        # show_tfidf(tfidf)
-
-        df = get_tfidf(_df_reviews, "reviewText")
-        df = df.select(["token", "tfidf"])
-        show_df(df, 10)
-
-        # with Timer("Write TFIDF results"):
-        #   cols_new = []
-        #   for c in df.columns:
-        #     c_new = c + "_string"
-        #     df = df.withColumn(c_new, df[c].cast("string"))
-        #     cols_new.append(c_new)
-        #   df = df.select(cols_new)
-        #   df.write.csv("results_tfidf.csv", header=True)
+# def get_tfidf_multi(dfs, inputCol, outputCol="tfidf"):
+#   assert type(dfs) == list
+#   tokenizer = ml.feature.Tokenizer(inputCol=inputCol, outputCol="token")
+#   hasher = ml.feature.CountVectorizer(inputCol="token", outputCol="hash")
+#   idf = ml.feature.IDF(inputCol="hash", outputCol=outputCol)
+#   pipeline = ml.Pipeline(stages=[tokenizer, hasher, idf])
+#   pipeline = pipeline.fit(dfs[0])  # Assume first is df_trn
+#   return [pipeline.transform(df) for df in dfs]
+#
+#
+# def get_tfidf(df, inputCol):
+#   df = df.select([inputCol]).dropna()
+#   df = get_tfidf_multi([df], inputCol)[0]
+#   return df
+#
+#
+# def show_tfidf(tfidf, n_show=10, decimals=4):
+#   print("Showing first {} TF-IDF results:".format(n_show))
+#   for doc_id in list(tfidf.keys())[:n_show]:
+#     print({k: round(v, decimals) for k, v in tfidf[doc_id].items()})
+#
+#
+# def tfidf_review_text(_df_reviews):
+#   with Timer("TFIDF for reviewText"):
+#     # _df_reviews = _df_reviews.sample(withReplacement=False, fraction=0.1, seed=42)
+#     # rdd = get_rdd_text(_df_reviews, col_text="reviewText")
+#     # tf, df = map_reduce_tfidf(rdd)
+#     # tfidf = get_tfidf(tf, df)
+#     # show_tfidf(tfidf)
+#
+#     df = get_tfidf(_df_reviews, "reviewText")
+#     df = df.select(["token", "tfidf"])
+#     show_df(df, 10)
+#
+#     # with Timer("Write TFIDF results"):
+#     #   cols_new = []
+#     #   for c in df.columns:
+#     #     c_new = c + "_string"
+#     #     df = df.withColumn(c_new, df[c].cast("string"))
+#     #     cols_new.append(c_new)
+#     #   df = df.select(cols_new)
+#     #   df.write.csv("results_tfidf.csv", header=True)
+#     return df
 
 
 def load_data(bucket, fname, sep_csv="\t"):
     name, ftype = fname.split(".")
     read_fn = {
-        "csv": partial(spark.read.csv, schema="asin STRING, reviewText STRING", sep=sep_csv),
+        "csv": partial(
+            spark.read.csv, schema="asin STRING, reviewText STRING", sep=sep_csv
+        ),
         "json": partial(spark.read.json, schema="asin STRING, price DOUBLE"),
     }[ftype]
     path_hdfs = os.path.join("hdfs:", fname)
@@ -233,6 +240,52 @@ def show_df(df, n_show):
         print(r)
 
 
+def export_results(spark, bucket, value_pearsonr, df_tfidf):
+    with Timer("Exporting results to S3 Bucket"):
+
+        def write_csv(df, path):
+            df.write.csv(path, header=True, sep="\t", mode="overwrite")
+
+        data_pearsonr = [(value_pearsonr,)]
+        assert type(data_pearsonr[0]) == tuple
+        df_pearsonr = spark.createDataFrame(data_pearsonr, schema="pearsonr DOUBLE")
+        write_csv(df_pearsonr, os.path.join(bucket, "pearsonr.csv"))
+        write_csv(df_tfidf, os.path.join(bucket, "tfidf.csv"))
+
+
+def tfidf_sparse2dict(vec, idx2word):
+    idxs = vec.indices
+    vals = vec.values
+    return str({idx2word[idxs[i]]: vals[i] for i in range(len(idxs))})
+
+
+def tfidf_review_text(df):
+    with Timer("TF-IDF for reviewText"):
+        df = df.select(["reviewText"]).dropna()
+
+        with Timer("TF-IDF pipeline"):
+            tokenizer = ml.feature.Tokenizer(inputCol="reviewText", outputCol="token")
+            hasher = ml.feature.CountVectorizer(inputCol="token", outputCol="hash")
+            idf = ml.feature.IDF(inputCol="hash", outputCol="tfidf")
+            pipeline = ml.Pipeline(stages=[tokenizer, hasher, idf])
+            pipeline = pipeline.fit(df)
+            df = pipeline.transform(df)
+
+        vocab = pipeline.stages[1].vocabulary
+        print("Vectorizer vocab size:", len(vocab))
+        idx2word = {idx: word for idx, word in enumerate(vocab)}
+
+        with Timer(
+            "Convert TF-IDF sparse index vectors to word:value string dictionary"
+        ):
+            my_udf = udf(
+                lambda vec: tfidf_sparse2dict(vec, idx2word), types.StringType()
+            )
+            df = df.select("reviewText", my_udf("tfidf").alias("tfidf_final"))
+        show_df(df, 10)
+        return df
+
+
 if __name__ == "__main__":
     with Timer("My spark script"):
         spark = SparkSession.builder.master("local[*]").getOrCreate()
@@ -243,10 +296,16 @@ if __name__ == "__main__":
         df_reviews = load_data(bucket, "mysql_data.csv")
         df_meta = load_data(bucket, "mongo_data.json")
 
+        ##########################################################################
+        # df_reviews = df_reviews.sample(0.1)
+        # df_meta = df_meta.sample(0.1)
+        ##########################################################################
+
         print("Meta:", show_df(df_meta, 10))
         print("Review:", show_df(df_reviews, 10))
 
-        pearson_price_vs_review_length(df_meta, df_reviews)
-        tfidf_review_text(df_reviews)
+        value_pearsonr = pearson_price_vs_review_length(df_meta, df_reviews)
+        df_tfidf = tfidf_review_text(df_reviews)
+        export_results(spark, bucket, value_pearsonr, df_tfidf)
 
     assert False  # For debugging, this exposes script printouts
