@@ -33,7 +33,7 @@ def write_ip_to_js(instance, folder="config_files"):
     if not os.path.isdir(folder):
         os.mkdir(folder)
     fname = "config.js"
-    content = 'export const flaskip = "http://{}:5000"'.format(instance.public_ip_address)
+    content = 'export const flaskip="http://{}:5000"'.format(instance.public_ip_address)
     with open(os.path.join(folder, fname), 'w') as f:
         f.write(str(content))
 
@@ -44,8 +44,8 @@ def write_config_files(instance, instance_type, folder="config_files"):
     fname = "config_{}.sh".format(instance_type)
     content = "\n".join([
         "#!/bin/bash",
-        'server_ip = "{}"'.format(instance.public_ip_address),
-        'public_key = "{}.pem"'.format(instance.key_name),
+        'server_ip="{}"'.format(instance.public_ip_address),
+        'public_key="{}.pem"'.format(instance.key_name),
         'username="ubuntu"',
     ])
     with open(os.path.join(folder, fname), 'w') as f:
