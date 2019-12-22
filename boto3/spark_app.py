@@ -253,10 +253,11 @@ def export_results(spark, bucket, value_pearsonr, df_tfidf):
         write_csv(df_tfidf, os.path.join(bucket, "tfidf.csv"))
 
 
-def tfidf_sparse2dict(vec, idx2word):
+def sparse2dict(vec, idx2word):
     idxs = vec.indices
     vals = vec.values
-    return str({idx2word[idxs[i]]: vals[i] for i in range(len(idxs))})
+    vals = vals.round(3)  # Less decimals saves space for export
+    return str({idx2word[i]: v for i,v in zip(idxs, vals)})
 
 
 def tfidf_review_text(df):
@@ -276,13 +277,13 @@ def tfidf_review_text(df):
         idx2word = {idx: word for idx, word in enumerate(vocab)}
 
         with Timer(
-            "Convert TF-IDF sparse index vectors to word:value string dictionary"
+            "Convert TF-IDF sparseVector to str(word:value dict)"
         ):
             my_udf = udf(
-                lambda vec: tfidf_sparse2dict(vec, idx2word), types.StringType()
+                lambda vec: sparse2dict(vec, idx2word), types.StringType()
             )
             df = df.select("reviewText", my_udf("tfidf").alias("tfidf_final"))
-        show_df(df, 10)
+        # show_df(df, 10)
         return df
 
 
@@ -303,8 +304,8 @@ if __name__ == "__main__":
         df_meta = df_meta.sample(0.1)
         ##########################################################################
 
-        print("Meta:", show_df(df_meta, 10))
-        print("Review:", show_df(df_reviews, 10))
+        # print("Meta:", show_df(df_meta, 10))
+        # print("Review:", show_df(df_reviews, 10))
 
         value_pearsonr = pearson_price_vs_review_length(df_meta, df_reviews)
         df_tfidf = tfidf_review_text(df_reviews)
