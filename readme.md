@@ -33,7 +33,7 @@ your `~/.ssh/known_hosts` file.
 No free lunch disclaimer: We only officially support "t3.large" instance types. 
 Cheaper types risk running out of memory.
 
-* To execute Analytics tasks, run `bash run_analytics.sh`
+* To run Analytics tasks and fetch results, run `bash run_analytics.sh`
 * To destroy all instances and the bucket, run `bash shutdown_all.sh`
 
 ## Expected output:
@@ -110,7 +110,8 @@ Downloaded: tfidf.csv/part-00002-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
 Downloaded: tfidf.csv/part-00003-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
 Downloaded: tfidf.csv/part-00004-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
 ```
-The result files can be loaded into Spark dataframes on the local machine like this:
+The result files will be fetched from S3 Bucket to your local machine automatically.
+They can be loaded into Spark dataframes like this:
 ```
 for name in ["tfidf.csv", "pearsonr.csv"]:
     path = os.path.join("bookreviews", "boto3", name)
