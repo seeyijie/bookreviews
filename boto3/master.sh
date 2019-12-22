@@ -4,11 +4,10 @@ image_id=$2
 instance_type=$3
 
 # ==================== Phase 0 - launching of instances ======================
-# Ideally launch spark code should be run here but for testing we put in run_analytics.sh
 echo "Launch Spark cluster in parallel, in background to save time. It should finish before Phase 2"
-nohup bash cluster_launch.sh &  # Running in background, doesn't terminate
+nohup bash cluster_launch.sh &
 cluster_pid=$!
-#bash cluster_launch.sh
+
 echo "Launch production backend instances"
 python3 launch_all.py --image=$image_id --keyname=$keypair --instancetype=$instance_type # runs instance and loads
 
@@ -61,6 +60,7 @@ ssh -i ~/.ssh/$keypair $mysql_username@$mysql_server_ip "cd /home/ubuntu ; chmod
 scp -i ~/.ssh/$keypair bash_scripts/extract_data/extract_mongo.sh $mongo_username@$mongo_server_ip:/home/$mongo_username
 scp -i ~/.ssh/$keypair -r ~/.aws/ $mongo_username@$mongo_server_ip:/home/$mongo_username/
 ssh -i ~/.ssh/$keypair $mongo_username@$mongo_server_ip "cd /home/ubuntu ; chmod +x extract_mongo.sh; bash extract_mongo.sh"
+
 # ================== Phase 2 - launch nginx and gunicorn ====================
 # start flask server
 ssh -echo "Starting up gunicorn on flask server"
@@ -75,3 +75,8 @@ ssh -i ~/.ssh/$keypair $react_username@$react_server_ip "cd /home/ubuntu/bookrev
 wait $cluster_pid
 echo "*************************************************"
 echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via the following link: http://$react_server_ip:80"
+
+# ================== Phase 3 - Execute analytics tasks ====================
+bash cluster_install_numpy.sh
+bash cluster_copy_file.sh info.txt
+bash cluster_run_app.sh spark_app.py
