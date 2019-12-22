@@ -62,10 +62,10 @@ def upload_file(bucket, filepath, overwrite=False):
     return objects[key]
 
 
-def delete_bucket(bucket):
+def delete_bucket_helper(bucket):
     print("Deleting bucket:", bucket.name)
-    to_delete = {"Objects": [{"Key": obj.key for obj in bucket.objects.all()}]}
-    bucket.delete_objects(Delete=to_delete)
+    for key in bucket.objects.all():
+        key.delete()
     return bucket.delete()
 
 
@@ -110,6 +110,30 @@ def make_valid_bucket_name(bucket_name):
     return bucket_name
 
 
+def import_results_from_bucket():
+    s3 = boto3.resource("s3")
+    with open("info.txt") as f:
+        bucket_name = eval(f.read())["bucket_name"]
+    bucket = s3.Bucket(bucket_name)
+    print("All bucket objects:", list(bucket.objects.all()))
+
+    for obj in bucket.objects.all():
+        for name in ["tfidf.csv", "pearsonr.csv"]:
+            if not os.path.isdir(name):
+                os.mkdir(name)
+            if obj.key.startswith(name):
+                bucket.download_file(Key=obj.key, Filename=obj.key)
+                print("Downloaded:", obj.key)
+
+
+def delete_bucket():
+    s3 = boto3.resource("s3")
+    with open("info.txt") as f:
+        bucket_name = eval(f.read())["bucket_name"]
+    bucket = s3.Bucket(bucket_name)
+    delete_bucket_helper(bucket)
+
+
 def main(csv_aws_credentials, region="us-east-1"):
     creds = read_credentials(csv_aws_credentials)
     write_credentials(creds, region)
@@ -142,4 +166,4 @@ def main(csv_aws_credentials, region="us-east-1"):
 
 
 if __name__ == "__main__":
-    fire.Fire(main)
+    fire.Fire()
