@@ -70,8 +70,9 @@ echo "*************************************************"
 echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via the following link: http://$react_server_ip:80"
 
 echo "================== Phase 3 - Execute analytics tasks and get results ===================="
-bash cluster_install_numpy.sh
-bash cluster_copy_file.sh info.txt
-bash cluster_run_app.sh spark_app.py > spark_output.txt
+echo "" > spark_output.txt
+bash cluster_install_numpy.sh >> spark_output.txt
+bash cluster_copy_file.sh info.txt >> spark_output.txt
+bash cluster_run_app.sh spark_app.py >> spark_output.txt
 python3 aws_setup.py import_results_from_bucket
 echo "Analytics finished and results imported! You can use Spark to read tfidf.csv and pearsonr.csv"
