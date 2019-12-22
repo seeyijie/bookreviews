@@ -70,9 +70,20 @@ echo "*************************************************"
 echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via the following link: http://$react_server_ip:80"
 
 echo "================== Phase 3 - Execute analytics tasks and get results ===================="
-echo "" > spark_output.txt
-bash cluster_install_numpy.sh >> spark_output.txt
-bash cluster_copy_file.sh info.txt >> spark_output.txt
-bash cluster_run_app.sh spark_app.py >> spark_output.txt
-python3 aws_setup.py import_results_from_bucket
+while true;
+do
+    read -r -p "Deployment done. Do you want to continue with analytics?" response   
+    if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
+    then
+        echo "" > spark_output.txt
+        bash cluster_install_numpy.sh >> spark_output.txt
+        bash cluster_copy_file.sh info.txt >> spark_output.txt
+        bash cluster_run_app.sh spark_app.py >> spark_output.txt
+        python3 aws_setup.py import_results_from_bucket
+        exit 0
+    else
+        continue
+    fi
+done
+
 echo "Analytics finished and results imported! You can use Spark to read tfidf.csv and pearsonr.csv"
