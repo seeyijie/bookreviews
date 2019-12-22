@@ -130,7 +130,7 @@ Then the script runs the new flask and react servers. This installs sets up and 
 Deployment done! Thank you for your patience! 
 Access the webpage via the following link: http://18.189.31.214:80
 ```
-**Analytics**
+### Analytics
 Running the analytics command will result in lots of output on the command line. This scirpt takes about 12 to 15 minutes on t3.large to launch from our tests. The lines to look for are:
 ```
 Downloaded: pearsonr.csv/_SUCCESS
@@ -144,7 +144,7 @@ Downloaded: tfidf.csv/part-00003-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
 Downloaded: tfidf.csv/part-00004-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
 ```
 
-**Terminating all processes**
+### Terminating all processes
 Running our script to terminate all the instances would take about 2 to 3 minutes. `shutdown_all.sh` terminates all EC2 instances and S3 bucket created by our production backend and analytics scripts.
 ```
 Destroying my-cluster...
