@@ -4,15 +4,21 @@
 ![system image](https://i.imgur.com/Ykq1SHa.jpg)
 
 ## Prerequisites
-* Install required python packages: `pip3 install -r requirements.txt`
+* AWS [Administrator](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_job-functions.html#jf_administrator) 
+user with **alphanumeric** username, [Programmatic access](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_users_create.html), 
+and credentials csv file 
 * Ubuntu 18.04 (For other OSes, please refer to "OS Compatibility" section)
-* openssh-server
-* openssh-client
 * Python 3.7 and above (Support for f-strings)
+* Install required python packages: `pip3 install -r requirements.txt`
+* openssh-server & openssh-client
 * Good internet connection
 
 ## Quickstart
-* Navigate to `boto3` folder (eg `cd bookreviews/boto3`)
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1bVpNBvvVSfkAtE5OGxyLFuIGoBotRQUm)
+<--- We also have an interactive demo notebook showing these steps and results! 
+We recommend to refer to it if there are any issues with the steps below.
+
+* Navigate to `boto3` folder (eg `cd boto3`)
 * To launch Production and Analytics backend, run `call_master.py` like below:
 ```
 python3 call_master.py \
@@ -20,7 +26,7 @@ python3 call_master.py \
     --instance_type="t3.large" \
     --n_nodes_analytics=4 \
 ```
-Note: If you see the warning `ssh connection refused`, let the script continue
+Note: If you see the warning `ssh connection refused`, please let the script continue
 to run. It should eventually add the IP address of the particular server into 
 your `~/.ssh/known_hosts` file.
 
@@ -28,52 +34,11 @@ No free lunch disclaimer: We only officially support "t3.large" instance types.
 Cheaper types risk running out of memory.
 
 * To execute Analytics tasks, run `bash run_analytics.sh`
-* To shut down all instances, run `bash shutdown_all.sh`
-
-##  Overview of main system scripts
-`bookreviews/boto3/call_master.py`
-1. Configure AWS credentials based on the provided .csv
-2. Create EC2 key-pair for creating instances
-2. Create S3 Bucket for data transfer later
-2. Generate bash scripts needed for Analytics cluster (eg cluster_launch.sh, cluster_login.sh)
-3. Call `master.sh` to launch Analytics & Production backend (in parallel to save time)
-
-`bookreviews/boto3/master.sh`
-1. Launch EC2 instances
-2. Run user data for MongoDB, MySQL, React and Flask servers
-2. Monitor to wait until user data is complete
-3. Extract data from MySQL and MongoDB, uploading to S3 Bucket
-4. Configure gunicorn and nginx for Flask/React
-6. Display link to access frontend webpage
-
-`bookreviews/boto3/spark_app.py`
-1. Import ETL data from S3 Bucket
-2. Write data to Hadoop File System
-3. Load reviews and metadata into PySpark dataframes
-3. Calculate Pearson Correlation between "price" and "reviewLength" in map-reduce fashion
-4. Calculate TF-IDF scores for "reviewText"
-5. Export results to S3 Bucket
-
-`bookreviews/boto3/run_analytics.sh`
-1. Submit Spark job to cluster to run `spark_app.py`
-2. Import analytics results from S3 Bucket to local machine
-
-`bookreviews/boto3/shutdown_all.sh`
-1. Terminate Analytics backend instances
-2. Terminate Production backend instances
-3. Delete S3 Bucket
-
-## Overview of Frontend
-![Image of frontend](https://i.imgur.com/fLS1Nbj.png)
-* Search bar
-* User registration and login
-* Browse book catalog
-* View reviews for each book
-* Add new review (Need to login first)
+* To destroy all instances and the bucket, run `bash shutdown_all.sh`
 
 ## Expected output:
 ### Production Backend and Webapp
-Launhing `call_master.py` should take about 7 to 9 minutes on t3.large. Here are the expected outputs:
+Launching `call_master.py` should take about 7 to 9 minutes on t3.large. Here are the expected outputs:
 
 First, you should see that the script creates a security group.
 
@@ -130,8 +95,10 @@ Then the script runs the new flask and react servers. This installs sets up and 
 Deployment done! Thank you for your patience! 
 Access the webpage via the following link: http://18.189.31.214:80
 ```
-### Analytics
-Running the analytics command will result in lots of output on the command line. This scirpt takes about 12 to 15 minutes on t3.large to launch from our tests. The lines to look for are:
+### Analytics Tasks
+Running the analytics command will result in lots of output on the command line. 
+This script takes about 12 to 15 minutes on t3.large to finish. 
+The final lines of the printout should look like this:
 ```
 Downloaded: pearsonr.csv/_SUCCESS
 Downloaded: pearsonr.csv/part-00000-af82b809-7402-4e54-818d-d7bb635fa728-c000.csv
@@ -143,13 +110,93 @@ Downloaded: tfidf.csv/part-00002-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
 Downloaded: tfidf.csv/part-00003-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
 Downloaded: tfidf.csv/part-00004-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
 ```
+The result files can be loaded into Spark dataframes on the local machine like this:
+```
+for name in ["tfidf.csv", "pearsonr.csv"]:
+    path = os.path.join("bookreviews", "boto3", name)
+    print("Reading result file:", path)
+    df = spark.read.csv(path, header=True, sep="\t")
+    print("Num row:", df.count())
+    df.show(10)
+```
+The output should look like this:
+```
+Reading result file: bookreviews/boto3/tfidf.csv
+Num row: 982597
++--------------------+--------------------+
+|          reviewText|         tfidf_final|
++--------------------+--------------------+
+|          reviewText|                  {}|
+|I enjoy vintage b...|{u'and': 0.413, u...|
+|This was a fairly...|{u'and': 0.62, u'...|
+|I'd never read an...|{u'': 0.983, u'on...|
+|If you like perio...|{u'': 0.983, u'en...|
+|A beautiful in-de...|{u'beautiful': 3....|
+|I enjoyed this on...|{u'and': 0.207, u...|
+|Never heard of Am...|{u'and': 0.207, u...|
+|Darth Maul workin...|{u'': 0.983, u'ov...|
+|This is a short s...|{u'major': 4.539,...|
++--------------------+--------------------+
+only showing top 10 rows
+
+Reading result file: bookreviews/boto3/pearsonr.csv
+Num row: 1
++--------------------+
+|            pearsonr|
++--------------------+
+|0.005156601974564208|
++--------------------+
+```
 
 ### Terminating all processes
-Running our script to terminate all the instances would take about 2 to 3 minutes. `shutdown_all.sh` terminates all EC2 instances and S3 bucket created by our production backend and analytics scripts.
+Running our script to terminate all the instances would take about 2 to 3 minutes.
+`shutdown_all.sh` terminates all EC2 instances and S3 bucket created by our 
+production backend and analytics scripts.
 ```
 Destroying my-cluster...
 Deleting bucket: <aws_username>-bucket-50043-group-datahoarders
 ```
+
+## Overview of Frontend
+![Image of frontend](https://i.imgur.com/fLS1Nbj.png)
+* Search bar
+* User registration and login
+* Browse book catalog
+* View reviews for each book
+* Add new review or book (Need to login first)
+
+##  Overview of main system scripts
+`boto3/call_master.py`
+1. Configure AWS credentials based on the provided .csv
+2. Create EC2 key-pair for creating instances
+2. Create S3 Bucket for data transfer later
+2. Generate bash scripts needed for Analytics cluster (eg cluster_launch.sh, cluster_login.sh)
+3. Call `master.sh` to launch Analytics & Production backend (in parallel to save time)
+
+`boto3/master.sh`
+1. Launch EC2 instances
+2. Run user data for MongoDB, MySQL, React and Flask servers
+2. Monitor to wait until user data is complete
+3. Extract data from MySQL and MongoDB, uploading to S3 Bucket
+4. Configure gunicorn and nginx for Flask/React
+6. Display link to access frontend webpage
+
+`boto3/spark_app.py`
+1. Import ETL data from S3 Bucket
+2. Write data to Hadoop File System
+3. Load reviews and metadata into PySpark dataframes
+3. Calculate Pearson Correlation between "price" and "reviewLength" in map-reduce fashion
+4. Calculate TF-IDF scores for "reviewText"
+5. Export results to S3 Bucket
+
+`boto3/run_analytics.sh`
+1. Submit Spark job to cluster to run `spark_app.py`
+2. Import analytics results from S3 Bucket to local machine
+
+`boto3/shutdown_all.sh`
+1. Terminate Analytics backend instances
+2. Terminate Production backend instances
+3. Delete S3 Bucket
 
 ### OS Compatibility
 **Linux**: Only Ubuntu is officially supported. However, the scripts should work 
@@ -157,7 +204,7 @@ if the requirements are installed.
 
 **Windows**: These scripts are meant to run on **UNIX based systems (linux or MacOS)**. 
 If you use windows subsystem for linux (WSL), please run `dos2unix` on 
-`bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. 
+`boto3/status_checks/status_check.sh` and `boto3/master.sh`. 
 This is because windows has different file line endings than unix.
 
 **MacOS**: Not officially supported. However, the scripts should work if the 
