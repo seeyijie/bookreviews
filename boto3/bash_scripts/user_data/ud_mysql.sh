@@ -1,6 +1,6 @@
 #!/bin/bash
 sudo apt-get -y update
-#sudo apt-get -y upgrade
+# sudo apt-get -y upgrade
 # download repository
 dropbox_url=https://50043-bucket.s3.us-east-2.amazonaws.com/bookreviews.zip
 wget -c $dropbox_url -O bookreviews.zip
@@ -41,3 +41,9 @@ rm /etc/mysql/mysql.conf.d/mysqld.cnf
 mv $home/bookreviews/boto3/config_files/mysqld.cnf /etc/mysql/mysql.conf.d/
 
 sudo service mysql restart
+
+# install virtualenv # TODO: check what can be removed
+sudo apt-get install -y python3-pip
+sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
+sudo apt-get install -y python3-venv
+sudo python3 -m venv env

@@ -18,6 +18,8 @@ import axios from "axios";
 import {Redirect} from "react-router-dom";
 import setAuthToken from "../util/setAuthToken";
 import * as config from '../Data/config';
+import {emails, passwords, authentication} from "../util/credentialsEnum";
+
 
 const useStyles = makeStyles(theme => ({
   '@global': {
@@ -44,6 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -51,17 +54,40 @@ class Login extends Component {
       email: '',
       password: '',
       doRedirect: false,
-      isLoading: false
-    }
+      isLoading: false,
+      passwordValidation: passwords.INIT,
+      emailValidation: emails.INIT,
+      authenticate: authentication.INIT
+    };
     this.handleClick = this.handleClick.bind(this);
     this.onChange = this.onChange.bind(this)
   }
 
   handleClick(e){
+    if (this.state.password.length >= 5) {
+      this.setState({
+        passwordValidation: passwords.VALID
+      });
+    } else if (0 < this.state.password.length < 5) {
+      this.setState({
+        passwordValidation: passwords.INVALID
+      });
+    }
+
+    if (this.state.email.match('(\\w+\\.)*\\w+@(\\w+\\.)+[A-Za-z]+')) {
+      this.setState({
+        emailValidation: emails.VALID
+      });
+    } else {
+      this.setState({
+        emailValidation: emails.INVALID
+      })
+    }
     const user = {
       email: this.state.email,
       password: this.state.password
     };
+
     this.setState({isLoading: true});
     axios.post(`${config.flaskip}/login`, user)
     // axios.post('http://127.0.0.1:5000/login', user)
@@ -71,19 +97,28 @@ class Login extends Component {
         localStorage.setItem('id', data.id);
         localStorage.setItem('name', data.name);
         setAuthToken(data.access_token);
-        this.setState({ doRedirect: true})
+        this.setState({
+          doRedirect: true,
+          authenticate: authentication.VALID
+        })
       })
-      .catch(err => this.setState({
-        errors: err.response.data,
-        isLoading: false
-      }));
+      .catch(err => {
+        this.setState({
+          isLoading: false
+        });
+        if (err.response.status === 500) {
+          this.setState({
+            authenticate: authentication.INVALID
+          })
+        }
+      });
   };
 
   onChange = e => this.setState({ [e.target.id]: e.target.value });
 
   render() {
     const {classes} = this.props;
-    const {email, password, isLoading} = this.state;
+    const {email, password, isLoading, emailValidation, passwordValidation, authenticate} = this.state;
 
     return (
       <Container component="main" maxWidth="xs">
@@ -109,12 +144,22 @@ class Login extends Component {
               autoComplete="email"
               autoFocus
               value={email}
+              helperText={emailValidation===emails.INVALID ? "Input a valid email" : null}
+              error={emailValidation===emails.INVALID}
               onChange={e => this.setState(this.onChange(e))}
             />
             <TextField
               variant="outlined"
               margin="normal"
               disabled={isLoading}
+              helperText={
+                passwordValidation === passwords.INVALID ?
+                    "Password must be 5 characters and above" :
+                    (authenticate === authentication.INVALID ?
+                        "Invalid password" :
+                        null)
+              }
+              error={passwordValidation === passwords.INVALID || authenticate === authentication.INVALID }
               required
               fullWidth
               name="password"

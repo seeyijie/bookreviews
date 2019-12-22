@@ -1,34 +1,75 @@
 # 50.043 Database Project
 
-## Automation script
-The automation script is located in `bookreviews/boto3/call_master.py`. It launches 4 EC2 instances and installs mysql, mongodb, flask and react on them. Text files and shell script files will be generated on your local machine. After the 4 servers are deployed, the server copies the IP addresses of all the new servers and transfers them into all the other servers. After deployment, follow the link generated in the command line. This will take you to our home page. Enjoy!
+## System Overview
+![system image](https://i.imgur.com/Ykq1SHa.jpg)
 
-**NOTE TO USER:**
-* Please make sure your AWS user account is in `us-east-1`
-* Please make sure you have a good internet connection when you try and run the automation scripts.
-* This script requires you to use python 3.7 and above because we use `fstrings`. If `python3` does not use python 3.7 and above by default, install python3.7 and use `python3.7` to run the scripts instead (or make an alias for python3).
-* if you see the warning `ssh connection refused`, let the script continue to run. It should eventually add the IP address of the particular server into your `~/.ssh/known_hosts` file.
-* This script is meant to run on **UNIX based systems (linux or MacOS)**. If you use windows subsystem for linux (WSL), please run `dos2unix` on `bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. This is because windows has different file line endings than unix.
-
-### Prerequisite python3 libraries
-* boto3
-* fire
-    * installed by `pip3 install fire`
-* dos2unix (for WSL users only)
-    * `sudo apt-get install dos2unix`
-
-### Other dependencies
+## Prerequisites
+* Install required python packages: `pip3 install -r requirements.txt`
+* Ubuntu 18.04 (For other OSes, please refer to "OS Compatibility" section)
 * openssh-server
 * openssh-client
+* Python 3.7 and above (Support for f-strings)
+* Good internet connection
 
-### Other requirements
-* Please make sure that no security group named `50043_SECURITY_GROUP` exists in your aws user account.
-* Please make sure you have an SSH keypair for your location. Put the SSH keypair in `~/.ssh` and ensure it has the appropriate permissions by running `chmod 400 ~/.ssh/<keyname>`
+## Quickstart
+* Navigate to `boto3` folder (eg `cd bookreviews/boto3`)
+* To launch Production and Analytics backend, run call_master.py like below:
+```
+python3 call_master.py \
+    --csv_aws_credentials=<path/to/csv> \
+    --instance_type="t3.large" \
+    --n_nodes_analytics=4 \
+```
+Note: If you see the warning `ssh connection refused`, let the script continue
+to run. It should eventually add the IP address of the particular server into 
+your `~/.ssh/known_hosts` file.
 
-### Instructions to launch automation script
-* the automation script takes in an empty **Ubuntu 18.04** ami image for your location as the `--image_id` argument.
-* from the `boto3` folder, run `python3 call_master.py --keyname=<keyname> --image_id=<image_id> --instance_type=<instance_type>`.
-* Example (for us-east-1): `python3 call_master.py --keypair=50043-east1-keypair --image_id=ami-04b9e92b5572fa0d1 --instance_type=t2.micro`
+No free lunch disclaimer: We only officially support "t3.large" instance types. 
+Cheaper types risk running out of memory.
+
+* To execute Analytics tasks, run `bash run_analytics.sh`
+* To shut down all instances, run `bash shutdown_all.sh`
+
+##  Overview of main system scripts
+`bookreviews/boto3/call_master.py`
+1. Configure AWS credentials based on the provided .csv
+2. Create EC2 key-pair for creating instances
+2. Create S3 Bucket for data transfer later
+2. Generate bash scripts needed for Analytics cluster (eg cluster_launch.sh, cluster_login.sh)
+3. Call `master.sh` to launch Analytics & Production backend (in parallel to save time)
+
+`bookreviews/boto3/master.sh`
+1. Launch EC2 instances
+2. Run user data for MongoDB, MySQL, React and Flask servers
+2. Monitor to wait until user data is complete
+3. Extract data from MySQL and MongoDB, uploading to S3 Bucket
+4. Configure gunicorn and nginx for Flask/React
+6. Display link to access frontend webpage
+
+`bookreviews/boto3/spark_app.py`
+1. Import ETL data from S3 Bucket
+2. Write data to Hadoop File System
+3. Load reviews and metadata into PySpark dataframes
+3. Calculate Pearson Correlation between "price" and "reviewLength" in map-reduce fashion
+4. Calculate TF-IDF scores for "reviewText"
+5. Export results to S3 Bucket
+
+`bookreviews/boto3/run_analytics.sh`
+1. Submit Spark job to cluster to run `spark_app.py`
+2. Import analytics results from S3 Bucket to local machine
+
+`bookreviews/boto3/shutdown_all.sh`
+1. Terminate Analytics backend instances
+2. Terminate Production backend instances
+3. Delete S3 Bucket
+
+## Overview of Frontend
+![Image of frontend](https://i.imgur.com/fLS1Nbj.png)
+* Search bar
+* User registration and login
+* Browse book catalog
+* View reviews for each book
+* Add new review (Need to login first)
 
 **Expected output:**
 First, you should see that the script creates a security group.
@@ -88,4 +129,16 @@ Access the webpage via the following link: http://18.189.31.214:80
 ```
 
 ## Schematic Diagram
-<img src="https://live.staticflickr.com/65535/49246127762_7b94aaec66_b.jpg" alt="alt text" width="900" > 
+<img src="https://live.staticflickr.com/65535/49246127762_7b94aaec66_b.jpg" alt="alt text" width="900" >
+
+### OS Compatibility
+**Linux**: Only Ubuntu is officially supported. However, the scripts should work 
+if the requirements are installed.
+
+**Windows**: These scripts are meant to run on **UNIX based systems (linux or MacOS)**. 
+If you use windows subsystem for linux (WSL), please run `dos2unix` on 
+`bookreviews/boto3/status_checks/status_check.sh` and `bookreviews/boto3/master.sh`. 
+This is because windows has different file line endings than unix.
+
+**MacOS**: Not officially supported. However, the scripts should work if the 
+requirements are installed.

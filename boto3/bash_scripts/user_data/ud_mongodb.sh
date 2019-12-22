@@ -45,3 +45,8 @@ sudo service mongod restart
 mongo < /home/ubuntu/bookreviews/boto3/bash_scripts/mongodb/create_user.js
 
 sudo service mongod restart
+
+# install virtualenv #TODO: check what can be removed
+sudo apt-get install -y python3-pip
+sudo apt-get install -y build-essential libssl-dev libffi-dev python-dev
+sudo apt-get install -y python3-venv

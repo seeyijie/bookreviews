@@ -15,7 +15,7 @@ cd bookreviews
 # create and update virtual environment requirements
 python3 -m venv env
 source env/bin/activate
-pip3 install -r requirements.txt
+pip3 install -r requirements_production.txt
 
 #If you followed the initial server setup guide, you should have a UFW firewall enabled.
 # To test the application, you need to allow access to port 5000:
