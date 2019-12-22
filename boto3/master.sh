@@ -80,4 +80,4 @@ echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via 
 bash cluster_install_numpy.sh
 bash cluster_copy_file.sh info.txt
 bash cluster_run_app.sh spark_app.py
-python import_results_from_bucket.py
+python3 import_results_from_bucket.py
