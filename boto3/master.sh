@@ -76,7 +76,8 @@ wait $cluster_pid
 echo "*************************************************"
 echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via the following link: http://$react_server_ip:80"
 
-# ================== Phase 3 - Execute analytics tasks ====================
+# ================== Phase 3 - Execute analytics tasks and get results ====================
 bash cluster_install_numpy.sh
 bash cluster_copy_file.sh info.txt
 bash cluster_run_app.sh spark_app.py
+python import_results_from_bucket.py
