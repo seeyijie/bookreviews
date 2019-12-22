@@ -257,7 +257,7 @@ def sparse2dict(vec, idx2word):
     idxs = vec.indices
     vals = vec.values
     vals = vals.round(3)  # Less decimals saves space for export
-    return str({idx2word[i]: v for i,v in zip(idxs, vals)})
+    return str({idx2word[i]:v for i,v in zip(idxs, vals)})
 
 
 def tfidf_review_text(df):
@@ -276,14 +276,10 @@ def tfidf_review_text(df):
         print("Vectorizer vocab size:", len(vocab))
         idx2word = {idx: word for idx, word in enumerate(vocab)}
 
-        with Timer(
-            "Convert TF-IDF sparseVector to str(word:value dict)"
-        ):
-            my_udf = udf(
-                lambda vec: sparse2dict(vec, idx2word), types.StringType()
-            )
+        with Timer("Convert TF-IDF sparseVector to str(word:value dict)"):
+            my_udf = udf(lambda vec: sparse2dict(vec, idx2word), types.StringType())
             df = df.select("reviewText", my_udf("tfidf").alias("tfidf_final"))
-        # show_df(df, 10)
+        show_df(df, 10)
         return df
 
 
@@ -298,17 +294,17 @@ if __name__ == "__main__":
         df_reviews = load_data(bucket, "mysql_data.csv")
         df_meta = load_data(bucket, "mongo_data.json")
 
-        ##########################################################################
-        # Use 10% of data for testing to save time
-        df_reviews = df_reviews.sample(0.1)
-        df_meta = df_meta.sample(0.1)
-        ##########################################################################
+        # ##########################################################################
+        # # Use 10% of data for testing to save time
+        # df_reviews = df_reviews.sample(0.1)
+        # df_meta = df_meta.sample(0.1)
+        # ##########################################################################
 
-        # print("Meta:", show_df(df_meta, 10))
-        # print("Review:", show_df(df_reviews, 10))
+        print("Meta:", show_df(df_meta, 10))
+        print("Review:", show_df(df_reviews, 10))
 
         value_pearsonr = pearson_price_vs_review_length(df_meta, df_reviews)
         df_tfidf = tfidf_review_text(df_reviews)
         export_results(spark, bucket, value_pearsonr, df_tfidf)
 
-    assert False  # For debugging, this exposes script printouts
+    # assert False  # For debugging, this exposes script printouts
