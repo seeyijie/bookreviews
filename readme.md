@@ -13,7 +13,7 @@
 
 ## Quickstart
 * Navigate to `boto3` folder (eg `cd bookreviews/boto3`)
-* To launch Production and Analytics backend, run call_master.py like below:
+* To launch Production and Analytics backend, run `call_master.py` like below:
 ```
 python3 call_master.py \
     --csv_aws_credentials=<path/to/csv> \
@@ -72,7 +72,8 @@ Cheaper types risk running out of memory.
 * Add new review (Need to login first)
 
 ## Expected output:
-**production backend and webapp**
+### Production Backend and Webapp
+Launhing `call_master.py` should take about 7 to 9 minutes on t3.large. Here are the expected outputs:
 
 First, you should see that the script creates a security group.
 
@@ -129,6 +130,27 @@ Then the script runs the new flask and react servers. This installs sets up and 
 Deployment done! Thank you for your patience! 
 Access the webpage via the following link: http://18.189.31.214:80
 ```
+**Analytics**
+Running the analytics command will result in lots of output on the command line. This scirpt takes about 12 to 15 minutes on t3.large to launch from our tests. The lines to look for are:
+```
+Downloaded: pearsonr.csv/_SUCCESS
+Downloaded: pearsonr.csv/part-00000-af82b809-7402-4e54-818d-d7bb635fa728-c000.csv
+Downloaded: pearsonr.csv/part-00001-af82b809-7402-4e54-818d-d7bb635fa728-c000.csv
+Downloaded: tfidf.csv/_SUCCESS
+Downloaded: tfidf.csv/part-00000-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
+Downloaded: tfidf.csv/part-00001-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
+Downloaded: tfidf.csv/part-00002-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
+Downloaded: tfidf.csv/part-00003-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
+Downloaded: tfidf.csv/part-00004-0280fe87-a5b9-4470-a776-c4e6d558c3e0-c000.csv
+```
+
+**Terminating all processes**
+Running our script to terminate all the instances would take about 2 to 3 minutes. `shutdown_all.sh` terminates all EC2 instances and S3 bucket created by our production backend and analytics scripts.
+```
+Destroying my-cluster...
+Deleting bucket: <aws_username>-bucket-50043-group-datahoarders
+```
+
 ### OS Compatibility
 **Linux**: Only Ubuntu is officially supported. However, the scripts should work 
 if the requirements are installed.

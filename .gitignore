@@ -16,6 +16,9 @@ boto3/metadata/*
 boto3/get-pip.py
 boto3/tfidf_csv/*
 boto3/pearsonr_csv/*
+boto3/pearsonr.csv/
+boto3/tfidf.csv/
+boto3/nohup.out
 
 kindle_reviews.csv
 meta_Kindle_Store.json
