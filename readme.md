@@ -157,6 +157,17 @@ Destroying my-cluster...
 Deleting bucket: <aws_username>-bucket-50043-group-datahoarders
 ```
 
+## Overview of Production backend
+* The web server receives requests and computes the responses by interacting with the databases.
+* The reviews are stored in a MySQL Database server on EC2
+* The metadata (book descriptions) is in a MongoDB server on EC2
+* The web server logs are recorded in a MongoDB server on EC2. 
+* Each log record contains:
+    * Timestamp
+    * What type of request is being served
+    * What is the response
+
+
 ## Overview of Frontend
 ![Image of frontend](https://i.imgur.com/fLS1Nbj.png)
 * Search bar
@@ -164,6 +175,7 @@ Deleting bucket: <aws_username>-bucket-50043-group-datahoarders
 * Browse book catalog
 * View reviews for each book
 * Add new review or book (Need to login first)
+* View logs information
 
 ##  Overview of main system scripts
 `boto3/call_master.py`
