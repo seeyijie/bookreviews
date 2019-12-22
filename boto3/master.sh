@@ -86,8 +86,8 @@ do
         bash cluster_copy_file.sh info.txt
         bash cluster_run_app.sh spark_app.py > sparkoutput.txt
         python3 import_results_from_bucket.py
-        break
-    else
         exit 0
+    else
+        continue
     fi
 done
