@@ -73,6 +73,7 @@ Cheaper types risk running out of memory.
 
 ## Expected output:
 **production backend and webapp**
+
 First, you should see that the script creates a security group.
 
 ```
