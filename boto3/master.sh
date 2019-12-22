@@ -77,7 +77,17 @@ echo "*************************************************"
 echo -e "Deployment done! Thank you for your patience! \nAccess the webpage via the following link: http://$react_server_ip:80"
 
 # ================== Phase 3 - Execute analytics tasks and get results ====================
-bash cluster_install_numpy.sh
-bash cluster_copy_file.sh info.txt
-bash cluster_run_app.sh spark_app.py
-python3 import_results_from_bucket.py
+while true;
+do
+    read -r -p "Deployment done. Do you want to continue with analytics?" response   
+    if [[ $response =~ ^([yY][eE][sS]|[yY])$ ]]
+    then
+        bash cluster_install_numpy.sh
+        bash cluster_copy_file.sh info.txt
+        bash cluster_run_app.sh spark_app.py > sparkoutput.txt
+        python3 import_results_from_bucket.py
+        break
+    else
+        exit 0
+    fi
+done
