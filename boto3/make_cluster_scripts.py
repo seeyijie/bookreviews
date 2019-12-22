@@ -59,7 +59,7 @@ def main(num_nodes, instance_type="t2.micro", ami="ami-00068cd7555f543d5"):
 
     lines = [
         "#!/bin/bash",
-        "curl -O https://bootstrap.pypa.io/get-pip.py",
+        "wget -q -nc https://bootstrap.pypa.io/get-pip.py",
         "bash cluster_copy_file.sh get-pip.py",
         "bash cluster_run_command.sh 'sudo python get-pip.py && sudo pip install numpy'",
     ]

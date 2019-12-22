@@ -10,7 +10,7 @@ boto3/cluster_*.sh
 boto3/config_files/*.sh
 boto3/config_files/config.js
 boto3/ip_addresses/*.txt
-boto3/info.txt
+boto3/*.txt
 boto3/*.pem
 boto3/metadata/*
 boto3/get-pip.py
