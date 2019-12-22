@@ -64,8 +64,8 @@ def upload_file(bucket, filepath, overwrite=False):
 
 def delete_bucket_helper(bucket):
     print("Deleting bucket:", bucket.name)
-    to_delete = {"Objects": [{"Key": obj.key for obj in bucket.objects.all()}]}
-    bucket.delete_objects(Delete=to_delete)
+    for key in bucket.objects.all():
+      key.delete()
     return bucket.delete()
 
 

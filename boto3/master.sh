@@ -55,7 +55,7 @@ scp -i ~/.ssh/$keypair bash_scripts/extract_data/extract_mongo.sh $mongo_usernam
 scp -i ~/.ssh/$keypair -r ~/.aws/ $mongo_username@$mongo_server_ip:/home/$mongo_username/
 ssh -i ~/.ssh/$keypair $mongo_username@$mongo_server_ip "cd /home/ubuntu ; chmod +x extract_mongo.sh; bash extract_mongo.sh"
 
-echo "================== Phase 2 - launch nginx and gunicorn ===================="
+echo "================== Phase 2 - Launch nginx and gunicorn ===================="
 ssh -echo "Starting up gunicorn on flask server"
 ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &"
 
