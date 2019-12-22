@@ -57,13 +57,13 @@ ssh -i ~/.ssh/$keypair $mongo_username@$mongo_server_ip "cd /home/ubuntu ; chmod
 
 echo "================== Phase 2 - launch nginx and gunicorn ===================="
 ssh -echo "Starting up gunicorn on flask server"
-ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &"
+ssh -i ~/.ssh/$keypair $flask_username@$flask_server_ip "cd /home/ubuntu/bookreviews ; source env/bin/activate ; sudo nohup gunicorn --bind 0.0.0.0:5000 wsgi:app > /dev/null 2>&1 &" > gunicorn_log.txt
 
 # replace react js config file
 echo "Transferring new configuration files for react server"
 scp -i ~/.ssh/$keypair config_files/config.js $react_username@$react_server_ip:/home/$react_username/bookreviews/react-end/src/Data
 # setup react server to use new IP addresses
-ssh -i ~/.ssh/$keypair $react_username@$react_server_ip "cd /home/ubuntu/bookreviews/react-end ; sudo yarn build ; sudo apt-get install -y nginx ; sudo rm /etc/nginx/sites-available/default ; sudo cp /home/ubuntu/bookreviews/boto3/config_files/default /etc/nginx/sites-available ; sudo service nginx start ; sudo service nginx restart"
+ssh -i ~/.ssh/$keypair $react_username@$react_server_ip "cd /home/ubuntu/bookreviews/react-end ; sudo yarn build ; sudo apt-get install -y nginx ; sudo rm /etc/nginx/sites-available/default ; sudo cp /home/ubuntu/bookreviews/boto3/config_files/default /etc/nginx/sites-available ; sudo service nginx start ; sudo service nginx restart" > react_log.txt
 
 wait $cluster_pid
 echo "*************************************************"
